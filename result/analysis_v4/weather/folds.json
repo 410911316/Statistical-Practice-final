@@ -1,0 +1,599 @@
+[
+  {
+    "outer_year": 2024,
+    "train_events": 12,
+    "test_events": 3,
+    "train_end": "2023-08-20",
+    "test_start": "2024-07-17",
+    "weights": {
+      "ols": 0.0,
+      "ridge": 0.5224990166923098,
+      "xgboost": 0.4775009833076902
+    },
+    "lp": {
+      "oof_mae": 776.6334576997651,
+      "oof_events": 8,
+      "solver": "scipy.optimize.linprog(highs)",
+      "scope": "meta_training_loss_not_outer_test_score"
+    },
+    "base_models": {
+      "ols": {
+        "model": "ols",
+        "groups": [],
+        "columns": [
+          "station=大橋頭站",
+          "station=民權西路",
+          "station=雙連",
+          "hour=19",
+          "hour=20",
+          "hour=21",
+          "hour=22",
+          "hour=23"
+        ],
+        "dropped_constants": [],
+        "params": {},
+        "rank": 9,
+        "n_columns_with_intercept": 9,
+        "fallback": null,
+        "includes_historical_baseline": false,
+        "fallback_constant": null
+      },
+      "ridge": {
+        "model": "ridge",
+        "groups": [
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "columns": [
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct",
+          "forecast_temperature_c:missing",
+          "forecast_wind_speed_m_s:missing",
+          "forecast_cloud_cover_pct:missing",
+          "station=大橋頭站",
+          "station=民權西路",
+          "station=雙連",
+          "hour=19",
+          "hour=20",
+          "hour=21",
+          "hour=22",
+          "hour=23",
+          "station=大橋頭站:hour=19",
+          "station=大橋頭站:hour=20",
+          "station=大橋頭站:hour=21",
+          "station=大橋頭站:hour=22",
+          "station=大橋頭站:hour=23",
+          "station=民權西路:hour=19",
+          "station=民權西路:hour=20",
+          "station=民權西路:hour=21",
+          "station=民權西路:hour=22",
+          "station=民權西路:hour=23",
+          "station=雙連:hour=19",
+          "station=雙連:hour=20",
+          "station=雙連:hour=21",
+          "station=雙連:hour=22",
+          "station=雙連:hour=23"
+        ],
+        "dropped_constants": [],
+        "params": {
+          "lambda": 1.0,
+          "sklearn_alpha": 288.0,
+          "n_train_rows": 288
+        },
+        "rank": 31,
+        "n_columns_with_intercept": 33,
+        "fallback": null,
+        "includes_historical_baseline": false,
+        "fallback_constant": null,
+        "imputation": {
+          "forecast_temperature_c": {
+            "strategy": "training_median",
+            "fill_value": 27.9131035,
+            "training_known_rows": 192,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_wind_speed_m_s": {
+            "strategy": "training_median",
+            "fill_value": 1.2651925,
+            "training_known_rows": 192,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_cloud_cover_pct": {
+            "strategy": "training_median",
+            "fill_value": 86.0,
+            "training_known_rows": 192,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          }
+        },
+        "all_training_values_unknown": [],
+        "missing_indicator_candidates": [
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ]
+      },
+      "xgboost": {
+        "model": "xgboost",
+        "groups": [
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "columns": [
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct",
+          "forecast_temperature_c:missing",
+          "forecast_wind_speed_m_s:missing",
+          "forecast_cloud_cover_pct:missing",
+          "station=大橋頭站",
+          "station=民權西路",
+          "station=雙連",
+          "hour=19",
+          "hour=20",
+          "hour=21",
+          "hour=22",
+          "hour=23"
+        ],
+        "dropped_constants": [],
+        "params": {
+          "max_depth": 5,
+          "n_estimators": 50,
+          "min_child_weight": 1,
+          "reg_lambda": 10.0
+        },
+        "rank": 16,
+        "n_columns_with_intercept": 18,
+        "fallback": null,
+        "includes_historical_baseline": false,
+        "fallback_constant": null,
+        "imputation": {
+          "forecast_temperature_c": {
+            "strategy": "training_median",
+            "fill_value": 27.9131035,
+            "training_known_rows": 192,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_wind_speed_m_s": {
+            "strategy": "training_median",
+            "fill_value": 1.2651925,
+            "training_known_rows": 192,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_cloud_cover_pct": {
+            "strategy": "training_median",
+            "fill_value": 86.0,
+            "training_known_rows": 192,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          }
+        },
+        "all_training_values_unknown": [],
+        "missing_indicator_candidates": [
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ]
+      }
+    }
+  },
+  {
+    "outer_year": 2025,
+    "train_events": 15,
+    "test_events": 3,
+    "train_end": "2024-08-10",
+    "test_start": "2025-08-06",
+    "weights": {
+      "ols": 0.0847694664917742,
+      "ridge": 0.31810460289706793,
+      "xgboost": 0.5971259306111578
+    },
+    "lp": {
+      "oof_mae": 767.8652580647631,
+      "oof_events": 11,
+      "solver": "scipy.optimize.linprog(highs)",
+      "scope": "meta_training_loss_not_outer_test_score"
+    },
+    "base_models": {
+      "ols": {
+        "model": "ols",
+        "groups": [
+          "is_weekend"
+        ],
+        "columns": [
+          "is_weekend",
+          "station=大橋頭站",
+          "station=民權西路",
+          "station=雙連",
+          "hour=19",
+          "hour=20",
+          "hour=21",
+          "hour=22",
+          "hour=23"
+        ],
+        "dropped_constants": [],
+        "params": {},
+        "rank": 10,
+        "n_columns_with_intercept": 10,
+        "fallback": null,
+        "includes_historical_baseline": false,
+        "fallback_constant": null
+      },
+      "ridge": {
+        "model": "ridge",
+        "groups": [
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "columns": [
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct",
+          "forecast_temperature_c:missing",
+          "forecast_wind_speed_m_s:missing",
+          "forecast_cloud_cover_pct:missing",
+          "station=大橋頭站",
+          "station=民權西路",
+          "station=雙連",
+          "hour=19",
+          "hour=20",
+          "hour=21",
+          "hour=22",
+          "hour=23",
+          "station=大橋頭站:hour=19",
+          "station=大橋頭站:hour=20",
+          "station=大橋頭站:hour=21",
+          "station=大橋頭站:hour=22",
+          "station=大橋頭站:hour=23",
+          "station=民權西路:hour=19",
+          "station=民權西路:hour=20",
+          "station=民權西路:hour=21",
+          "station=民權西路:hour=22",
+          "station=民權西路:hour=23",
+          "station=雙連:hour=19",
+          "station=雙連:hour=20",
+          "station=雙連:hour=21",
+          "station=雙連:hour=22",
+          "station=雙連:hour=23"
+        ],
+        "dropped_constants": [],
+        "params": {
+          "lambda": 1.0,
+          "sklearn_alpha": 360.0,
+          "n_train_rows": 360
+        },
+        "rank": 31,
+        "n_columns_with_intercept": 33,
+        "fallback": null,
+        "includes_historical_baseline": false,
+        "fallback_constant": null,
+        "imputation": {
+          "forecast_temperature_c": {
+            "strategy": "training_median",
+            "fill_value": 28.157592,
+            "training_known_rows": 264,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_wind_speed_m_s": {
+            "strategy": "training_median",
+            "fill_value": 1.126436,
+            "training_known_rows": 264,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_cloud_cover_pct": {
+            "strategy": "training_median",
+            "fill_value": 52.9666665,
+            "training_known_rows": 264,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          }
+        },
+        "all_training_values_unknown": [],
+        "missing_indicator_candidates": [
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ]
+      },
+      "xgboost": {
+        "model": "xgboost",
+        "groups": [
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "columns": [
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct",
+          "forecast_temperature_c:missing",
+          "forecast_wind_speed_m_s:missing",
+          "forecast_cloud_cover_pct:missing",
+          "station=大橋頭站",
+          "station=民權西路",
+          "station=雙連",
+          "hour=19",
+          "hour=20",
+          "hour=21",
+          "hour=22",
+          "hour=23"
+        ],
+        "dropped_constants": [],
+        "params": {
+          "max_depth": 5,
+          "n_estimators": 50,
+          "min_child_weight": 1,
+          "reg_lambda": 10.0
+        },
+        "rank": 16,
+        "n_columns_with_intercept": 18,
+        "fallback": null,
+        "includes_historical_baseline": false,
+        "fallback_constant": null,
+        "imputation": {
+          "forecast_temperature_c": {
+            "strategy": "training_median",
+            "fill_value": 28.157592,
+            "training_known_rows": 264,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_wind_speed_m_s": {
+            "strategy": "training_median",
+            "fill_value": 1.126436,
+            "training_known_rows": 264,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_cloud_cover_pct": {
+            "strategy": "training_median",
+            "fill_value": 52.9666665,
+            "training_known_rows": 264,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          }
+        },
+        "all_training_values_unknown": [],
+        "missing_indicator_candidates": [
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ]
+      }
+    }
+  },
+  {
+    "outer_year": 2026,
+    "train_events": 18,
+    "test_events": 3,
+    "train_end": "2025-08-30",
+    "test_start": "2026-07-25",
+    "weights": {
+      "ols": 0.13494892010441498,
+      "ridge": 0.11480804031164578,
+      "xgboost": 0.7502430395839392
+    },
+    "lp": {
+      "oof_mae": 741.8263616125687,
+      "oof_events": 14,
+      "solver": "scipy.optimize.linprog(highs)",
+      "scope": "meta_training_loss_not_outer_test_score"
+    },
+    "base_models": {
+      "ols": {
+        "model": "ols",
+        "groups": [
+          "is_weekend"
+        ],
+        "columns": [
+          "is_weekend",
+          "station=大橋頭站",
+          "station=民權西路",
+          "station=雙連",
+          "hour=19",
+          "hour=20",
+          "hour=21",
+          "hour=22",
+          "hour=23"
+        ],
+        "dropped_constants": [],
+        "params": {},
+        "rank": 10,
+        "n_columns_with_intercept": 10,
+        "fallback": null,
+        "includes_historical_baseline": false,
+        "fallback_constant": null
+      },
+      "ridge": {
+        "model": "ridge",
+        "groups": [
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "columns": [
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct",
+          "forecast_temperature_c:missing",
+          "forecast_wind_speed_m_s:missing",
+          "forecast_cloud_cover_pct:missing",
+          "station=大橋頭站",
+          "station=民權西路",
+          "station=雙連",
+          "hour=19",
+          "hour=20",
+          "hour=21",
+          "hour=22",
+          "hour=23",
+          "station=大橋頭站:hour=19",
+          "station=大橋頭站:hour=20",
+          "station=大橋頭站:hour=21",
+          "station=大橋頭站:hour=22",
+          "station=大橋頭站:hour=23",
+          "station=民權西路:hour=19",
+          "station=民權西路:hour=20",
+          "station=民權西路:hour=21",
+          "station=民權西路:hour=22",
+          "station=民權西路:hour=23",
+          "station=雙連:hour=19",
+          "station=雙連:hour=20",
+          "station=雙連:hour=21",
+          "station=雙連:hour=22",
+          "station=雙連:hour=23"
+        ],
+        "dropped_constants": [],
+        "params": {
+          "lambda": 0.1,
+          "sklearn_alpha": 43.2,
+          "n_train_rows": 432
+        },
+        "rank": 31,
+        "n_columns_with_intercept": 33,
+        "fallback": null,
+        "includes_historical_baseline": false,
+        "fallback_constant": null,
+        "imputation": {
+          "forecast_temperature_c": {
+            "strategy": "training_median",
+            "fill_value": 27.8808535,
+            "training_known_rows": 336,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_wind_speed_m_s": {
+            "strategy": "training_median",
+            "fill_value": 1.1610225,
+            "training_known_rows": 336,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_cloud_cover_pct": {
+            "strategy": "training_median",
+            "fill_value": 43.400000000000006,
+            "training_known_rows": 336,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          }
+        },
+        "all_training_values_unknown": [],
+        "missing_indicator_candidates": [
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ]
+      },
+      "xgboost": {
+        "model": "xgboost",
+        "groups": [
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "columns": [
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct",
+          "forecast_temperature_c:missing",
+          "forecast_wind_speed_m_s:missing",
+          "forecast_cloud_cover_pct:missing",
+          "station=大橋頭站",
+          "station=民權西路",
+          "station=雙連",
+          "hour=19",
+          "hour=20",
+          "hour=21",
+          "hour=22",
+          "hour=23"
+        ],
+        "dropped_constants": [],
+        "params": {
+          "max_depth": 5,
+          "n_estimators": 100,
+          "min_child_weight": 1,
+          "reg_lambda": 10.0
+        },
+        "rank": 16,
+        "n_columns_with_intercept": 18,
+        "fallback": null,
+        "includes_historical_baseline": false,
+        "fallback_constant": null,
+        "imputation": {
+          "forecast_temperature_c": {
+            "strategy": "training_median",
+            "fill_value": 27.8808535,
+            "training_known_rows": 336,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_wind_speed_m_s": {
+            "strategy": "training_median",
+            "fill_value": 1.1610225,
+            "training_known_rows": 336,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_cloud_cover_pct": {
+            "strategy": "training_median",
+            "fill_value": 43.400000000000006,
+            "training_known_rows": 336,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          }
+        },
+        "all_training_values_unknown": [],
+        "missing_indicator_candidates": [
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ]
+      }
+    }
+  }
+]

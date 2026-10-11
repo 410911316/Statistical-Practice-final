@@ -1,0 +1,14 @@
+﻿variable,label,group,unit,events,complete_events,incomplete_events,expected_unique_values,available_unique_values,missing_unique_values
+y,起站人次,核心輸入／目標,活動（四站六時段完整）,21,21,0,504,504,0
+baseline_hourly_56d,歷史基準,核心輸入／目標,活動（四站六時段完整）,21,21,0,504,504,0
+station,車站,核心輸入／目標,活動（四站六時段完整）,21,21,0,504,504,0
+hour,時段,核心輸入／目標,活動（四站六時段完整）,21,21,0,504,504,0
+is_weekend,週末,核心輸入／目標,活動（四站六時段完整）,21,21,0,504,504,0
+day_of_year,年內日序,核心輸入／目標,活動（四站六時段完整）,21,21,0,504,504,0
+year_index,年度序號,核心輸入／目標,活動（四站六時段完整）,21,21,0,504,504,0
+temperature_at_report_time_c,氣溫六點平均（°C）,事後實測天氣：僅 EDA,活動（六個測站時點完整；四站不重複計數）,21,21,0,126,126,0
+wind_preceding_10min_mean_m_s,風速六點平均（m/s）,事後實測天氣：僅 EDA,活動（六個測站時點完整；四站不重複計數）,21,21,0,126,126,0
+precipitation_hour_ending_mm,平均每小時雨量（mm）,事後實測天氣：僅 EDA,活動（六個測站時點完整；四站不重複計數）,21,18,3,126,119,7
+cloud_at_report_time_tenths,雲量六點平均（十分量）,事後實測天氣：僅 EDA,活動（六個測站時點完整；四站不重複計數）,21,15,6,126,90,36
+observed_has_drone_show,實際無人機（有／無／未知）,事後活動實況：僅 EDA,活動（每場一筆）,21,3,18,21,3,18
+observed_fireworks_seconds,實際煙火秒數,事後活動實況：僅 EDA,活動（每場一筆）,21,21,0,21,21,0

@@ -1,0 +1,10 @@
+﻿,origin_total,baseline_total,is_weekend,day_of_year,year_index,temperature_mean,wind_mean,rain_mean,cloud_mean
+origin_total,21,21,21,21,21,21,21,18,15
+baseline_total,21,21,21,21,21,21,21,18,15
+is_weekend,21,21,21,21,21,21,21,18,15
+day_of_year,21,21,21,21,21,21,21,18,15
+year_index,21,21,21,21,21,21,21,18,15
+temperature_mean,21,21,21,21,21,21,21,18,15
+wind_mean,21,21,21,21,21,21,21,18,15
+rain_mean,18,18,18,18,18,18,18,18,13
+cloud_mean,15,15,15,15,15,15,15,13,15

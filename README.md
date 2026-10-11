@@ -2,17 +2,17 @@
 
 ## 專案目的與目前進度
 
-整理北捷逐時 OD、活動、天氣及社群資料，分析煙火活動人流，銜接候車與列車容量情境。**第三版已加入事前節目公告、歷史天氣預報，並比較 90 組 XGBoost 參數。結果並非變數越多越準。**
+整理北捷逐時 OD、活動、天氣及社群資料，分析煙火活動人流，銜接候車與列車容量情境。**已將煙火時間與天氣分開重跑：XGBoost 單加煙火改善、單加天氣退步；Ridge 加任一組都退步。**
 
-先看 [四版本比較](result/analysis_v3/version_report.md)／[主要版完整結果](result/analysis_v3/report.md)，方法與實作看 [process.md 第 14 節](process.md#14-第三版活動前一天的節目天氣與調參)。新圖在根目錄 `result/analysis_v3/`，舊版本保留不覆蓋。
+先看 [煙火／天氣分組比較](result/analysis_v4/report.md)／[平均人次圖](result/analysis_v4/figures/mean_event_counts.png)，實作看 [process.md 第 15 節](process.md#15-第四版煙火與天氣分開比較)。新圖在根目錄 `result/analysis_v4/`，舊版本保留供對照。
 
 | 項目 | 本版規格 |
 |---|---|
 | 預測目標 | 活動日北門、大橋頭站、雙連、民權西路 18–23 時的來源時段起站人次，暫作進站需求代理 |
 | 資料與評估 | 2017–2026 年 21 場、504 列；外層比較 2024–2026 年共 9 場、216 列，整年向前切分 |
 | 事前截止 | 活動前一天 18:00（臺北時間），每筆新輸入須有截止前的公告或預報版本證據 |
-| 主要版輸入 | 車站、時段、日曆日期特徵，另候選預定節目與 GFS 預報；Ridge 保留站別 × 時段 |
-| 人流基準 | 近 56 天一般日人流的發布時間未核實，主要版排除；另外保留含基準的回顧敏感度版 |
+| 四組輸入 | 基本欄位／另加煙火時間／另加天氣／兩組都加；Ridge 均保留站別 × 時段 |
+| 人流基準 | 近 56 天一般日人流的發布時間未核實，本次四組一律排除；舊版另有含基準的回顧敏感度比較 |
 | 限制 | 504 列不等於 504 個獨立活動；較早訓練標籤發布時間及事後已辦活動篩選仍有限制，尚非完整 D−1 上線驗證 |
 
 ## 這次加入哪些資料
@@ -21,7 +21,7 @@
 |---|---:|---|
 | 預定煙火分鐘 | 19/21 | 加入；純煙火與無人機／水幕分開 |
 | 預定煙火開始時間 | 16/21 | 加入；整套節目開始不冒充真正煙火開始 |
-| 預定無人機、整套展演分鐘 | 各 2/21 | 接好欄位，但過去年份訓練全未知，外層模型自動剔除；**尚不能估計無人機效果** |
+| 預定無人機、整套展演分鐘 | 各 2/21 | 第三版外層訓練全未知而自動剔除，本次不列候選；**尚不能估計無人機效果** |
 | 預報氣溫、風速、雲量 | 各 17/21，每場 6 時點 | 另取當年已公開的 GFS 預報；不是當天實測 |
 | 降雨機率 | 無合格系列 | 未加入，不以實測雨量代替 |
 
@@ -29,7 +29,50 @@
 
 來源：[節目公告逐欄證據](docs/d1_program_sources.json)／[天氣取得方式](docs/d1_weather_audit.md)／[預報來源與數值](docs/d1_weather_sources.json)／[逐筆截止時間檢查](result/analysis_v3/tables/d1_feature_audit.csv)。
 
-## 第三版實際結果
+## 煙火與天氣分開後，哪組讓預測變差？
+
+相同九場外層活動、相同訓練年度、相同 90 組 XGBoost 搜尋；四組均不用發布時間未核實的人流基準。每組依同一規則重新選變數、調參與學融合權重。
+
+**北門逐時 MAE（人次／小時，越小越好）：**
+
+| 方法 | 不加新變數 | 只加煙火時間 | 只加天氣預報 | 煙火＋天氣 |
+|---|---:|---:|---:|---:|
+| 一般回歸 | 1,353 | 1,353 | 1,353 | 1,353 |
+| Ridge | 1,486 | 1,700 | 1,625 | 1,688 |
+| XGBoost | 1,053 | **898** | 1,132 | 1,236 |
+| Stacking | 1,198 | **946** | 1,246 | 1,246 |
+
+- **XGBoost：煙火這組有用，加入目前這組天氣預報後退步。** 單加煙火，北門 MAE 降 **14.7%**、四站 MAE 576 → 480；單加天氣，北門 MAE 增 **7.5%**。煙火再加天氣則由 898 → 1,236。這是本資料及建模流程的結果，不表示天氣不影響人流。
+- **Ridge：兩組各自加入都退步。** 基本版三年度皆選 λ=0.1；煙火版與合併版皆改選 λ=1，整個模型收縮更強。資料和 λ 同時改變，不能斷定退步全由其中一項造成。
+- **一般回歸：四組結果相同。** Forward Selection 沒選進新增欄位；「提供候選」不等於模型一定會採用。
+- **尖峰仍未解決。** XGBoost 九場北門實際尖峰絕對誤差由 2,376 → 2,139（煙火），但 2026 年北門逐時 MAE 由 677 → 820，該年北門反而退步；煙火版 8/5 尖峰高估約 3,051 人次。不能只看跨年平均改善。
+
+![煙火與天氣分開比較](result/analysis_v4/figures/feature_ablation.png)
+
+**為什麼變數多了反而差？** 只有 21 場活動，早年天氣共同缺值、預報網格較粗，煙火開始與長度又隨年度／活動型態改變。新欄位可能帶入不穩定規律，也會改變選中的懲罰與樹結構；504 列不代表 504 場獨立訓練資料。這些是診斷與可能解釋，分組比較不能證明單一機制。無人機過去訓練全未知，這次未放入。
+
+下一步可把「只加煙火的 XGBoost」保留為較精簡候選，用尚未看過的新場次驗證。**本次沒有依外層成績自動更換正式模型，也不能把這九場當成全新的確認性測試。** [完整指標](result/analysis_v4/tables/group_ablation.csv)／[逐年度結果](result/analysis_v4/tables/yearly_ablation.csv)。
+
+## 實際與三模型、混合模型的平均人次
+
+以下固定展示「煙火＋天氣」版：**每場先加總 18–23 時，再平均同九場外層活動**。這是車站起站**人次**，不是煙火現場的獨立參加人數；三模型與 Stacking 都使用留出預測。類別平均值適合畫長條圖。
+
+| 方法 | 四站合計平均人次／場 | 北門平均人次／場 |
+|---|---:|---:|
+| 實際 | 45,842 | 17,528 |
+| 一般回歸 | 38,912 | 14,130 |
+| Ridge | 39,577 | 10,200 |
+| XGBoost | 39,048 | 12,946 |
+| Stacking | 38,990 | 13,194 |
+
+![平均活動人次：實際與三模型及混合模型](result/analysis_v4/figures/mean_event_counts.png)
+
+總量接近仍可能有逐時高低估互相抵銷，故必須一起看尖峰誤差。[四組完整平均值](result/analysis_v4/tables/mean_event_counts.csv)。
+
+<details>
+<summary>上一版：加新變數與移除人流基準的比較</summary>
+
+### 第三版實際結果
 
 下表為同九場活動的 **北門逐時 MAE，越小越好**；「加新變數」與「拿掉基準」分開比較，避免把不同改動混成一個效果。
 
@@ -62,14 +105,17 @@
 
 本次不因結果退步而偷偷改候選或丟掉場次；四個版本全部保留。後續先補可辨識的節目計畫、核實人流基準發布時間，再評估相對預定結束時段等特徵；不能直接拿目前點預測當作月台安全容量或營運班表。
 
-## XGBoost 的樹深、樹數怎麼調
+</details>
+
+## 90 組是怎麼選出一個設定的？
 
 1. **樹深**是每棵樹最多分幾層；**樹數**是逐步修正預測的次數，增加不保證更準。
-2. 上一版只試深度 `1/2/3`、樹數 `100/250`；最佳 `3/100` 在候選邊界，所以本次擴為深度 **1/2/3/4/5**、樹數 **50/100/250**。
-3. 再搭配 `min_child_weight=1/6/24`、`reg_lambda=1/10`，共 **90 組**；學習率固定 **0.05**。
-4. 每個外層年度只用較早年度做內層驗證，選活動等權 MAE 最小的組合；**不看當年外層真值調參**。
+2. 現在固定樹深 **1/2/3/4/5**、樹數 **50/100/250**、`min_child_weight=1/6/24`、`reg_lambda=1/10`，即 **5 × 3 × 3 × 2 = 90 組**；學習率固定 **0.05**。
+3. **是從 90 組選出內層 MAE 最低的一組，稱為網格搜尋。** 各組用較早年度的時間驗證折評分，再以該外層年度之前的資料重新訓練；不看當年外層真值選參。
+4. **每個年度、每個變數組合各選一次，並非整個研究只選一組。** 這是候選網格內的最佳，不保證所有可能參數的全域最佳；沒有把 90 個模型平均。Stacking 是另外融合 OLS、Ridge、XGBoost 三模型。
+5. `min_child_weight` 是子節點 Hessian 總和門檻；本案等權平方誤差可對應最少列數，**不是最少活動場數**。`reg_lambda` 控制葉節點權重的 L2 懲罰。[官方參數說明](https://xgboost.readthedocs.io/en/stable/parameter.html)
 
-主要版實際選出的設定：
+「煙火＋天氣」版實際選出的設定（與第三版相同）：
 
 | 外層測試年 | 樹深 | 樹數 | min_child_weight | reg_lambda |
 |---|---:|---:|---:|---:|
@@ -77,9 +123,9 @@
 | 2025 | 4 | 50 | 6 | 10 |
 | 2026 | 5 | 100 | 1 | 10 |
 
-![主要版訓練內調參熱圖](result/analysis_v3/figures/xgb_tuning_heatmap.png)
+![煙火加天氣版訓練內調參熱圖](result/analysis_v4/both/figures/xgb_tuning_heatmap.png)
 
-要改搜尋範圍，修改 [`configs/analysis_v3.json`](configs/analysis_v3.json) 的 `xgb_grid` 後完整重跑；每格熱圖是該深度／樹數下其他參數的內層最佳值。[完整選參表](result/analysis_v3/tables/xgb_selected_params.csv)／[所有候選分數](result/analysis_v3/tables/inner_selection.csv)。同樣的資料與候選範圍可能選出相同參數，這本身不是錯誤；碰到邊界也不等於找到全域最佳。
+要改搜尋範圍，修改 [`configs/analysis_v4_both.json`](configs/analysis_v4_both.json) 的 `xgb_grid` 後完整重跑；分組比較時四組網格須一致。每格熱圖是該深度／樹數下其他參數的內層最佳值。[完整選參表](result/analysis_v4/both/tables/xgb_selected_params.csv)／[所有候選分數](result/analysis_v4/both/tables/inner_selection.csv)。
 
 <details>
 <summary>保留第二版交互作用診斷與改版前後結果</summary>
@@ -128,7 +174,8 @@ XGBoost 三個外層年度均選到 `max_depth=3`、`n_estimators=100`、`min_ch
 flowchart TD
     A["資料整理與時間戳記<br/>活動 × 車站 × 小時"]
     J["D−1 18:00 公告與預報閘門<br/>主要版排除未核實人流基準"]
-    B["依可得時間清理與向前切分<br/>前處理、選模只使用訓練期"]
+    K["四組對照<br/>基本、加煙火、加天氣、兩者都加"]
+    B["依可得時間清理與向前切分<br/>每組前處理、選模只使用訓練期"]
     C["Forward Selection<br/>一般多元回歸"]
     D["Ridge：車站 × 時段<br/>內層選擇懲罰強度"]
     E["XGBoost<br/>內層搜尋 90 組參數"]
@@ -137,7 +184,8 @@ flowchart TD
     H["列車批次登車與剩餘容量<br/>計算候車、滯留與候車隊列"]
     I["可行班表的模擬最佳化<br/>比較加班車、班距及增量成本"]
     A --> J
-    J --> B
+    J --> K
+    K --> B
     B --> C
     B --> D
     B --> E
@@ -149,7 +197,7 @@ flowchart TD
     H -.-> I
     classDef completed fill:#fff,stroke:#888,color:#222,stroke-width:1px;
     classDef assumed fill:#fff,stroke:#888,color:#222,stroke-width:1px,stroke-dasharray:5 3;
-    class A,J,B,C,D,E,F completed;
+    class A,J,K,B,C,D,E,F completed;
     class G,H,I assumed;
     linkStyle default stroke:#666,stroke-width:1px;
 ```
@@ -166,12 +214,12 @@ flowchart TD
 | 4. 三模型並行 | OLS 在內層做 Forward Selection；Ridge 選 λ；XGBoost 選複雜度 | 已完成。Ridge／XGBoost 不沿用 OLS 選完的子集 |
 | 5. 學融合權重 | 用更早年度的留出預測學非負、總和為 1 的權重 | 已完成；不能用當年測試真值調權重 |
 | 6. 評估預測 | 同一外層活動比較基準、三模型、等權與 Stacking；看逐站、逐場及尖峰 | 全站平均 MAE 最佳不代表北門尖峰最佳；目前尖峰仍明顯低估 |
-| 7. 改善尖峰 | 同活動比較有無交互作用與 XGBoost 調參；再考慮一般日基準＋活動增量及預定散場對齊 | 已比較調參與新變數：加欄未整體改善；相對預定結束階段與增量模型尚未實作 |
+| 7. 改善尖峰 | 固定切分、來源與調參範圍，分開加入煙火時間及預報 | 已完成四組比較：XGB 單加煙火平均改善，但 2026 年北門退步；相對預定結束階段與增量模型尚未實作 |
 | 8. 建立到達情境 | 以量測／調查估方向比例、5 分鐘到達曲線與閘門至月台延遲；測試分位數與集中到達情境 | 目前只有均勻到達假設；逐時資料不能直接辨識分鐘尖峰 |
 | 9. 批次服務排隊 | 每班依本站剩餘容量上車，滯留延續到下一班；計等待人分鐘、最大隊列、清空時間 | 已有情境程式；列車不直接套 M/M/c，尚未驗證實際候車與全月台人數 |
 | 10. 可行調度 | 加入車隊、折返、最小班距、既有班表、月台安全及成本限制，模擬比較可行方案 | 待取得營運限制；不能只選「班距越短越好」 |
 
-北門的原版診斷見 [第 12 節](process.md#12-北門尖峰診斷與改善順序)，第二版見 [第 13 節](process.md#13-第二版實作與實際改善結果)，本次新增輸入見 [第 14 節](process.md#14-第三版活動前一天的節目天氣與調參)。
+北門的原版診斷見 [第 12 節](process.md#12-北門尖峰診斷與改善順序)，交互作用見 [第 13 節](process.md#13-第二版實作與實際改善結果)，事前來源見 [第 14 節](process.md#14-第三版活動前一天的節目天氣與調參)，本次分組比較見 [第 15 節](process.md#15-第四版煙火與天氣分開比較)。
 
 ## 快速開始
 
@@ -184,17 +232,12 @@ uv sync --group analysis
 # 先確認資料；不需要連 MySQL，不會寫回 SQL
 uv run --group analysis python -X utf8 src/run_analysis.py --validate-only
 
-# 新環境先重建第一版作對照（已保有第一版私有輸出時可略過）
-uv run --group analysis python -X utf8 src/run_analysis.py
-
-# 第二版：自動輸出 result/analysis_v2，並產生原版比較
-uv run --group analysis python -X utf8 src/run_analysis.py --config configs/analysis_v2.json
-
-# 第三版：依序重跑對照、加欄敏感度、主要版與四版本彙整
-uv run --group analysis python -X utf8 src/run_analysis.py --config configs/analysis_v3_tuning.json
-uv run --group analysis python -X utf8 src/run_analysis.py --config configs/analysis_v3_with_baseline.json
-uv run --group analysis python -X utf8 src/run_analysis.py --config configs/analysis_v3.json
-uv run --group analysis python -X utf8 src/compare_analysis_v3.py
+# 四組各自重跑；不需先執行舊版本
+foreach ($variant in @('core', 'fireworks', 'weather', 'both')) {
+    uv run --group analysis python -X utf8 src/run_analysis.py --config "configs/analysis_v4_$variant.json"
+    if ($LASTEXITCODE -ne 0) { throw "分析失敗：$variant" }
+}
+uv run --group analysis python -X utf8 src/compare_analysis_v4.py
 
 # 有意義的資料、時間切分、融合與排隊測試
 uv run --group analysis python -X utf8 -m unittest discover -s tests -p 'test_analysis_v*.py'
@@ -206,9 +249,9 @@ uv run --group analysis python -X utf8 -m unittest discover -s tests -p 'test_an
 - `data/processed/calendar_baseline/candidate_audit.csv`
 - `data/processed/station_hourly.parquet`
 
-可選的 `.local/research_review/2026-10-07-refresh/statistics_snapshot.json` 只補實際節目 EDA；缺少它仍可跑同一套預測，但節目完整度圖不同。兩版比較要求相同輸入雜湊，避免把資料改變誤認為模型改善；需保有第一版私有預測及其執行紀錄，否則先跑第一版。各檔 SHA-256 與套件版本記錄在 [run_manifest.json](result/analysis_v2/run_manifest.json)。SQL、原始資料與逐筆預測不提交；只看報告與 PNG 不需要資料庫。
+可選的 `.local/research_review/2026-10-07-refresh/statistics_snapshot.json` 只補實際節目 EDA；缺少它仍可跑同一套預測，但節目完整度圖不同。四組必須使用同一份原資料；比較程式會核對來源、模型程式雜湊、主鍵、真值、完整四站六小時與訓練截止。[核對紀錄](result/analysis_v4/comparison_checks.json)。SQL、原始資料與逐筆預測不提交；只看報告與 PNG 不需要資料庫。舊版重現命令保留在 `process.md`。
 
-`--require-d1` 會在事前資訊可用性尚未核實時停止。主要版設定在 [`configs/analysis_v3.json`](configs/analysis_v3.json)，兩份公開來源 JSON 已附在 `docs/`；新參數在該設定的 `xgb_grid`。第二版設定仍在 [`configs/analysis_v2.json`](configs/analysis_v2.json)，原設定保留於 [`analysis_v1.json`](configs/analysis_v1.json)。
+`--require-d1` 會在整套事前資訊可用性尚未核實時停止。四組設定為 `configs/analysis_v4_*.json`，兩份公告／預報來源 JSON 已附在 `docs/`；各版本獨立保存輸出，不覆蓋舊結果。
 
 <details>
 <summary>既有網站、前處理與文字雲操作</summary>
@@ -238,6 +281,7 @@ uv sync --group analysis --group notebook --extra social --extra web --extra app
 ├── configs/analysis_v1.json           # 原版設定，保留供對照
 ├── configs/analysis_v2.json           # 第二版對照
 ├── configs/analysis_v3*.json          # 主要版、只調參、保留基準敏感度
+├── configs/analysis_v4_*.json         # 基本、煙火、天氣、兩者四組對照
 ├── scripts/collect_d1_gfs.py          # 歷史操作型預報蒐集與發布稽核
 │
 ├── src/
@@ -253,10 +297,16 @@ uv sync --group analysis --group notebook --extra social --extra web --extra app
 │   │   ├── reporting.py              # 模型圖表及中文結果報告
 │   │   └── comparison.py             # 相同活動的原版／新版比較
 │   ├── compare_analysis_v3.py        # 四版同樣本結果彙整
+│   ├── compare_analysis_v4.py        # 分組比較、平均人次與完整樣本核對
 │   ├── main.py                       # 既有捷運前處理
 │   └── ...                           # 氣象、社群與資料匯入程式
 │
-├── result/analysis_v3/                # 主要版、四版本比較、調參與覆蓋率圖
+├── result/analysis_v4/                # 本次報告、兩張總覽圖及彙整表
+│   ├── core/                        # 基本欄位完整結果
+│   ├── fireworks/                   # 只加煙火開始與時長
+│   ├── weather/                     # 只加天氣預報
+│   └── both/                        # 兩組都加；各自附選參與稽核
+├── result/analysis_v3/                # 前版、四版本比較、調參與覆蓋率圖
 ├── result/analysis_v3_tuning/         # 只擴大XGB搜尋的對照
 ├── result/analysis_v3_with_baseline/  # 加新變數但保留回顧基準
 ├── result/analysis_v1/                # 第一版結果，保留不覆蓋
@@ -279,6 +329,7 @@ uv sync --group analysis --group notebook --extra social --extra web --extra app
 
 ## 詳細說明與參考資料
 
+- [煙火與天氣分組比較](result/analysis_v4/report.md)／[平均人次長條圖](result/analysis_v4/figures/mean_event_counts.png)
 - [第三版完整分析](result/analysis_v3/report.md)／[四版本比較](result/analysis_v3/version_report.md)／[事前天氣查核](docs/d1_weather_audit.md)
 - [第二版完整分析結果](result/analysis_v2/report.md)／[改版比較](result/analysis_v2/comparison/report.md)／[實作細節與公式](process.md)
 - [網站啟動與隊員連線](app/README.md)

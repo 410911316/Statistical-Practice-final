@@ -1,0 +1,1164 @@
+{
+  "analysis_version": "analysis_v4_core_20261011",
+  "evaluation_kind": "exploratory_retrospective_forward_comparison_after_v1_diagnostics_not_verified_D_minus_1",
+  "config": {
+    "version": "analysis_v4_core_20261011",
+    "evaluation_kind": "exploratory_retrospective_forward_comparison_after_v1_diagnostics_not_verified_D_minus_1",
+    "seed": 20261010,
+    "outer_years": [
+      2024,
+      2025,
+      2026
+    ],
+    "min_inner_train_events": 2,
+    "min_base_train_events": 4,
+    "min_inner_folds": 2,
+    "max_forward_groups": 2,
+    "min_forward_improvement": 0.0,
+    "candidate_groups": [
+      "is_weekend",
+      "day_of_year",
+      "year_index"
+    ],
+    "ridge_lambdas": [
+      0.001,
+      0.01,
+      0.1,
+      1.0,
+      10.0
+    ],
+    "xgb_grid": [
+      {
+        "max_depth": 1,
+        "n_estimators": 50,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 50,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 50,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 50,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 50,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 50,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 100,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 100,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 100,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 100,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 100,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 100,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 250,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 250,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 250,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 250,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 250,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 250,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 50,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 50,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 50,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 50,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 50,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 50,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 100,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 100,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 100,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 100,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 100,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 100,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 250,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 250,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 250,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 250,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 250,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 250,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 50,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 50,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 50,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 50,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 50,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 50,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 100,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 100,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 100,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 100,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 100,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 100,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 250,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 250,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 250,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 250,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 250,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 250,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 50,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 50,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 50,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 50,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 50,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 50,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 100,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 100,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 100,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 100,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 100,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 100,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 250,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 250,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 250,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 250,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 250,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 250,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 50,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 50,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 50,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 50,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 50,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 50,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 100,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 100,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 100,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 100,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 100,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 100,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 250,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 250,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 250,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 250,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 250,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 250,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      }
+    ],
+    "xgb_fixed": {
+      "learning_rate": 0.05,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0,
+      "subsample": 1.0,
+      "colsample_bytree": 1.0
+    },
+    "stack_objective": "event_balanced_mae_simplex_lp",
+    "queue_example": {
+      "event_date": "2026-08-15",
+      "station": "北門",
+      "forecast_model": "stack",
+      "direction_shares": {
+        "方向A_假設": 0.6,
+        "方向B_假設": 0.4
+      },
+      "walk_delay_minutes": 5,
+      "scenarios": [
+        {
+          "name": "假設每6分鐘",
+          "headway_minutes": 6,
+          "first_train_minutes": 6,
+          "available_capacity": 300,
+          "clearance_minutes": 120,
+          "assumptions": [
+            "純教學情境：每班剩餘300人、均勻分鐘到達、未驗證北捷營運可行性。"
+          ]
+        },
+        {
+          "name": "假設每4分鐘",
+          "headway_minutes": 4,
+          "first_train_minutes": 4,
+          "available_capacity": 300,
+          "clearance_minutes": 120,
+          "assumptions": [
+            "純教學情境：每班剩餘300人、均勻分鐘到達、未驗證北捷營運可行性。"
+          ]
+        },
+        {
+          "name": "假設每3分鐘",
+          "headway_minutes": 3,
+          "first_train_minutes": 3,
+          "available_capacity": 300,
+          "clearance_minutes": 120,
+          "assumptions": [
+            "純教學情境：每班剩餘300人、均勻分鐘到達、未驗證北捷營運可行性。"
+          ]
+        }
+      ]
+    },
+    "report_title": "第四版分組比較：不加新變數",
+    "ridge_station_hour_interaction": true,
+    "output_dir": "result/analysis_v4/core",
+    "private_output_dir": ".local/analysis_v4/core",
+    "experiment_notes": [
+      "Four predeclared covariate groups with identical time splits, tuning grid and no historical baseline.",
+      "New values require source publication at or before D-1 18:00 Taipei; training-only imputation.",
+      "No drone or combined-show duration: all outer training years lack observed values.",
+      "90 XGBoost candidates selected using inner chronological event-balanced MAE only.",
+      "Outer results are exploratory; earlier labels and held-event selection retain retrospective limitations."
+    ],
+    "tuning_diagnostics": true,
+    "d1_features": [],
+    "d1_source_files": [
+      "docs/d1_program_sources.json",
+      "docs/d1_weather_sources.json"
+    ],
+    "d1_cutoff_hour": 18,
+    "include_historical_baseline": false
+  },
+  "data": {
+    "manifest": [
+      {
+        "path": "data/processed/event_station_hourly_context.csv",
+        "sha256": "11f1c426a14ba08542b1895a999d71f9ac4dfe5ed63558b14afc41167d8f6468",
+        "bytes": 259430
+      },
+      {
+        "path": "data/processed/calendar_baseline/candidate_audit.csv",
+        "sha256": "a62fd0549da4d607cf061696995712c006b8d6568e12ae9844e13f7ddc4bcef5",
+        "bytes": 57218
+      },
+      {
+        "path": "data/processed/station_hourly.parquet",
+        "sha256": "2bc4c399d8a7ab8ae9672c5c7e31b5a459281acda9f05be6345258f2c3bdb85f",
+        "bytes": 6340054
+      },
+      {
+        "path": ".local/research_review/2026-10-07-refresh/statistics_snapshot.json",
+        "sha256": "e9688eb20c03b199bc32a22290a3afdf88e9bd7a844199e9438fbddf807b2aed",
+        "bytes": 372301
+      }
+    ],
+    "audit": {
+      "evaluation_status": "retrospective_non_deployable",
+      "d1_deployable": false,
+      "reason": "Historical OD publication/available_at timestamps are unverified; chronological observation dates alone do not prove D-1 availability.",
+      "baseline_policy": "same_weekday_calendar_56d_nearest4_v1",
+      "selected_dates_strictly_past": true,
+      "baseline_source_lag_days": [
+        7,
+        56
+      ],
+      "calendar_note": "Existing selected-date audit uses a retrospective government calendar; historical calendar vintages are not verified.",
+      "target_definition": "Origin trips in source hourly bins; not verified platform arrivals or physical passenger trajectories.",
+      "model_feature_whitelist": [
+        "station",
+        "hour",
+        "is_weekend",
+        "day_of_year",
+        "year_index"
+      ],
+      "year_index_origin": 2017,
+      "optional_activity_snapshot": "loaded for EDA only; actual outcomes are excluded from MODEL_FEATURES",
+      "source_target_counts_match": true,
+      "hourly_and_window_baseline_match": true,
+      "comparison_date_lists_match": true,
+      "baseline_excluded_from_fitted_models": true
+    },
+    "missing_summary": {
+      "event_date": 0,
+      "year": 0,
+      "station": 0,
+      "hour": 0,
+      "y": 0,
+      "baseline_hourly_56d": 0,
+      "is_weekend": 0,
+      "day_of_year": 0,
+      "year_index": 0,
+      "temperature_at_report_time_c": 0,
+      "wind_preceding_10min_mean_m_s": 0,
+      "precipitation_hour_ending_mm": 28,
+      "precipitation_raw": 0,
+      "precipitation_status": 0,
+      "cloud_at_report_time_tenths": 144,
+      "cloud_measurement_type": 0,
+      "cloud_method_verified": 0,
+      "weather_report_hour_end": 0,
+      "weather_station_id": 0,
+      "observed_has_drone_show": 432,
+      "observed_fireworks_seconds": 0
+    },
+    "feature_eligibility": {
+      "baseline_hourly_56d": {
+        "use": "retrospective_comparator_only_excluded_from_models",
+        "reason": "Historical OD publication timestamps are unverified; no baseline enters any fitted model."
+      },
+      "station": {
+        "use": "retrospective_model",
+        "d1_deployable": true
+      },
+      "hour": {
+        "use": "retrospective_model",
+        "d1_deployable": true
+      },
+      "is_weekend": {
+        "use": "retrospective_model",
+        "d1_deployable": true
+      },
+      "day_of_year": {
+        "use": "retrospective_model",
+        "d1_deployable": true
+      },
+      "year_index": {
+        "use": "retrospective_model",
+        "d1_deployable": true
+      },
+      "observed_weather": {
+        "use": "EDA_only",
+        "reason": "Measured after forecast cutoff; no historical forecast vintage supplied."
+      },
+      "observed_has_drone_show": {
+        "use": "EDA_only",
+        "reason": "Sparse actual event status; not a verified pre-event announcement."
+      },
+      "observed_fireworks_seconds": {
+        "use": "EDA_only",
+        "reason": "Actual duration, not verified planned duration available at D-1."
+      },
+      "annual_finance": {
+        "use": "excluded",
+        "reason": "Annual-level sparse funding and unverified release timing."
+      },
+      "social_trends": {
+        "use": "excluded",
+        "reason": "No comparable complete historical D-1 series."
+      }
+    },
+    "activity_counts": {
+      "context_dates": 26,
+      "held_dates": 21,
+      "rows": 504,
+      "years": 10,
+      "dates": [
+        "2017-08-26",
+        "2018-08-18",
+        "2019-08-03",
+        "2020-08-29",
+        "2021-10-16",
+        "2022-07-30",
+        "2023-07-05",
+        "2023-07-12",
+        "2023-07-19",
+        "2023-08-09",
+        "2023-08-16",
+        "2023-08-20",
+        "2024-07-17",
+        "2024-07-31",
+        "2024-08-10",
+        "2025-08-06",
+        "2025-08-20",
+        "2025-08-30",
+        "2026-07-25",
+        "2026-08-05",
+        "2026-08-15"
+      ],
+      "by_year": {
+        "2017": 1,
+        "2018": 1,
+        "2019": 1,
+        "2020": 1,
+        "2021": 1,
+        "2022": 1,
+        "2023": 6,
+        "2024": 3,
+        "2025": 3,
+        "2026": 3
+      },
+      "by_status": {
+        "cancelled": 4,
+        "held": 21,
+        "postponed": 1
+      }
+    }
+  },
+  "python": "3.10.11",
+  "packages": {
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "scipy": "1.15.3",
+    "scikit-learn": "1.7.2",
+    "xgboost": "3.1.3",
+    "matplotlib": "3.10.9",
+    "duckdb": "1.5.6"
+  },
+  "code": [
+    {
+      "path": "src/run_analysis.py",
+      "sha256": "88fd73c0281dfbe9af591f81b021309b4ab145eac42053d84c565ec17e608a51"
+    },
+    {
+      "path": "configs/analysis_v4_core.json",
+      "sha256": "f3bea6e31f57c5411b07200289ff22fa882834a3dd4d70bf043fbdcfb8c097cf"
+    },
+    {
+      "path": "src/analysis_v1/__init__.py",
+      "sha256": "a9d96dd73509953b479cb2d8ecc9c599a485b8321974b51896036cb402bce0b2"
+    },
+    {
+      "path": "src/analysis_v1/comparison.py",
+      "sha256": "635cccc82aab861a667aa329574b9ac483a1414b3b93bded314d252cad113508"
+    },
+    {
+      "path": "src/analysis_v1/d1_features.py",
+      "sha256": "01ffb66a6298acdd18c23e6e50761257fba8d204b17cb3ce559245fa4ecde691"
+    },
+    {
+      "path": "src/analysis_v1/d1_reporting.py",
+      "sha256": "9386b69d115ee96bfb8a3e86b6153db42ee62d326d30f281b1874df02bc0fc32"
+    },
+    {
+      "path": "src/analysis_v1/data.py",
+      "sha256": "4e9c7fdfb17d3eb98dff29117e215cc7a5a0a20a1096882c2ba526198929fa77"
+    },
+    {
+      "path": "src/analysis_v1/eda.py",
+      "sha256": "437f67b3114f5e18d7271d1d55d9eafb0a2e9d8785ebca3c93c7277412dc1e9f"
+    },
+    {
+      "path": "src/analysis_v1/models.py",
+      "sha256": "9c9bd8e6ae98b08c8c0ba5d8814e0850d3e83168197a07f5c2fcc14cff32e346"
+    },
+    {
+      "path": "src/analysis_v1/queue_report.py",
+      "sha256": "07d30942d3673e0ec8ccb23a98eec9b01bcb1710e4ac253bdf66edb442101ec2"
+    },
+    {
+      "path": "src/analysis_v1/queueing.py",
+      "sha256": "bccc3a47ca85720730569cab0d7f0960107f7e9f3d5aba59a23b48617ae7fa67"
+    },
+    {
+      "path": "src/analysis_v1/reporting.py",
+      "sha256": "61862fbc687db9f3f76bd4245f6018a1c21622cce8e5cd379d17926ffb605d51"
+    },
+    {
+      "path": "uv.lock",
+      "sha256": "96a771005432cfae484306444a6b6c2d4cf49f12c629881801f635f07e991c62"
+    }
+  ],
+  "outer_test": {
+    "years": [
+      2024,
+      2025,
+      2026
+    ],
+    "events": 9,
+    "rows": 216
+  },
+  "full_data_research_fit": {
+    "weights": {
+      "ols": 0.08451325860298232,
+      "ridge": 0.1561616122898177,
+      "xgboost": 0.7593251291071998
+    },
+    "lp": {
+      "oof_mae": 680.5493643314616,
+      "oof_events": 17,
+      "solver": "scipy.optimize.linprog(highs)",
+      "scope": "meta_training_loss_not_outer_test_score"
+    },
+    "deployable": false,
+    "warning": "These weights are not used to score the outer tests."
+  },
+  "eda": {
+    "activity_count": 21,
+    "year_count": 10,
+    "figures": {
+      "eda_activity_counts": "figures/eda_activity_counts.png",
+      "eda_completeness": "figures/eda_completeness.png",
+      "eda_spearman": "figures/eda_spearman.png"
+    },
+    "tables": {
+      "eda_activity_features": "tables/eda_activity_features.csv",
+      "eda_completeness": "tables/eda_completeness.csv",
+      "eda_activity_counts": "tables/eda_activity_counts.csv",
+      "eda_descriptive_statistics": "tables/eda_descriptive_statistics.csv",
+      "eda_spearman": "tables/eda_spearman.csv",
+      "eda_spearman_pair_counts": "tables/eda_spearman_pair_counts.csv"
+    },
+    "evaluation_status": "retrospective_non_deployable",
+    "notes": [
+      "Descriptive statistics only; no p-values or causal interpretation.",
+      "Weather deduplicated by activity/hour before requiring six valid observations.",
+      "Pairwise correlation sample sizes reported separately; unknowns and trace rainfall are not zero.",
+      "Observed weather and actual programs are EDA-only and excluded from prediction features."
+    ]
+  },
+  "queue": {
+    "status": "created_hypothetical_queue_scenario_report",
+    "event_date": "2026-08-15",
+    "station": "北門",
+    "forecast_model": "stack",
+    "evaluation_kind": "exploratory_retrospective_forward_comparison_after_v1_diagnostics_not_verified_D_minus_1",
+    "source_hours": [
+      18,
+      19,
+      20,
+      21,
+      22,
+      23
+    ],
+    "source_hourly_predictions": [
+      2872.729623149174,
+      2195.5031255391696,
+      3106.543881850581,
+      6617.66543104216,
+      2720.5179421895155,
+      1459.4082299886877
+    ],
+    "total_predicted_entries": 18972.368233759287,
+    "total_allocated_arrivals": 18972.368233759287,
+    "directions": {
+      "方向A_假設": 0.6,
+      "方向B_假設": 0.4
+    },
+    "walk_delay_minutes": 5,
+    "figure": "figures/queue_scenarios.png",
+    "table": "tables/queue_scenarios.csv",
+    "assumptions": [
+      "使用所指定活動、車站與模型的留出預測，並非實測分鐘到達。",
+      "方向比例為明示假設；每小時內均勻到達、初始隊列為零。",
+      "閘門至月台採固定 5 分鐘延遲，保留跨午夜人流。",
+      "列車瞬間批次登車；各班剩餘容量由情境給定，未另推估轉乘或上游載客。",
+      "均值人流的流體模擬不等於隨機佇列的期望候車時間。",
+      "未驗證班表、車隊、號誌、月台安全與乘務限制；不是營運建議，未做調度最佳化。"
+    ],
+    "scenarios": [
+      {
+        "event_date": "2026-08-15",
+        "station": "北門",
+        "forecast_model": "stack",
+        "evaluation_kind": "exploratory_retrospective_forward_comparison_after_v1_diagnostics_not_verified_D_minus_1",
+        "direction": "方向A_假設",
+        "direction_share": 0.6,
+        "scenario": "假設每6分鐘",
+        "headway_minutes": 6.0,
+        "remaining_capacity_per_train": 300.0,
+        "first_train_minutes": 6.0,
+        "walk_delay_minutes": 5,
+        "clearance_window_minutes": 120.0,
+        "total_forecast_arrivals": 11383.420940255572,
+        "total_boarded": 11383.420940255579,
+        "waiting_person_minutes": 82251.92536354682,
+        "mean_wait_minutes": 7.225589372055688,
+        "max_waiting_queue": 1231.6277837367682,
+        "residual_queue": 0.0,
+        "cleared": true,
+        "last_positive_arrival_minutes": 365.0,
+        "clearance_time_from_start_minutes": 366.0,
+        "clearance_after_last_arrival_minutes": 1.0,
+        "arrival_horizon_minutes": 365.0,
+        "simulation_horizon_minutes": 485.0,
+        "train_count": 80,
+        "trains_boarding_passengers": 61,
+        "capacity_caused_carryover": true,
+        "waiting_space_limit": null,
+        "waiting_space_exceeded": null,
+        "conservation_error": -7.275957614183426e-12,
+        "assumptions": "使用所指定活動、車站與模型的留出預測，並非實測分鐘到達。；方向比例為明示假設；每小時內均勻到達、初始隊列為零。；閘門至月台採固定 5 分鐘延遲，保留跨午夜人流。；列車瞬間批次登車；各班剩餘容量由情境給定，未另推估轉乘或上游載客。；均值人流的流體模擬不等於隨機佇列的期望候車時間。；未驗證班表、車隊、號誌、月台安全與乘務限制；不是營運建議，未做調度最佳化。；純教學情境：每班剩餘300人、均勻分鐘到達、未驗證北捷營運可行性。"
+      },
+      {
+        "event_date": "2026-08-15",
+        "station": "北門",
+        "forecast_model": "stack",
+        "evaluation_kind": "exploratory_retrospective_forward_comparison_after_v1_diagnostics_not_verified_D_minus_1",
+        "direction": "方向A_假設",
+        "direction_share": 0.6,
+        "scenario": "假設每4分鐘",
+        "headway_minutes": 4.0,
+        "remaining_capacity_per_train": 300.0,
+        "first_train_minutes": 4.0,
+        "walk_delay_minutes": 5,
+        "clearance_window_minutes": 120.0,
+        "total_forecast_arrivals": 11383.420940255572,
+        "total_boarded": 11383.42094025556,
+        "waiting_person_minutes": 22766.841880511143,
+        "mean_wait_minutes": 2.0,
+        "max_waiting_queue": 264.7066172416864,
+        "residual_queue": 0.0,
+        "cleared": true,
+        "last_positive_arrival_minutes": 365.0,
+        "clearance_time_from_start_minutes": 368.0,
+        "clearance_after_last_arrival_minutes": 3.0,
+        "arrival_horizon_minutes": 365.0,
+        "simulation_horizon_minutes": 485.0,
+        "train_count": 121,
+        "trains_boarding_passengers": 91,
+        "capacity_caused_carryover": false,
+        "waiting_space_limit": null,
+        "waiting_space_exceeded": null,
+        "conservation_error": 1.0913936421275139e-11,
+        "assumptions": "使用所指定活動、車站與模型的留出預測，並非實測分鐘到達。；方向比例為明示假設；每小時內均勻到達、初始隊列為零。；閘門至月台採固定 5 分鐘延遲，保留跨午夜人流。；列車瞬間批次登車；各班剩餘容量由情境給定，未另推估轉乘或上游載客。；均值人流的流體模擬不等於隨機佇列的期望候車時間。；未驗證班表、車隊、號誌、月台安全與乘務限制；不是營運建議，未做調度最佳化。；純教學情境：每班剩餘300人、均勻分鐘到達、未驗證北捷營運可行性。"
+      },
+      {
+        "event_date": "2026-08-15",
+        "station": "北門",
+        "forecast_model": "stack",
+        "evaluation_kind": "exploratory_retrospective_forward_comparison_after_v1_diagnostics_not_verified_D_minus_1",
+        "direction": "方向A_假設",
+        "direction_share": 0.6,
+        "scenario": "假設每3分鐘",
+        "headway_minutes": 3.0,
+        "remaining_capacity_per_train": 300.0,
+        "first_train_minutes": 3.0,
+        "walk_delay_minutes": 5,
+        "clearance_window_minutes": 120.0,
+        "total_forecast_arrivals": 11383.420940255572,
+        "total_boarded": 11383.420940255555,
+        "waiting_person_minutes": 17075.131410383416,
+        "mean_wait_minutes": 1.500000000000005,
+        "max_waiting_queue": 198.52996293126478,
+        "residual_queue": 0.0,
+        "cleared": true,
+        "last_positive_arrival_minutes": 365.0,
+        "clearance_time_from_start_minutes": 366.0,
+        "clearance_after_last_arrival_minutes": 1.0,
+        "arrival_horizon_minutes": 365.0,
+        "simulation_horizon_minutes": 485.0,
+        "train_count": 161,
+        "trains_boarding_passengers": 121,
+        "capacity_caused_carryover": false,
+        "waiting_space_limit": null,
+        "waiting_space_exceeded": null,
+        "conservation_error": 1.6370904631912708e-11,
+        "assumptions": "使用所指定活動、車站與模型的留出預測，並非實測分鐘到達。；方向比例為明示假設；每小時內均勻到達、初始隊列為零。；閘門至月台採固定 5 分鐘延遲，保留跨午夜人流。；列車瞬間批次登車；各班剩餘容量由情境給定，未另推估轉乘或上游載客。；均值人流的流體模擬不等於隨機佇列的期望候車時間。；未驗證班表、車隊、號誌、月台安全與乘務限制；不是營運建議，未做調度最佳化。；純教學情境：每班剩餘300人、均勻分鐘到達、未驗證北捷營運可行性。"
+      },
+      {
+        "event_date": "2026-08-15",
+        "station": "北門",
+        "forecast_model": "stack",
+        "evaluation_kind": "exploratory_retrospective_forward_comparison_after_v1_diagnostics_not_verified_D_minus_1",
+        "direction": "方向B_假設",
+        "direction_share": 0.4,
+        "scenario": "假設每6分鐘",
+        "headway_minutes": 6.0,
+        "remaining_capacity_per_train": 300.0,
+        "first_train_minutes": 6.0,
+        "walk_delay_minutes": 5,
+        "clearance_window_minutes": 120.0,
+        "total_forecast_arrivals": 7588.947293503716,
+        "total_boarded": 7588.947293503709,
+        "waiting_person_minutes": 22766.841880511125,
+        "mean_wait_minutes": 2.9999999999999973,
+        "max_waiting_queue": 264.7066172416864,
+        "residual_queue": 0.0,
+        "cleared": true,
+        "last_positive_arrival_minutes": 365.0,
+        "clearance_time_from_start_minutes": 366.0,
+        "clearance_after_last_arrival_minutes": 1.0,
+        "arrival_horizon_minutes": 365.0,
+        "simulation_horizon_minutes": 485.0,
+        "train_count": 80,
+        "trains_boarding_passengers": 61,
+        "capacity_caused_carryover": false,
+        "waiting_space_limit": null,
+        "waiting_space_exceeded": null,
+        "conservation_error": 6.366462912410498e-12,
+        "assumptions": "使用所指定活動、車站與模型的留出預測，並非實測分鐘到達。；方向比例為明示假設；每小時內均勻到達、初始隊列為零。；閘門至月台採固定 5 分鐘延遲，保留跨午夜人流。；列車瞬間批次登車；各班剩餘容量由情境給定，未另推估轉乘或上游載客。；均值人流的流體模擬不等於隨機佇列的期望候車時間。；未驗證班表、車隊、號誌、月台安全與乘務限制；不是營運建議，未做調度最佳化。；純教學情境：每班剩餘300人、均勻分鐘到達、未驗證北捷營運可行性。"
+      },
+      {
+        "event_date": "2026-08-15",
+        "station": "北門",
+        "forecast_model": "stack",
+        "evaluation_kind": "exploratory_retrospective_forward_comparison_after_v1_diagnostics_not_verified_D_minus_1",
+        "direction": "方向B_假設",
+        "direction_share": 0.4,
+        "scenario": "假設每4分鐘",
+        "headway_minutes": 4.0,
+        "remaining_capacity_per_train": 300.0,
+        "first_train_minutes": 4.0,
+        "walk_delay_minutes": 5,
+        "clearance_window_minutes": 120.0,
+        "total_forecast_arrivals": 7588.947293503716,
+        "total_boarded": 7588.94729350372,
+        "waiting_person_minutes": 15177.894587007426,
+        "mean_wait_minutes": 1.9999999999999993,
+        "max_waiting_queue": 176.47107816112427,
+        "residual_queue": 0.0,
+        "cleared": true,
+        "last_positive_arrival_minutes": 365.0,
+        "clearance_time_from_start_minutes": 368.0,
+        "clearance_after_last_arrival_minutes": 3.0,
+        "arrival_horizon_minutes": 365.0,
+        "simulation_horizon_minutes": 485.0,
+        "train_count": 121,
+        "trains_boarding_passengers": 91,
+        "capacity_caused_carryover": false,
+        "waiting_space_limit": null,
+        "waiting_space_exceeded": null,
+        "conservation_error": -4.547473508864641e-12,
+        "assumptions": "使用所指定活動、車站與模型的留出預測，並非實測分鐘到達。；方向比例為明示假設；每小時內均勻到達、初始隊列為零。；閘門至月台採固定 5 分鐘延遲，保留跨午夜人流。；列車瞬間批次登車；各班剩餘容量由情境給定，未另推估轉乘或上游載客。；均值人流的流體模擬不等於隨機佇列的期望候車時間。；未驗證班表、車隊、號誌、月台安全與乘務限制；不是營運建議，未做調度最佳化。；純教學情境：每班剩餘300人、均勻分鐘到達、未驗證北捷營運可行性。"
+      },
+      {
+        "event_date": "2026-08-15",
+        "station": "北門",
+        "forecast_model": "stack",
+        "evaluation_kind": "exploratory_retrospective_forward_comparison_after_v1_diagnostics_not_verified_D_minus_1",
+        "direction": "方向B_假設",
+        "direction_share": 0.4,
+        "scenario": "假設每3分鐘",
+        "headway_minutes": 3.0,
+        "remaining_capacity_per_train": 300.0,
+        "first_train_minutes": 3.0,
+        "walk_delay_minutes": 5,
+        "clearance_window_minutes": 120.0,
+        "total_forecast_arrivals": 7588.947293503716,
+        "total_boarded": 7588.94729350371,
+        "waiting_person_minutes": 11383.420940255577,
+        "mean_wait_minutes": 1.5000000000000004,
+        "max_waiting_queue": 132.3533086208432,
+        "residual_queue": 0.0,
+        "cleared": true,
+        "last_positive_arrival_minutes": 365.0,
+        "clearance_time_from_start_minutes": 366.0,
+        "clearance_after_last_arrival_minutes": 1.0,
+        "arrival_horizon_minutes": 365.0,
+        "simulation_horizon_minutes": 485.0,
+        "train_count": 161,
+        "trains_boarding_passengers": 121,
+        "capacity_caused_carryover": false,
+        "waiting_space_limit": null,
+        "waiting_space_exceeded": null,
+        "conservation_error": 5.4569682106375694e-12,
+        "assumptions": "使用所指定活動、車站與模型的留出預測，並非實測分鐘到達。；方向比例為明示假設；每小時內均勻到達、初始隊列為零。；閘門至月台採固定 5 分鐘延遲，保留跨午夜人流。；列車瞬間批次登車；各班剩餘容量由情境給定，未另推估轉乘或上游載客。；均值人流的流體模擬不等於隨機佇列的期望候車時間。；未驗證班表、車隊、號誌、月台安全與乘務限制；不是營運建議，未做調度最佳化。；純教學情境：每班剩餘300人、均勻分鐘到達、未驗證北捷營運可行性。"
+      }
+    ],
+    "interpretation": "隊列與等待取決於所設方向比例、均勻分鐘到達、剩餘容量及班距；這些條件式結果不能直接推論實際煙火尖峰是否壅塞。",
+    "all_scenarios_without_capacity_carryover": false,
+    "all_scenario_mean_waits_equal_half_headway": false,
+    "operational_optimization_performed": false,
+    "actual_platform_safety_verified": false
+  }
+}
