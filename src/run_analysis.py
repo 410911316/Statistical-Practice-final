@@ -1,4 +1,4 @@
-"""Run the first retrospective, temporally validated analysis; never writes SQL."""
+"""Run versioned retrospective, temporally validated analysis; never writes SQL."""
 from __future__ import annotations
 
 import argparse
@@ -36,17 +36,47 @@ def write_csv(frame, path):
     frame.to_csv(path, index=False, encoding="utf-8-sig")
 
 
+def resolve_run_paths(args, config):
+    output = Path(args.output or ROOT / config.get("output_dir", "result/analysis_v1")).resolve()
+    private = Path(args.private_output or ROOT / config.get("private_output_dir", ".local/analysis_v1")).resolve()
+    reference = ROOT / config["comparison_reference"] if config.get("comparison_reference") else None
+    reference_manifest = ROOT / config["comparison_manifest"] if config.get("comparison_manifest") else None
+    if reference is not None:
+        reference = reference.resolve()
+        if reference_manifest is None:
+            raise ValueError("A version comparison requires its reference run manifest")
+        reference_manifest = reference_manifest.resolve()
+        if private == reference.parent or output == reference_manifest.parent:
+            raise ValueError("Comparison output must not overwrite the reference run")
+    return output, private, reference, reference_manifest
+
+
+def verify_comparison_inputs(reference, reference_manifest, data_info):
+    """Require identical source versions before attributing differences to models."""
+    if not reference.is_file():
+        raise FileNotFoundError(f"Missing original private predictions: {reference}")
+    previous = json.loads(reference_manifest.read_text(encoding="utf-8"))
+    old_hashes = {row["path"]: row["sha256"] for row in previous["data"]["manifest"]}
+    new_hashes = {row["path"]: row["sha256"] for row in data_info["manifest"]}
+    if old_hashes != new_hashes:
+        raise ValueError("Comparison source hashes differ from v1; do not confound a data revision with model changes")
+    return {"reference_predictions_sha256": hashlib.sha256(reference.read_bytes()).hexdigest(),
+            "reference_manifest_sha256": hashlib.sha256(reference_manifest.read_bytes()).hexdigest(),
+            "same_input_hashes": True, "reference_version": previous["analysis_version"]}
+
+
 def run(args):
     config_path = Path(args.config).resolve()
     config = json.loads(config_path.read_text(encoding="utf-8-sig"))
     frame, data_info = load_analysis_data(ROOT)
     print(json.dumps(data_info["activity_counts"], ensure_ascii=False), flush=True)
+    output, private, reference, reference_manifest = resolve_run_paths(args, config)
+    comparison_info = verify_comparison_inputs(reference, reference_manifest, data_info) if reference else None
     if args.require_d1 and not data_info["audit"]["d1_deployable"]:
         raise ValueError("尚未核實歷史 OD／日曆發布版本，不能宣稱已驗證 D−1 預測。請補齊 available_at 與預報版本後再建立正式部署資料。")
     if args.validate_only:
         print("資料驗證通過；目前僅支援回顧式向前驗證。", flush=True)
         return
-    output, private = Path(args.output).resolve(), Path(args.private_output).resolve()
     for path in (output / "figures", output / "tables", private):
         path.mkdir(parents=True, exist_ok=True)
     trainer = Trainer(config)
@@ -109,8 +139,21 @@ def run(args):
                 "full_data_research_fit": {"weights": dict(zip(BASE_MODELS, final_weights)), "lp": final_lp,
                                            "deployable": False, "warning": "These weights are not used to score the outer tests."},
                 "eda": eda, "queue": queue}
+    if reference is not None:
+        from analysis_v1.comparison import write_comparison
+        original = pd.read_csv(reference, parse_dates=["event_date"])
+        # OLS and the historical baseline are unchanged experimental controls.
+        keys = ["event_date", "station", "hour"]
+        before = original.sort_values(keys).reset_index(drop=True)
+        after = predictions.sort_values(keys).reset_index(drop=True)
+        if not before[keys].equals(after[keys]) or not np.allclose(
+                before[["baseline", "ols"]], after[["baseline", "ols"]], rtol=0, atol=1e-8):
+            raise ValueError("Unchanged OLS/baseline controls differ; comparison requires investigation")
+        write_comparison(original, predictions, output / "comparison")
+        manifest["comparison"] = {**comparison_info, "ols_and_baseline_controls_match": True,
+                                  "report": "comparison/report.md", "confirmatory_test": False}
     write_json(output / "run_manifest.json", manifest)
-    write_report(output, metrics, folds, data_info, queue)
+    write_report(output, metrics, folds, data_info, queue, config=config, private_output=private)
     print(metrics.to_string(index=False), flush=True)
     print(f"分析結果：{output}", flush=True)
 
@@ -118,8 +161,8 @@ def run(args):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", default=str(ROOT / "configs/analysis_v1.json"))
-    parser.add_argument("--output", default=str(ROOT / "result/analysis_v1"))
-    parser.add_argument("--private-output", default=str(ROOT / ".local/analysis_v1"))
+    parser.add_argument("--output", default=None, help="Defaults to the versioned directory in config")
+    parser.add_argument("--private-output", default=None, help="Defaults to the versioned private directory in config")
     parser.add_argument("--validate-only", action="store_true")
     parser.add_argument("--require-d1", action="store_true", help="Stop unless historical information availability has been verified.")
     args = parser.parse_args()

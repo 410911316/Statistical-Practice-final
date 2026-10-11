@@ -47,6 +47,14 @@ def report_inputs(years=(2031, 2032)):
 
 
 class DynamicReportTest(unittest.TestCase):
+    def test_small_nonzero_ridge_penalty_is_not_reported_as_zero(self):
+        metrics, folds, info, queue = report_inputs((2031,))
+        folds[0]["base_models"]["ridge"]["params"]["lambda"] = .001
+        with tempfile.TemporaryDirectory() as directory:
+            write_report(Path(directory), metrics, folds, info, queue)
+            text = (Path(directory) / "report.md").read_text(encoding="utf-8")
+        self.assertIn("| 2031 | 3 | 2 | 無 | 0.001 |", text)
+
     def test_report_uses_supplied_years_counts_queue_and_winners(self):
         metrics, folds, info, queue = report_inputs()
         with tempfile.TemporaryDirectory() as directory:

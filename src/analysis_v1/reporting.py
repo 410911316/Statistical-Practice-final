@@ -68,7 +68,7 @@ def build_model_figures(predictions, metrics, folds, vif, output: Path):
             ax.plot(part.hour, part.y, "o-", color="#111111", label="實際")
             ax.plot(part.hour, part.baseline, "--", color="#999999", label="一般日基準")
             ax.plot(part.hour, part["stack"], "s-", color="#547D98", label="Stacking")
-            ax.set(title=f"{pd.Timestamp(day):%Y-%m-%d}｜{station}", xticks=list(range(18,24)), xlabel="來源小時", ylabel="進站人次")
+            ax.set(title=f"{pd.Timestamp(day):%Y-%m-%d}｜{station}", xticks=list(range(18,24)), xlabel="來源小時", ylabel="起站人次")
             ax.grid(axis="y", alpha=.2)
     axes[0, 0].legend(fontsize=8)
     fig.suptitle(f"{max(predictions.year)} 年全部 {len(days)} 場外層預測｜未將當年真值交給訓練程序")
@@ -101,7 +101,7 @@ def build_model_figures(predictions, metrics, folds, vif, output: Path):
     save(fig, figures / "ols_residuals.png")
 
     latest = vif.loc[(vif.outer_year == vif.outer_year.max()) & vif.model.eq("ridge")].sort_values("vif")
-    fig, ax = plt.subplots(figsize=(9, 5), constrained_layout=True)
+    fig, ax = plt.subplots(figsize=(11, max(5, len(latest) * .28)), constrained_layout=True)
     displayed = np.minimum(latest.vif.to_numpy(), 50.)
     bars = ax.barh(latest.column, displayed, color="#71818C")
     for bar, value in zip(bars, latest.vif):
@@ -117,7 +117,8 @@ def markdown_table(frame):
     return "\n".join(rows)
 
 
-def write_report(output, metrics, folds, data_info, queue):
+def write_report(output, metrics, folds, data_info, queue, config=None, private_output=None):
+    config = config or {}
     root = Path(__file__).resolve().parents[2]
     def repo_link(filename):
         try:
@@ -140,11 +141,21 @@ def write_report(output, metrics, folds, data_info, queue):
     for fold in folds:
         rows.append({"測試年": fold["outer_year"], "訓練活動": fold["train_events"], "測試活動": fold["test_events"],
                      "OLS額外選入": "、".join(fold["base_models"]["ols"]["groups"]) or "無",
-                     "Ridge λ": fold["base_models"]["ridge"]["params"]["lambda"],
+                     "Ridge λ": f'{fold["base_models"]["ridge"]["params"]["lambda"]:.3g}',
                      "OLS權重": fold["weights"]["ols"], "Ridge權重": fold["weights"]["ridge"], "XGB權重": fold["weights"]["xgboost"]})
-    text = f"""# 第一版人流預測分析結果
+    title = config.get("report_title", "第一版人流預測分析結果")
+    interaction_note = ("本版 Ridge 在原主效果外新增 15 個車站 × 小時交互項；OLS 保持原設計作對照。"
+                        f"XGBoost 不另加這組乘積欄，改由樹分裂學習交互，使用 {len(config.get('xgb_grid', []))} 組預先指定的參數搜尋。"
+                        if config.get("ridge_station_hour_interaction") else "本版線性模型只有站別與小時主效果，尚未加入交互作用。")
+    comparison_note = ("原版與本版的同日期比較見 [改版比較報告](comparison/report.md)。本次改動由第一版結果啟發，"
+                       "同一批外層年份已被檢視，因此是探索式回顧比較，不能當作全新未接觸的確認性測試。"
+                       if config.get("comparison_reference") else "")
+    private_label = Path(private_output).relative_to(root).as_posix() if private_output and Path(private_output).is_relative_to(root) else "設定指定的私有資料夾"
+    text = f"""# {title}
 
 本次已實際執行資料核對、變數描述、Forward OLS、Ridge、XGBoost、等權平均與 MAE Stacking，並完成列車批次容量的假設情境試算。
+
+{comparison_note}
 
 ## 1. 結論與適用範圍
 
@@ -172,6 +183,8 @@ MAE／RMSE 先按活動平均；目前每場同為 24 列。尖峰低估先找�
 
 固定核心為同站同時段一般日基準、站別及小時；候選為週末、年內日序與年度趨勢。OLS 用內層時間 MAE 做 Forward Selection，Ridge／XGBoost 使用全部合格候選。連續欄位標準化只使用當次訓練資料；VIF 是設計診斷，不作機械式刪欄門檻。年度與日序可能代表活動型態差異，不是因果效果。
 
+{interaction_note}
+
 {markdown_table(pd.DataFrame(rows))}
 
 ![權重](figures/stack_weights.png)
@@ -184,7 +197,7 @@ MAE／RMSE 先按活動平均；目前每場同為 24 列。尖峰低估先找�
 
 ![最近測試年全部活動四站](figures/heldout_profiles_latest.png)
 
-圖顯示該年全部活動與四站，未只挑表現較好的案例。北門大型尖峰仍明顯低估，鄰站亦可能高估，不能只用整體 MAE 決定調度。各站數值見 [車站指標](tables/station_metrics.csv)。逐筆來源與模型物件留在本機 `.local/analysis_v1/`，Git 提供彙整圖表。
+圖顯示該年全部活動與四站，未只挑表現較好的案例。請同時核對尖峰高度、時刻與鄰站誤差，不能只用整體 MAE 決定調度。各站數值見 [車站指標](tables/station_metrics.csv)。逐筆來源與模型物件留在本機 `{private_label}`，Git 提供彙整圖表。
 
 ## 5. 資料探索
 

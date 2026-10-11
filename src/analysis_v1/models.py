@@ -36,10 +36,11 @@ def temporal_splits(frame: pd.DataFrame, min_events: int):
 class Encoder:
     """Fit numeric scaling, reference levels and constants on this train only."""
 
-    def fit(self, frame: pd.DataFrame, groups: tuple[str, ...]):
+    def fit(self, frame: pd.DataFrame, groups: tuple[str, ...], station_hour_interaction: bool = False):
         if not set(groups) <= ALLOWED_CANDIDATES:
             raise ValueError("Unapproved or post-event feature in model")
         self.groups = groups
+        self.station_hour_interaction = station_hour_interaction
         self.numeric = list(CORE_NUMERIC) + list(groups)
         self.mean = frame[self.numeric].mean()
         self.scale = frame[self.numeric].std(ddof=0).replace(0, 1)
@@ -48,6 +49,12 @@ class Encoder:
             self.mean["is_weekend"], self.scale["is_weekend"] = 0.0, 1.0
         self.categories = {c: sorted(frame[c].unique()) for c in ("station", "hour")}
         self.all_names = self.numeric + [f"{c}={v}" for c, cats in self.categories.items() for v in cats[1:]]
+        if self.station_hour_interaction:
+            # Treatment coding retains both main effects. The reference station
+            # and hour are learned from this training subset, never the holdout.
+            self.all_names += [f"station={s}:hour={h}"
+                               for s in self.categories["station"][1:]
+                               for h in self.categories["hour"][1:]]
         raw = self._raw(frame)
         if not np.isfinite(raw).all():
             raise ValueError("Nonfinite model input; missing values are not zero")
@@ -60,6 +67,12 @@ class Encoder:
         arrays = [((frame[self.numeric] - self.mean) / self.scale).to_numpy(float)]
         for col, cats in self.categories.items():
             arrays.extend([(frame[col].to_numpy() == val).astype(float)[:, None] for val in cats[1:]])
+        # Previously saved v1 encoders do not have this attribute.
+        if getattr(self, "station_hour_interaction", False):
+            arrays.extend([((frame.station.to_numpy() == station) &
+                            (frame.hour.to_numpy() == hour)).astype(float)[:, None]
+                           for station in self.categories["station"][1:]
+                           for hour in self.categories["hour"][1:]])
         return np.column_stack(arrays)
 
     def transform(self, frame):
@@ -100,7 +113,8 @@ class Fitted:
 
 
 def fit_one(frame, name, groups, params, config):
-    encoder = Encoder().fit(frame, tuple(groups))
+    encoder = Encoder().fit(frame, tuple(groups), station_hour_interaction=(
+        name == "ridge" and config.get("ridge_station_hour_interaction", False)))
     x = encoder.transform(frame)
     design = np.column_stack([np.ones(len(x)), x])
     rank = int(np.linalg.matrix_rank(design))
@@ -117,8 +131,11 @@ def fit_one(frame, name, groups, params, config):
         estimator = Ridge(alpha=alpha, fit_intercept=True, solver="svd").fit(x, y)
         params = {**params, "sklearn_alpha": alpha, "n_train_rows": len(frame)}
     elif name == "xgboost":
-        estimator = XGBRegressor(objective="reg:squarederror", tree_method="hist", n_jobs=1,
-                                 random_state=config["seed"], **config["xgb_fixed"], **params).fit(x, y)
+        # Grid candidates may deliberately vary a parameter formerly held fixed.
+        # Merge before constructing the estimator so candidate values take effect.
+        xgb_params = {"objective": "reg:squarederror", "tree_method": "hist", "n_jobs": 1,
+                      "random_state": config["seed"], **config["xgb_fixed"], **params}
+        estimator = XGBRegressor(**xgb_params).fit(x, y)
     else:
         raise ValueError(name)
     return Fitted(name, encoder, estimator, params, rank, design.shape[1], fallback)
