@@ -1,0 +1,648 @@
+{
+  "version": "analysis_v7_core_20261011",
+  "evaluation_kind": "exploratory_retrospective_forward_comparison_after_v1_diagnostics_not_verified_D_minus_1",
+  "seed": 20261010,
+  "outer_years": [
+    2024,
+    2025,
+    2026
+  ],
+  "min_inner_train_events": 2,
+  "min_base_train_events": 4,
+  "min_inner_folds": 2,
+  "candidate_groups": [
+    "is_weekend",
+    "day_of_year",
+    "year_index"
+  ],
+  "ridge_lambdas": [
+    0.001,
+    0.01,
+    0.1,
+    1.0,
+    10.0
+  ],
+  "xgb_grid": [
+    {
+      "max_depth": 1,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    }
+  ],
+  "xgb_fixed": {
+    "learning_rate": 0.05,
+    "min_child_weight": 24,
+    "reg_lambda": 10.0,
+    "subsample": 1.0,
+    "colsample_bytree": 1.0
+  },
+  "stack_objective": "event_balanced_mae_simplex_lp",
+  "report_title": "第七版：修正 GAM 低支持度與無懲罰外插，再比較融合",
+  "output_dir": "result/analysis_v7/core",
+  "private_output_dir": ".local/analysis_v7/core",
+  "experiment_notes": [
+    "Preserve the original data, D-1 cutoff, all temporal folds, and eight legacy methods.",
+    "GAM numeric candidates with fewer than six known training events are omitted, including their missingness indicators; station/hour and is_weekend remain.",
+    "The GAM-specific support gate runs before its training-only encoder and exact-rank filter.",
+    "SSE + smooth_lambda * squared second coefficient differences + n_train * ridge_alpha * squared non-intercept coefficients.",
+    "Joint 5 by 4 prespecified smoothing/ridge grid selected only by chronological inner event-balanced MAE; all original OOF years retained.",
+    "Audit all raw continuous candidates, including omitted and linear terms, in inner, OOF and outer validation; no holdout-based clipping or knot refitting.",
+    "This repair follows retrospective diagnosis and is exploratory, not untouched confirmation or fully verified D-1 deployment."
+  ],
+  "tuning_diagnostics": true,
+  "d1_features": [],
+  "d1_source_files": [
+    "docs/d1_program_sources.json",
+    "docs/d1_weather_sources.json"
+  ],
+  "d1_cutoff_hour": 18,
+  "include_historical_baseline": false,
+  "station_hour_interaction": true,
+  "linear_design": "full_shared_with_training_rank_filter",
+  "lasso_alphas": [
+    0.1,
+    1,
+    5,
+    10,
+    25,
+    50,
+    100,
+    250
+  ],
+  "fusion_top_k": 2,
+  "fusion_selection_scope": "past_temporal_oof_all_stations_event_mae_top2",
+  "lasso_max_iter": 1000000,
+  "lasso_tol": 1e-10,
+  "lasso_certificate_tol": 1e-06,
+  "gam_lambdas": [
+    0.1,
+    1,
+    10,
+    100,
+    1000
+  ],
+  "gam_n_splines": 5,
+  "gam_spline_order": 3,
+  "gam_min_known_events": 6,
+  "gam_min_unique": 8,
+  "gam_max_iter": 1000,
+  "gam_tol": 1e-06,
+  "gam_smooth_candidates": [
+    "day_of_year",
+    "planned_fireworks_minutes",
+    "planned_fireworks_start_hour",
+    "forecast_temperature_c",
+    "forecast_wind_speed_m_s",
+    "forecast_cloud_cover_pct"
+  ],
+  "gam_fusion_models": [
+    "ridge",
+    "gam",
+    "xgboost"
+  ],
+  "gam_ridge_alphas": [
+    0.001,
+    0.01,
+    0.1,
+    1
+  ],
+  "gam_robustness_policy": "omit_low_event_support_and_full_coefficient_ridge",
+  "gam_binary_groups": [
+    "is_weekend"
+  ]
+}
