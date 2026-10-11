@@ -1,0 +1,420 @@
+{
+  "pairs": {
+    "core": {
+      "same_panel_truth_and_cutoffs": true,
+      "same_model_settings_packages_and_existing_sources": true,
+      "added_candidates": [
+        "planned_end_0_60_beimen",
+        "planned_end_0_60_daqiaotou",
+        "planned_end_0_60_shuanglian",
+        "planned_end_0_60_minquan_west",
+        "planned_end_60_120_beimen",
+        "planned_end_60_120_daqiaotou",
+        "planned_end_60_120_shuanglian",
+        "planned_end_60_120_minquan_west"
+      ],
+      "all_models_refit_with_new_inputs": true,
+      "prediction_changes_allowed": [
+        "ols",
+        "ridge",
+        "lasso",
+        "xgboost",
+        "equal",
+        "stack",
+        "select_best",
+        "select_stack",
+        "gam",
+        "gam_equal",
+        "gam_stack"
+      ],
+      "shared_encoder_extension": {
+        "path": "src/analysis_v1/models.py",
+        "before_sha256": "9c9bd8e6ae98b08c8c0ba5d8814e0850d3e83168197a07f5c2fcc14cff32e346",
+        "after_sha256": "46a5316431d25d175b73807c9f8e97fba361d63845b899efbf2397f0c26bbead",
+        "reviewed_scope": "Exact eight planned-end names added to optional whitelist and [0,1] range validation; manually reviewed code delta, not an automatic algorithm-equivalence proof"
+      }
+    },
+    "fireworks": {
+      "same_panel_truth_and_cutoffs": true,
+      "same_model_settings_packages_and_existing_sources": true,
+      "added_candidates": [
+        "planned_end_0_60_beimen",
+        "planned_end_0_60_daqiaotou",
+        "planned_end_0_60_shuanglian",
+        "planned_end_0_60_minquan_west",
+        "planned_end_60_120_beimen",
+        "planned_end_60_120_daqiaotou",
+        "planned_end_60_120_shuanglian",
+        "planned_end_60_120_minquan_west"
+      ],
+      "all_models_refit_with_new_inputs": true,
+      "prediction_changes_allowed": [
+        "ols",
+        "ridge",
+        "lasso",
+        "xgboost",
+        "equal",
+        "stack",
+        "select_best",
+        "select_stack",
+        "gam",
+        "gam_equal",
+        "gam_stack"
+      ],
+      "shared_encoder_extension": {
+        "path": "src/analysis_v1/models.py",
+        "before_sha256": "9c9bd8e6ae98b08c8c0ba5d8814e0850d3e83168197a07f5c2fcc14cff32e346",
+        "after_sha256": "46a5316431d25d175b73807c9f8e97fba361d63845b899efbf2397f0c26bbead",
+        "reviewed_scope": "Exact eight planned-end names added to optional whitelist and [0,1] range validation; manually reviewed code delta, not an automatic algorithm-equivalence proof"
+      }
+    },
+    "weather": {
+      "same_panel_truth_and_cutoffs": true,
+      "same_model_settings_packages_and_existing_sources": true,
+      "added_candidates": [
+        "planned_end_0_60_beimen",
+        "planned_end_0_60_daqiaotou",
+        "planned_end_0_60_shuanglian",
+        "planned_end_0_60_minquan_west",
+        "planned_end_60_120_beimen",
+        "planned_end_60_120_daqiaotou",
+        "planned_end_60_120_shuanglian",
+        "planned_end_60_120_minquan_west"
+      ],
+      "all_models_refit_with_new_inputs": true,
+      "prediction_changes_allowed": [
+        "ols",
+        "ridge",
+        "lasso",
+        "xgboost",
+        "equal",
+        "stack",
+        "select_best",
+        "select_stack",
+        "gam",
+        "gam_equal",
+        "gam_stack"
+      ],
+      "shared_encoder_extension": {
+        "path": "src/analysis_v1/models.py",
+        "before_sha256": "9c9bd8e6ae98b08c8c0ba5d8814e0850d3e83168197a07f5c2fcc14cff32e346",
+        "after_sha256": "46a5316431d25d175b73807c9f8e97fba361d63845b899efbf2397f0c26bbead",
+        "reviewed_scope": "Exact eight planned-end names added to optional whitelist and [0,1] range validation; manually reviewed code delta, not an automatic algorithm-equivalence proof"
+      }
+    },
+    "both": {
+      "same_panel_truth_and_cutoffs": true,
+      "same_model_settings_packages_and_existing_sources": true,
+      "added_candidates": [
+        "planned_end_0_60_beimen",
+        "planned_end_0_60_daqiaotou",
+        "planned_end_0_60_shuanglian",
+        "planned_end_0_60_minquan_west",
+        "planned_end_60_120_beimen",
+        "planned_end_60_120_daqiaotou",
+        "planned_end_60_120_shuanglian",
+        "planned_end_60_120_minquan_west"
+      ],
+      "all_models_refit_with_new_inputs": true,
+      "prediction_changes_allowed": [
+        "ols",
+        "ridge",
+        "lasso",
+        "xgboost",
+        "equal",
+        "stack",
+        "select_best",
+        "select_stack",
+        "gam",
+        "gam_equal",
+        "gam_stack"
+      ],
+      "shared_encoder_extension": {
+        "path": "src/analysis_v1/models.py",
+        "before_sha256": "9c9bd8e6ae98b08c8c0ba5d8814e0850d3e83168197a07f5c2fcc14cff32e346",
+        "after_sha256": "46a5316431d25d175b73807c9f8e97fba361d63845b899efbf2397f0c26bbead",
+        "reviewed_scope": "Exact eight planned-end names added to optional whitelist and [0,1] range validation; manually reviewed code delta, not an automatic algorithm-equivalence proof"
+      }
+    }
+  },
+  "input_pairs": {
+    "core": {
+      "events": 21,
+      "rows": 504,
+      "old_input_columns_bit_identical": true,
+      "new_feature_columns": [
+        "planned_end_0_60_beimen",
+        "planned_end_0_60_daqiaotou",
+        "planned_end_0_60_shuanglian",
+        "planned_end_0_60_minquan_west",
+        "planned_end_60_120_beimen",
+        "planned_end_60_120_daqiaotou",
+        "planned_end_60_120_shuanglian",
+        "planned_end_60_120_minquan_west"
+      ]
+    },
+    "fireworks": {
+      "events": 21,
+      "rows": 504,
+      "old_input_columns_bit_identical": true,
+      "new_feature_columns": [
+        "planned_end_0_60_beimen",
+        "planned_end_0_60_daqiaotou",
+        "planned_end_0_60_shuanglian",
+        "planned_end_0_60_minquan_west",
+        "planned_end_60_120_beimen",
+        "planned_end_60_120_daqiaotou",
+        "planned_end_60_120_shuanglian",
+        "planned_end_60_120_minquan_west"
+      ]
+    },
+    "weather": {
+      "events": 21,
+      "rows": 504,
+      "old_input_columns_bit_identical": true,
+      "new_feature_columns": [
+        "planned_end_0_60_beimen",
+        "planned_end_0_60_daqiaotou",
+        "planned_end_0_60_shuanglian",
+        "planned_end_0_60_minquan_west",
+        "planned_end_60_120_beimen",
+        "planned_end_60_120_daqiaotou",
+        "planned_end_60_120_shuanglian",
+        "planned_end_60_120_minquan_west"
+      ]
+    },
+    "both": {
+      "events": 21,
+      "rows": 504,
+      "old_input_columns_bit_identical": true,
+      "new_feature_columns": [
+        "planned_end_0_60_beimen",
+        "planned_end_0_60_daqiaotou",
+        "planned_end_0_60_shuanglian",
+        "planned_end_0_60_minquan_west",
+        "planned_end_60_120_beimen",
+        "planned_end_60_120_daqiaotou",
+        "planned_end_60_120_shuanglian",
+        "planned_end_60_120_minquan_west"
+      ]
+    }
+  },
+  "oof_pairs": {
+    "core": {
+      "unique_events": 14,
+      "rows": 336,
+      "same_past_oof_panel": true
+    },
+    "fireworks": {
+      "unique_events": 14,
+      "rows": 336,
+      "same_past_oof_panel": true
+    },
+    "weather": {
+      "unique_events": 14,
+      "rows": 336,
+      "same_past_oof_panel": true
+    },
+    "both": {
+      "unique_events": 14,
+      "rows": 336,
+      "same_past_oof_panel": true
+    }
+  },
+  "end_audits": {
+    "core": {
+      "events": 21,
+      "known_events": 18,
+      "unknown_events": 3,
+      "scope_counts": {
+        "fireworks_only": 16,
+        "unknown": 3,
+        "combined_sky_program": 2
+      },
+      "all_rows_retained": true,
+      "all_eight_overlap_features_recomputed_independently": true,
+      "not_measured_egress_time_or_stage_end": true,
+      "outer_events": 9,
+      "outer_known_events": 9
+    },
+    "fireworks": {
+      "events": 21,
+      "known_events": 18,
+      "unknown_events": 3,
+      "scope_counts": {
+        "fireworks_only": 16,
+        "unknown": 3,
+        "combined_sky_program": 2
+      },
+      "all_rows_retained": true,
+      "all_eight_overlap_features_recomputed_independently": true,
+      "not_measured_egress_time_or_stage_end": true,
+      "outer_events": 9,
+      "outer_known_events": 9
+    },
+    "weather": {
+      "events": 21,
+      "known_events": 18,
+      "unknown_events": 3,
+      "scope_counts": {
+        "fireworks_only": 16,
+        "unknown": 3,
+        "combined_sky_program": 2
+      },
+      "all_rows_retained": true,
+      "all_eight_overlap_features_recomputed_independently": true,
+      "not_measured_egress_time_or_stage_end": true,
+      "outer_events": 9,
+      "outer_known_events": 9
+    },
+    "both": {
+      "events": 21,
+      "known_events": 18,
+      "unknown_events": 3,
+      "scope_counts": {
+        "fireworks_only": 16,
+        "unknown": 3,
+        "combined_sky_program": 2
+      },
+      "all_rows_retained": true,
+      "all_eight_overlap_features_recomputed_independently": true,
+      "not_measured_egress_time_or_stage_end": true,
+      "outer_events": 9,
+      "outer_known_events": 9
+    }
+  },
+  "all_layer_gam_diagnostics": {
+    "core": {
+      "all_layers": [
+        "inner_grid",
+        "middle_oof",
+        "outer"
+      ],
+      "evaluations": 721,
+      "candidate_feature_audits": 7210,
+      "all_grid_candidates_audited": true,
+      "all_fits_numerically_verified": true,
+      "unsupported_inputs_and_indicators_omitted": true,
+      "max_normal_equation_relative_residual": 9.348219206058363e-10,
+      "max_prediction_any_grid_or_selected_evaluation": 7931.265921343145,
+      "warning": "all_grid_diagnostics_are_not_selected_model_generalization_scores"
+    },
+    "fireworks": {
+      "all_layers": [
+        "inner_grid",
+        "middle_oof",
+        "outer"
+      ],
+      "evaluations": 721,
+      "candidate_feature_audits": 8652,
+      "all_grid_candidates_audited": true,
+      "all_fits_numerically_verified": true,
+      "unsupported_inputs_and_indicators_omitted": true,
+      "max_normal_equation_relative_residual": 9.348219206058363e-10,
+      "max_prediction_any_grid_or_selected_evaluation": 7931.265921343145,
+      "warning": "all_grid_diagnostics_are_not_selected_model_generalization_scores"
+    },
+    "weather": {
+      "all_layers": [
+        "inner_grid",
+        "middle_oof",
+        "outer"
+      ],
+      "evaluations": 721,
+      "candidate_feature_audits": 9373,
+      "all_grid_candidates_audited": true,
+      "all_fits_numerically_verified": true,
+      "unsupported_inputs_and_indicators_omitted": true,
+      "max_normal_equation_relative_residual": 9.348219206058363e-10,
+      "max_prediction_any_grid_or_selected_evaluation": 7931.265921343145,
+      "warning": "all_grid_diagnostics_are_not_selected_model_generalization_scores"
+    },
+    "both": {
+      "all_layers": [
+        "inner_grid",
+        "middle_oof",
+        "outer"
+      ],
+      "evaluations": 721,
+      "candidate_feature_audits": 10815,
+      "all_grid_candidates_audited": true,
+      "all_fits_numerically_verified": true,
+      "unsupported_inputs_and_indicators_omitted": true,
+      "max_normal_equation_relative_residual": 9.348219206058363e-10,
+      "max_prediction_any_grid_or_selected_evaluation": 7931.265921343145,
+      "warning": "all_grid_diagnostics_are_not_selected_model_generalization_scores"
+    }
+  },
+  "file_hashes": {
+    "v7/core/outer_predictions.csv": "992d6c48394c5d631c4e2ec9b1f1b4abb053049e050cea725db21eaf17b85716",
+    "v7/core/meta_predictions.csv": "83eadc94f2eac287b2bd9486854f2cec5866c1cb6f7c231a4a8619fcbb94bf09",
+    "v7/core/analysis_input.csv": "4097646f4b8b6fe1acd20afdf85c3c579ed97a1757a920871d590e0b88e84495",
+    "v7/fireworks/outer_predictions.csv": "e4adc32c5f1ec52b102e8085059537c83cdbe6ecb963967234de3fc7d4da391c",
+    "v7/fireworks/meta_predictions.csv": "06cdd5ebe7a2389ef896f2c3dbe9283a20c9e817d3b97ddac30c84a91267a763",
+    "v7/fireworks/analysis_input.csv": "48294e21a0318c551669b36652894c3fcd3be6d1df521ae577c6a96c65d30473",
+    "v7/weather/outer_predictions.csv": "67c527e5229d595cc1fc3d57bac16c6ade7dd87b4f1bf22c34d8b3d7b80f7074",
+    "v7/weather/meta_predictions.csv": "067103e4e25df5979fa9faed42fb1fb970f1c8e8e67ff3529ad1046b555769f3",
+    "v7/weather/analysis_input.csv": "15df8846d0a7b92cc0a8d3b300256637c494b6fdcd04479bdb20f46e8aab34ac",
+    "v7/both/outer_predictions.csv": "4fdea7dd77a309c72b63d89701a1f235d34d698a9e9fd93454758f771589b83f",
+    "v7/both/meta_predictions.csv": "524df143d29bf7bcbc0d86f0b801aa027647434aaa09dc07d840bfd5c0bf1ee0",
+    "v7/both/analysis_input.csv": "1e029d23366f09988bef4d2a15d83ed0832647506899012ec5abb7103607dc3f",
+    "v8/core/outer_predictions.csv": "c5f44c093473a3cb9e13112327f63598c841669ac956be294da7b750cd47f4a6",
+    "v8/core/meta_predictions.csv": "27c48ae52ab424254385f41520cb1a6ee9de9015807b54bfb14b33769f820327",
+    "v8/core/analysis_input.csv": "36679711a676d976d72d35b74db4e3291abfdfac9cd837947af1c3afbbaf4102",
+    "v8/fireworks/outer_predictions.csv": "6fa1da7596477046b1c3a8ee644d7478ed6287572719e1946e7c3376c2e1d7ed",
+    "v8/fireworks/meta_predictions.csv": "dc2e449b2d46e91a54abc05989e36654e5def2aea7cc6b68744ea11ed873484b",
+    "v8/fireworks/analysis_input.csv": "b040b7df83cee1cf9b81209c303e81d7d49eb1a0428e28626f3ae6c6545c899a",
+    "v8/weather/outer_predictions.csv": "0b57e3827ce0b08b4b8445c0c112ede8c11f8f00ece8929249de5ed8137294a7",
+    "v8/weather/meta_predictions.csv": "d246b1dafcbcc623a676c1ca2fd3b94d58a3d9be58c1dca902c839179617c19a",
+    "v8/weather/analysis_input.csv": "f9770d6a2f7ff55d6d6327364c9298ecac8837b9574255495ca4c8a534fd1493",
+    "v8/both/outer_predictions.csv": "a033ec2e2b094cee215fb3f7fca1ddb6ae2492b1fd39a6a0c0c52f53bac1df25",
+    "v8/both/meta_predictions.csv": "f2e7f9ca8d01029efa10a3d9e4b45e622529296c1e3b2d20b572ab1ea55cdbc0",
+    "v8/both/analysis_input.csv": "81a0bc7e8420d828cd16b7814d705323d217090e93a6bb139e2fa7acdfc96c5a"
+  },
+  "v7_design": {
+    "base_input_hashes": {
+      "data/processed/event_station_hourly_context.csv": "11f1c426a14ba08542b1895a999d71f9ac4dfe5ed63558b14afc41167d8f6468",
+      "data/processed/calendar_baseline/candidate_audit.csv": "a62fd0549da4d607cf061696995712c006b8d6568e12ae9844e13f7ddc4bcef5",
+      "data/processed/station_hourly.parquet": "2bc4c399d8a7ab8ae9672c5c7e31b5a459281acda9f05be6345258f2c3bdb85f",
+      ".local/research_review/2026-10-07-refresh/statistics_snapshot.json": "e9688eb20c03b199bc32a22290a3afdf88e9bd7a844199e9438fbddf807b2aed"
+    },
+    "d1_source_hashes": {
+      "docs/d1_weather_sources.json": "362c523f2b9763df4079076e10785a23b2fa2dc897a80daa6e4d002b7e3afc88",
+      "docs/d1_program_sources.json": "12a2535b789ebd5516ed5f901947660824dd8296541f643c9d40df3624b38304"
+    },
+    "model_code_hashes": {
+      "src/analysis_v6/models.py": "1814f04ecf5743276555e965ff8bf155446a5a1f1fcb95951690c0d10fad2894",
+      "src/analysis_v1/data.py": "4e9c7fdfb17d3eb98dff29117e215cc7a5a0a20a1096882c2ba526198929fa77",
+      "src/run_analysis_v7.py": "a4665d9bb914b26e2be885ecffa05905757a47fdd45e1b1fbd935dfc3ae7a203",
+      "src/analysis_v7/models.py": "465eb232a0c2f0d49f6c942c70f0edce277b1c67bb754e1f65179129d0cb4a8f",
+      "src/analysis_v5/models.py": "aa86487eafaabe41d1aa55b902059ef6cc325e30949c79a7e7135720b12dbd66",
+      "src/analysis_v1/d1_features.py": "01ffb66a6298acdd18c23e6e50761257fba8d204b17cb3ce559245fa4ecde691",
+      "src/analysis_v1/models.py": "9c9bd8e6ae98b08c8c0ba5d8814e0850d3e83168197a07f5c2fcc14cff32e346"
+    },
+    "same_settings_except_feature_groups": true
+  },
+  "v8_design": {
+    "same_settings_except_candidate_groups": true,
+    "source_hashes": {
+      "docs/d1_show_end_sources.json": "f7d53dd7c8887aa7eb9c031cf0e0f43992e8da638ea04eddedbe7b6eb5cc0d3b",
+      "docs/d1_program_sources.json": "12a2535b789ebd5516ed5f901947660824dd8296541f643c9d40df3624b38304",
+      "docs/d1_weather_sources.json": "362c523f2b9763df4079076e10785a23b2fa2dc897a80daa6e4d002b7e3afc88"
+    },
+    "model_code_hashes": {
+      "src/analysis_v1/d1_features.py": "01ffb66a6298acdd18c23e6e50761257fba8d204b17cb3ce559245fa4ecde691",
+      "src/analysis_v7/models.py": "465eb232a0c2f0d49f6c942c70f0edce277b1c67bb754e1f65179129d0cb4a8f",
+      "src/analysis_v1/data.py": "4e9c7fdfb17d3eb98dff29117e215cc7a5a0a20a1096882c2ba526198929fa77",
+      "src/analysis_v5/models.py": "aa86487eafaabe41d1aa55b902059ef6cc325e30949c79a7e7135720b12dbd66",
+      "src/run_analysis_v8.py": "ed019931b8be208900bb47bd3963553efcb40cd5a35c5e176fa2259e32796351",
+      "src/analysis_v8/features.py": "7d447e071ce382e00e5a7d989c1f3ddcd394ae529962d33a380f932a2afb1a5c",
+      "src/analysis_v6/models.py": "1814f04ecf5743276555e965ff8bf155446a5a1f1fcb95951690c0d10fad2894",
+      "src/analysis_v1/models.py": "46a5316431d25d175b73807c9f8e97fba361d63845b899efbf2397f0c26bbead"
+    },
+    "main_variant_prespecified": "both"
+  },
+  "comparison_scope": "exploratory_paired_feature_addition_on_previously_inspected_outer_events",
+  "reporting_code": {
+    "path": "src/analysis_v8/reporting.py",
+    "sha256": "2aaf21ecbc761956ca46ccd9000ca5cd3bf9c3f47c80ae87d9f96b88b32ead51"
+  }
+}

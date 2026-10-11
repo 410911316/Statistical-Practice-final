@@ -1,0 +1,659 @@
+{
+  "version": "analysis_v8_core_20261011",
+  "evaluation_kind": "exploratory_retrospective_forward_comparison_after_v1_diagnostics_not_verified_D_minus_1",
+  "seed": 20261010,
+  "outer_years": [
+    2024,
+    2025,
+    2026
+  ],
+  "min_inner_train_events": 2,
+  "min_base_train_events": 4,
+  "min_inner_folds": 2,
+  "candidate_groups": [
+    "is_weekend",
+    "day_of_year",
+    "year_index",
+    "planned_end_0_60_beimen",
+    "planned_end_0_60_daqiaotou",
+    "planned_end_0_60_shuanglian",
+    "planned_end_0_60_minquan_west",
+    "planned_end_60_120_beimen",
+    "planned_end_60_120_daqiaotou",
+    "planned_end_60_120_shuanglian",
+    "planned_end_60_120_minquan_west"
+  ],
+  "ridge_lambdas": [
+    0.001,
+    0.01,
+    0.1,
+    1.0,
+    10.0
+  ],
+  "xgb_grid": [
+    {
+      "max_depth": 1,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    }
+  ],
+  "xgb_fixed": {
+    "learning_rate": 0.05,
+    "min_child_weight": 24,
+    "reg_lambda": 10.0,
+    "subsample": 1.0,
+    "colsample_bytree": 1.0
+  },
+  "stack_objective": "event_balanced_mae_simplex_lp",
+  "report_title": "第八版：加入事前預定展演結束訊號的比較",
+  "output_dir": "result/analysis_v8/core",
+  "private_output_dir": ".local/analysis_v8/core",
+  "experiment_notes": [
+    "Add only prespecified D-1 planned-show-end overlap signals; retain every original event and all missing end-time events.",
+    "Hourly overlap with [planned end, end+60min) and [end+60min, end+120min), interacted with each of four stations (eight columns).",
+    "Sixteen fireworks-only ends and two combined sky-program ends have different recorded scopes; neither denotes observed egress or stage end.",
+    "Unknown source timing remains missing across all eight columns; no actual outcome or context nominal-end fallback.",
+    "Use unchanged v7 model algorithms, hyperparameter grids, fusion objectives and temporal folds; refit all models with the added candidates.",
+    "Compare against archived v7 on identical outer rows, not only records with known end times. All model predictions may change.",
+    "This is an exploratory ablation on previously inspected years, not a new independent confirmation or fully verified D-1 deployment."
+  ],
+  "tuning_diagnostics": true,
+  "d1_features": [],
+  "d1_source_files": [
+    "docs/d1_program_sources.json",
+    "docs/d1_weather_sources.json"
+  ],
+  "d1_cutoff_hour": 18,
+  "include_historical_baseline": false,
+  "station_hour_interaction": true,
+  "linear_design": "full_shared_with_training_rank_filter",
+  "lasso_alphas": [
+    0.1,
+    1,
+    5,
+    10,
+    25,
+    50,
+    100,
+    250
+  ],
+  "fusion_top_k": 2,
+  "fusion_selection_scope": "past_temporal_oof_all_stations_event_mae_top2",
+  "lasso_max_iter": 1000000,
+  "lasso_tol": 1e-10,
+  "lasso_certificate_tol": 1e-06,
+  "gam_lambdas": [
+    0.1,
+    1,
+    10,
+    100,
+    1000
+  ],
+  "gam_n_splines": 5,
+  "gam_spline_order": 3,
+  "gam_min_known_events": 6,
+  "gam_min_unique": 8,
+  "gam_max_iter": 1000,
+  "gam_tol": 1e-06,
+  "gam_smooth_candidates": [
+    "day_of_year",
+    "planned_fireworks_minutes",
+    "planned_fireworks_start_hour",
+    "forecast_temperature_c",
+    "forecast_wind_speed_m_s",
+    "forecast_cloud_cover_pct"
+  ],
+  "gam_fusion_models": [
+    "ridge",
+    "gam",
+    "xgboost"
+  ],
+  "gam_ridge_alphas": [
+    0.001,
+    0.01,
+    0.1,
+    1
+  ],
+  "gam_robustness_policy": "omit_low_event_support_and_full_coefficient_ridge",
+  "gam_binary_groups": [
+    "is_weekend"
+  ],
+  "baseline_variant": "core",
+  "end_source_file": "docs/d1_show_end_sources.json",
+  "end_signal_policy": "station_specific_overlap_0_60_and_60_120_minutes"
+}

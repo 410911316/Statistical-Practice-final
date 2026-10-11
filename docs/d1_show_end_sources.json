@@ -1,0 +1,535 @@
+{
+  "schema_version": 1,
+  "title": "D−1 預定展演結束與逐時相對時窗來源",
+  "timezone": "Asia/Taipei",
+  "prediction_cutoff": "活動前一天 18:00 Asia/Taipei",
+  "parent_source_path": "docs/d1_program_sources.json",
+  "parent_source_sha256": "12a2535b789ebd5516ed5f901947660824dd8296541f643c9d40df3624b38304",
+  "parent_checked_at": "2026-10-11T14:23:16+08:00",
+  "derivation": "預定開始小時 + 預定展演分鐘 / 60；逐時區間與結束後 [0,60)、[60,120) 分鐘的重疊時數乘以車站指示變數。",
+  "scope_policy": "16 場 fireworks_only；2 場 combined_sky_program；3 場 unknown。兩種展演範圍都保留，不能將天空展演起點誤當煙火段起點。",
+  "limitations": [
+    "這些是事前公告的计划時點，並非實際演出結束、民眾散場、舞台結束或步行抵站時間。",
+    "可得性根據目前可核對文章發布與更新欄；尚未保存當年網頁快照，未補齊整個歷史 OD 標籤發布稽核。",
+    "2026 整套天空展演開始另做明示的人工結構化；舊 planned_fireworks_start_hour 不改寫。",
+    "未知場次全部八個衍生特徵都保持缺值，之後只能由訓練資料填補。"
+  ],
+  "records": [
+    {
+      "event_date": "2017-08-26",
+      "scope": "fireworks_only",
+      "availability_status": "verified_pre_cutoff",
+      "planned_start_hour": 20.333333333333332,
+      "planned_duration_minutes": 10,
+      "planned_end_hour": 20.5,
+      "published_at": "2017-08-21T23:59:59+08:00",
+      "cutoff_at": "2017-08-25T18:00:00+08:00",
+      "source_urls": [
+        "https://www.travel.taipei/zh-tw/news/details/11384"
+      ],
+      "parent_references": [
+        {
+          "feature": "planned_fireworks_start_hour",
+          "record_sha256": "07b4b9f615723dad0eb34553fddc37052c6e4fe54cf063464b0e00670a853d66"
+        },
+        {
+          "feature": "planned_fireworks_minutes",
+          "record_sha256": "499240c87eb1c99c3cc1d8a9945f20ca3e9f5aa1e96841efe45e07c242591a0a"
+        }
+      ],
+      "notes": "公告預定天空展演結束，不是舞台結束、實際散場或抵達車站時刻。"
+    },
+    {
+      "event_date": "2018-08-18",
+      "scope": "unknown",
+      "availability_status": "unknown",
+      "planned_start_hour": null,
+      "planned_duration_minutes": null,
+      "planned_end_hour": null,
+      "published_at": "2018-08-17T23:59:59+08:00",
+      "cutoff_at": "2018-08-17T18:00:00+08:00",
+      "source_urls": [
+        "https://www.travel.taipei/zh-tw/news/details/18061"
+      ],
+      "parent_references": [
+        {
+          "feature": "planned_fireworks_start_hour",
+          "record_sha256": "72c9fec975876fa071f3716b0c6eee63fe37b7e5eeae5cbb9a391da4938e7726"
+        },
+        {
+          "feature": "planned_fireworks_minutes",
+          "record_sha256": "c546eb587c47d401490214a3e63c053a82368d7bb723af55867cb9d8ab1898b3"
+        }
+      ],
+      "notes": "來源未知或晚於截止，保留未知；不得用名義活動時間或結果倒填。"
+    },
+    {
+      "event_date": "2019-08-03",
+      "scope": "fireworks_only",
+      "availability_status": "verified_pre_cutoff",
+      "planned_start_hour": 20,
+      "planned_duration_minutes": 8,
+      "planned_end_hour": 20.133333333333333,
+      "published_at": "2019-08-01T23:59:59+08:00",
+      "cutoff_at": "2019-08-02T18:00:00+08:00",
+      "source_urls": [
+        "https://www.travel.taipei/zh-tw/news/details/20511"
+      ],
+      "parent_references": [
+        {
+          "feature": "planned_fireworks_start_hour",
+          "record_sha256": "dc4f4c665a075d3ece15c1a8d12872ec315c92d5dc0836018a94ad43f1beb42d"
+        },
+        {
+          "feature": "planned_fireworks_minutes",
+          "record_sha256": "b3ca101e28887c4467e66c16b916ccdfb110161673e3422b43f555e32039af55"
+        }
+      ],
+      "notes": "公告預定天空展演結束，不是舞台結束、實際散場或抵達車站時刻。"
+    },
+    {
+      "event_date": "2020-08-29",
+      "scope": "fireworks_only",
+      "availability_status": "verified_pre_cutoff",
+      "planned_start_hour": 20.333333333333332,
+      "planned_duration_minutes": 8,
+      "planned_end_hour": 20.466666666666665,
+      "published_at": "2020-08-25T23:59:59+08:00",
+      "cutoff_at": "2020-08-28T18:00:00+08:00",
+      "source_urls": [
+        "https://www.gov.taipei/News_Content.aspx?n=F0DDAF49B89E9413&s=83AF7306D12CB4D7&sms=72544237BBE4C5F6"
+      ],
+      "parent_references": [
+        {
+          "feature": "planned_fireworks_start_hour",
+          "record_sha256": "8f4d8e98256824aa9ac920c66fd7407eac34d8552815552904c217e42e381a52"
+        },
+        {
+          "feature": "planned_fireworks_minutes",
+          "record_sha256": "42273f2382974ef964e949d629a29f72d14da327e7c85cf594716357cc0ca54f"
+        }
+      ],
+      "notes": "公告預定天空展演結束，不是舞台結束、實際散場或抵達車站時刻。"
+    },
+    {
+      "event_date": "2021-10-16",
+      "scope": "fireworks_only",
+      "availability_status": "verified_pre_cutoff",
+      "planned_start_hour": 20.166666666666668,
+      "planned_duration_minutes": 8,
+      "planned_end_hour": 20.3,
+      "published_at": "2021-10-13T23:59:59+08:00",
+      "cutoff_at": "2021-10-15T18:00:00+08:00",
+      "source_urls": [
+        "https://www.dot.gov.taipei/News_Content.aspx?n=D739A9F6B5C0AB95&s=DE45A059E7F7BAB3"
+      ],
+      "parent_references": [
+        {
+          "feature": "planned_fireworks_start_hour",
+          "record_sha256": "3b92ba1fda587045347fc77b47ff42930fee2734d6a537fe5572051a12d2f0c0"
+        },
+        {
+          "feature": "planned_fireworks_minutes",
+          "record_sha256": "dede295c7b4044fee9c8cc31d65990f6894b0128cac79e54886a0dd9dd6482d5"
+        }
+      ],
+      "notes": "公告預定天空展演結束，不是舞台結束、實際散場或抵達車站時刻。"
+    },
+    {
+      "event_date": "2022-07-30",
+      "scope": "fireworks_only",
+      "availability_status": "verified_pre_cutoff",
+      "planned_start_hour": 20.166666666666668,
+      "planned_duration_minutes": 8,
+      "planned_end_hour": 20.3,
+      "published_at": "2022-07-14T23:59:59+08:00",
+      "cutoff_at": "2022-07-29T18:00:00+08:00",
+      "source_urls": [
+        "https://www.travel.taipei/zh-tw/news/details/37338"
+      ],
+      "parent_references": [
+        {
+          "feature": "planned_fireworks_start_hour",
+          "record_sha256": "2e312fcc591e9b94163247740d42a97250bce0bd4ba91c631f7dfd150d6f06e1"
+        },
+        {
+          "feature": "planned_fireworks_minutes",
+          "record_sha256": "4282e34e389d23ba37ffc4cd9cceb29c503223e23cf6ab105cc4b611e2d44c7f"
+        }
+      ],
+      "notes": "公告預定天空展演結束，不是舞台結束、實際散場或抵達車站時刻。"
+    },
+    {
+      "event_date": "2023-07-05",
+      "scope": "unknown",
+      "availability_status": "unknown",
+      "planned_start_hour": null,
+      "planned_duration_minutes": null,
+      "planned_end_hour": null,
+      "published_at": "2023-06-29T23:59:59+08:00",
+      "cutoff_at": "2023-07-04T18:00:00+08:00",
+      "source_urls": [
+        "https://www.travel.taipei/zh-tw/news/details/47990"
+      ],
+      "parent_references": [
+        {
+          "feature": "planned_fireworks_start_hour",
+          "record_sha256": "3aa8d2f5bb10e36f69076cbb041830292fe2c7e930376dcdd23ebebf09ab0d7e"
+        },
+        {
+          "feature": "planned_fireworks_minutes",
+          "record_sha256": "1125e3c03f30a1e77d082d033b225304c8a17af1b02b827d4425d5ca867d1193"
+        }
+      ],
+      "notes": "來源未知或晚於截止，保留未知；不得用名義活動時間或結果倒填。"
+    },
+    {
+      "event_date": "2023-07-12",
+      "scope": "fireworks_only",
+      "availability_status": "verified_pre_cutoff",
+      "planned_start_hour": 20.5,
+      "planned_duration_minutes": 3,
+      "planned_end_hour": 20.55,
+      "published_at": "2023-07-05T23:59:59+08:00",
+      "cutoff_at": "2023-07-11T18:00:00+08:00",
+      "source_urls": [
+        "https://www.travel.taipei/zh-tw/news/details/48028",
+        "https://www.travel.taipei/zh-tw/news/details/47990"
+      ],
+      "parent_references": [
+        {
+          "feature": "planned_fireworks_start_hour",
+          "record_sha256": "fa48e4c39e8b80055ef2900c91ede9409186eee5ea5c18113f3fa8f79a762b02"
+        },
+        {
+          "feature": "planned_fireworks_minutes",
+          "record_sha256": "0144d3614740490e9cf8b5bb60587901d8b83c977699043f9d64646fef0a1a5c"
+        }
+      ],
+      "notes": "公告預定天空展演結束，不是舞台結束、實際散場或抵達車站時刻。"
+    },
+    {
+      "event_date": "2023-07-19",
+      "scope": "fireworks_only",
+      "availability_status": "verified_pre_cutoff",
+      "planned_start_hour": 20.5,
+      "planned_duration_minutes": 3,
+      "planned_end_hour": 20.55,
+      "published_at": "2023-07-05T23:59:59+08:00",
+      "cutoff_at": "2023-07-18T18:00:00+08:00",
+      "source_urls": [
+        "https://www.travel.taipei/zh-tw/news/details/48028",
+        "https://www.travel.taipei/zh-tw/news/details/47990"
+      ],
+      "parent_references": [
+        {
+          "feature": "planned_fireworks_start_hour",
+          "record_sha256": "97bc2065b77348b3596cbe0118dc84c4cb5b7150f7fbf357478c57e6db88eae2"
+        },
+        {
+          "feature": "planned_fireworks_minutes",
+          "record_sha256": "d31cc433fcdbde9b5fea2e2c6212b6e60927a0e7cc35cb57662b2b7c183de382"
+        }
+      ],
+      "notes": "公告預定天空展演結束，不是舞台結束、實際散場或抵達車站時刻。"
+    },
+    {
+      "event_date": "2023-08-09",
+      "scope": "unknown",
+      "availability_status": "unknown",
+      "planned_start_hour": null,
+      "planned_duration_minutes": null,
+      "planned_end_hour": null,
+      "published_at": "2023-08-08T18:04:00+08:00",
+      "cutoff_at": "2023-08-08T18:00:00+08:00",
+      "source_urls": [
+        "https://www.tpedoit.gov.taipei/News_Content.aspx?n=603755835E928BED&s=1543E99F91B18FDD&sms=72544237BBE4C5F6"
+      ],
+      "parent_references": [
+        {
+          "feature": "planned_fireworks_start_hour",
+          "record_sha256": "58cf14a1c24034b30833369a10cf88e07735d173db5bb6c2e948212edeb01398"
+        },
+        {
+          "feature": "planned_fireworks_minutes",
+          "record_sha256": "fccac2bec4bc19ba6abe431f7ace949151f890a15dc6c112b90f4e0ec02fe20f"
+        }
+      ],
+      "notes": "來源未知或晚於截止，保留未知；不得用名義活動時間或結果倒填。"
+    },
+    {
+      "event_date": "2023-08-16",
+      "scope": "fireworks_only",
+      "availability_status": "verified_pre_cutoff",
+      "planned_start_hour": 20.583333333333332,
+      "planned_duration_minutes": 6,
+      "planned_end_hour": 20.683333333333334,
+      "published_at": "2023-08-08T18:04:00+08:00",
+      "cutoff_at": "2023-08-15T18:00:00+08:00",
+      "source_urls": [
+        "https://www.tpedoit.gov.taipei/News_Content.aspx?n=603755835E928BED&s=1543E99F91B18FDD&sms=72544237BBE4C5F6"
+      ],
+      "parent_references": [
+        {
+          "feature": "planned_fireworks_start_hour",
+          "record_sha256": "a930146fc9ff55f1ac768440c3a4e9246691f9cfd1d2458a7a535a64ab3f9b29"
+        },
+        {
+          "feature": "planned_fireworks_minutes",
+          "record_sha256": "6c67e8d6a53339dd9d5f5d0586e3306403fbea1ceb4c9bbec2af6c46367b7751"
+        }
+      ],
+      "notes": "公告預定天空展演結束，不是舞台結束、實際散場或抵達車站時刻。"
+    },
+    {
+      "event_date": "2023-08-20",
+      "scope": "fireworks_only",
+      "availability_status": "verified_pre_cutoff",
+      "planned_start_hour": 20.583333333333332,
+      "planned_duration_minutes": 8,
+      "planned_end_hour": 20.716666666666665,
+      "published_at": "2023-08-08T18:04:00+08:00",
+      "cutoff_at": "2023-08-19T18:00:00+08:00",
+      "source_urls": [
+        "https://www.tpedoit.gov.taipei/News_Content.aspx?n=603755835E928BED&s=1543E99F91B18FDD&sms=72544237BBE4C5F6"
+      ],
+      "parent_references": [
+        {
+          "feature": "planned_fireworks_start_hour",
+          "record_sha256": "262df1c9216f0a4f6a3b2051bef3ab3129010e2f4481a9af0176ec6634b7ada9"
+        },
+        {
+          "feature": "planned_fireworks_minutes",
+          "record_sha256": "050b1e63a0b0fc3f96320ed05e4e6b5693d982fef970b72185fbf7392782186d"
+        }
+      ],
+      "notes": "公告預定天空展演結束，不是舞台結束、實際散場或抵達車站時刻。"
+    },
+    {
+      "event_date": "2024-07-17",
+      "scope": "fireworks_only",
+      "availability_status": "verified_pre_cutoff",
+      "planned_start_hour": 20,
+      "planned_duration_minutes": 5,
+      "planned_end_hour": 20.083333333333332,
+      "published_at": "2024-06-05T17:24:00+08:00",
+      "cutoff_at": "2024-07-16T18:00:00+08:00",
+      "source_urls": [
+        "https://www.gov.taipei/News_Content.aspx?n=F0DDAF49B89E9413&s=C8993A0D5ED76B9F"
+      ],
+      "parent_references": [
+        {
+          "feature": "planned_fireworks_start_hour",
+          "record_sha256": "88ccb4e144858f00d2b927cded503b9e50c1521db1a88125da798c674b8e63b7"
+        },
+        {
+          "feature": "planned_fireworks_minutes",
+          "record_sha256": "76b05a0f29c16a1cc2227db9137167ca39e521e4202e521e6cf11f5cd620875e"
+        }
+      ],
+      "notes": "公告預定天空展演結束，不是舞台結束、實際散場或抵達車站時刻。"
+    },
+    {
+      "event_date": "2024-07-31",
+      "scope": "fireworks_only",
+      "availability_status": "verified_pre_cutoff",
+      "planned_start_hour": 20,
+      "planned_duration_minutes": 5,
+      "planned_end_hour": 20.083333333333332,
+      "published_at": "2024-06-05T17:24:00+08:00",
+      "cutoff_at": "2024-07-30T18:00:00+08:00",
+      "source_urls": [
+        "https://www.gov.taipei/News_Content.aspx?n=F0DDAF49B89E9413&s=C8993A0D5ED76B9F"
+      ],
+      "parent_references": [
+        {
+          "feature": "planned_fireworks_start_hour",
+          "record_sha256": "d5a6342fc722529363179d3ada12c09a218aa12cba4e66f1eecfcff525ab69cb"
+        },
+        {
+          "feature": "planned_fireworks_minutes",
+          "record_sha256": "d2e4ded46b57a62c233c0af695707da7b840077cfaee7120876dcba2298bfc8d"
+        }
+      ],
+      "notes": "公告預定天空展演結束，不是舞台結束、實際散場或抵達車站時刻。"
+    },
+    {
+      "event_date": "2024-08-10",
+      "scope": "fireworks_only",
+      "availability_status": "verified_pre_cutoff",
+      "planned_start_hour": 20,
+      "planned_duration_minutes": 8,
+      "planned_end_hour": 20.133333333333333,
+      "published_at": "2024-06-05T17:24:00+08:00",
+      "cutoff_at": "2024-08-09T18:00:00+08:00",
+      "source_urls": [
+        "https://www.gov.taipei/News_Content.aspx?n=F0DDAF49B89E9413&s=C8993A0D5ED76B9F"
+      ],
+      "parent_references": [
+        {
+          "feature": "planned_fireworks_start_hour",
+          "record_sha256": "12bef587d86fffed10a5aec04a269abc7156ef1dba1db5802e123f80fa0c3d8f"
+        },
+        {
+          "feature": "planned_fireworks_minutes",
+          "record_sha256": "0db73589ce3b66f4257aa4894450f61d30703dd223b36136596388991b2ae1ba"
+        }
+      ],
+      "notes": "公告預定天空展演結束，不是舞台結束、實際散場或抵達車站時刻。"
+    },
+    {
+      "event_date": "2025-08-06",
+      "scope": "fireworks_only",
+      "availability_status": "verified_pre_cutoff",
+      "planned_start_hour": 20,
+      "planned_duration_minutes": 5,
+      "planned_end_hour": 20.083333333333332,
+      "published_at": "2025-07-04T23:59:59+08:00",
+      "cutoff_at": "2025-08-05T18:00:00+08:00",
+      "source_urls": [
+        "https://www.travel.taipei/zh-tw/news/details/65527"
+      ],
+      "parent_references": [
+        {
+          "feature": "planned_fireworks_start_hour",
+          "record_sha256": "a503f5f294048b4622e06a2f0221b7a9345a16866370ea5cdaf4359eaec3349c"
+        },
+        {
+          "feature": "planned_fireworks_minutes",
+          "record_sha256": "1ccd405491ba9e57c1e03c2c272ba1b08a7cf7763997d210955ed917300c30e3"
+        }
+      ],
+      "notes": "公告預定天空展演結束，不是舞台結束、實際散場或抵達車站時刻。"
+    },
+    {
+      "event_date": "2025-08-20",
+      "scope": "fireworks_only",
+      "availability_status": "verified_pre_cutoff",
+      "planned_start_hour": 20,
+      "planned_duration_minutes": 5,
+      "planned_end_hour": 20.083333333333332,
+      "published_at": "2025-08-18T23:59:59+08:00",
+      "cutoff_at": "2025-08-19T18:00:00+08:00",
+      "source_urls": [
+        "https://www.travel.taipei/zh-tw/news/details/65741"
+      ],
+      "parent_references": [
+        {
+          "feature": "planned_fireworks_start_hour",
+          "record_sha256": "4a8193a6f9752cfe8cd4218446d97bdd84e68598ba0c0a984b2b7040dede3cbd"
+        },
+        {
+          "feature": "planned_fireworks_minutes",
+          "record_sha256": "c6ec1f87092fd4533427a1fea7068ab546f972d68ef65d81cdab6903eaf5a419"
+        }
+      ],
+      "notes": "公告預定天空展演結束，不是舞台結束、實際散場或抵達車站時刻。"
+    },
+    {
+      "event_date": "2025-08-30",
+      "scope": "fireworks_only",
+      "availability_status": "verified_pre_cutoff",
+      "planned_start_hour": 20,
+      "planned_duration_minutes": 8,
+      "planned_end_hour": 20.133333333333333,
+      "published_at": "2025-07-04T23:59:59+08:00",
+      "cutoff_at": "2025-08-29T18:00:00+08:00",
+      "source_urls": [
+        "https://www.travel.taipei/zh-tw/news/details/65527"
+      ],
+      "parent_references": [
+        {
+          "feature": "planned_fireworks_start_hour",
+          "record_sha256": "aae21df610efce1996b2da166f2a2dc4305fc59132bead0f0241c67bfdd3137c"
+        },
+        {
+          "feature": "planned_fireworks_minutes",
+          "record_sha256": "6f536a5a8d2c15208c2bce41e198aaf36f9d37c3779b32fba32487df31c47b22"
+        }
+      ],
+      "notes": "公告預定天空展演結束，不是舞台結束、實際散場或抵達車站時刻。"
+    },
+    {
+      "event_date": "2026-07-25",
+      "scope": "combined_sky_program",
+      "availability_status": "verified_pre_cutoff",
+      "planned_start_hour": 20.0,
+      "planned_duration_minutes": 20,
+      "planned_end_hour": 20.333333333333332,
+      "published_at": "2026-06-30T23:59:59+08:00",
+      "cutoff_at": "2026-07-24T18:00:00+08:00",
+      "source_urls": [
+        "https://www.gov.taipei/News_Content.aspx?n=F0DDAF49B89E9413&s=FF7935502CB3CC88"
+      ],
+      "parent_references": [
+        {
+          "feature": "planned_program_minutes",
+          "record_sha256": "3541bd826358973e3167035993ac43ab2a631fd6a2ac830d6a2795c1df60f8d0"
+        }
+      ],
+      "notes": "公告預定天空展演結束，不是舞台結束、實際散場或抵達車站時刻。",
+      "structured_start_evidence": {
+        "feature": "planned_program_start_hour",
+        "value": 20.0,
+        "source_url": "https://www.gov.taipei/News_Content.aspx?n=F0DDAF49B89E9413&s=FF7935502CB3CC88",
+        "published_at": "2026-06-30T23:59:59+08:00",
+        "parent_record_sha256": "3541bd826358973e3167035993ac43ab2a631fd6a2ac830d6a2795c1df60f8d0",
+        "evidence_text": "正文預告 7/25 與 8/15 的無人機加煙火整套天空展演長 20 分鐘，晚間 20:00 開始。",
+        "curation_method": "人工結構化既有來源引文中的整套天空展演 20:00；不解析自由文字，也不修改煙火段開始未知的原紀錄。"
+      }
+    },
+    {
+      "event_date": "2026-08-05",
+      "scope": "fireworks_only",
+      "availability_status": "verified_pre_cutoff",
+      "planned_start_hour": 20,
+      "planned_duration_minutes": 8,
+      "planned_end_hour": 20.133333333333333,
+      "published_at": "2026-06-30T23:59:59+08:00",
+      "cutoff_at": "2026-08-04T18:00:00+08:00",
+      "source_urls": [
+        "https://www.gov.taipei/News_Content.aspx?n=F0DDAF49B89E9413&s=FF7935502CB3CC88"
+      ],
+      "parent_references": [
+        {
+          "feature": "planned_fireworks_start_hour",
+          "record_sha256": "a804bc10613b96b3c5155746328cbdc1ae5bb2b8b9bd19ea039947a9c59464c9"
+        },
+        {
+          "feature": "planned_fireworks_minutes",
+          "record_sha256": "019ac486342b519e367c3fb5aded669c7eaf6111fdaaef0459dda444ab5ce680"
+        }
+      ],
+      "notes": "公告預定天空展演結束，不是舞台結束、實際散場或抵達車站時刻。"
+    },
+    {
+      "event_date": "2026-08-15",
+      "scope": "combined_sky_program",
+      "availability_status": "verified_pre_cutoff",
+      "planned_start_hour": 20.0,
+      "planned_duration_minutes": 20,
+      "planned_end_hour": 20.333333333333332,
+      "published_at": "2026-06-30T23:59:59+08:00",
+      "cutoff_at": "2026-08-14T18:00:00+08:00",
+      "source_urls": [
+        "https://www.gov.taipei/News_Content.aspx?n=F0DDAF49B89E9413&s=FF7935502CB3CC88"
+      ],
+      "parent_references": [
+        {
+          "feature": "planned_program_minutes",
+          "record_sha256": "b234f3741811b953c72f9952220cb57536de21ad469a1fc528b377c0383ec272"
+        }
+      ],
+      "notes": "公告預定天空展演結束，不是舞台結束、實際散場或抵達車站時刻。",
+      "structured_start_evidence": {
+        "feature": "planned_program_start_hour",
+        "value": 20.0,
+        "source_url": "https://www.gov.taipei/News_Content.aspx?n=F0DDAF49B89E9413&s=FF7935502CB3CC88",
+        "published_at": "2026-06-30T23:59:59+08:00",
+        "parent_record_sha256": "b234f3741811b953c72f9952220cb57536de21ad469a1fc528b377c0383ec272",
+        "evidence_text": "正文預告 7/25 與 8/15 的無人機加煙火整套天空展演長 20 分鐘，晚間 20:00 開始。",
+        "curation_method": "人工結構化既有來源引文中的整套天空展演 20:00；不解析自由文字，也不修改煙火段開始未知的原紀錄。"
+      }
+    }
+  ]
+}

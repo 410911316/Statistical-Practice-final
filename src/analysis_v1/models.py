@@ -15,11 +15,17 @@ from xgboost import XGBRegressor
 BASE_MODELS = ("ols", "ridge", "xgboost")
 ALL_MODELS = ("baseline", *BASE_MODELS, "equal", "stack")
 CORE_NUMERIC = ("baseline_hourly_56d",)
+PLANNED_END_CANDIDATES = {
+    "planned_end_0_60_beimen", "planned_end_0_60_daqiaotou",
+    "planned_end_0_60_shuanglian", "planned_end_0_60_minquan_west",
+    "planned_end_60_120_beimen", "planned_end_60_120_daqiaotou",
+    "planned_end_60_120_shuanglian", "planned_end_60_120_minquan_west",
+}
 MISSING_ALLOWED_CANDIDATES = {
     "planned_drone", "planned_fireworks_minutes", "planned_fireworks_start_hour",
     "planned_program_minutes", "forecast_temperature_c", "forecast_precip_probability",
     "forecast_wind_speed_m_s", "forecast_cloud_cover_pct",
-}
+} | PLANNED_END_CANDIDATES
 ALLOWED_CANDIDATES = {"is_weekend", "day_of_year", "year_index"} | MISSING_ALLOWED_CANDIDATES
 
 
@@ -106,6 +112,8 @@ class Encoder:
             raise ValueError(f"Nonfinite approved feature {name}; infinity is not missing")
         if name == "planned_drone" and not known.isin([0, 1]).all():
             raise ValueError("planned_drone must be 0, 1, or unknown")
+        if name in PLANNED_END_CANDIDATES and not known.between(0, 1).all():
+            raise ValueError("Planned show-end hourly overlap must be within [0, 1] or unknown")
 
     def _numeric_values(self, frame):
         values = frame[self.numeric].copy()
