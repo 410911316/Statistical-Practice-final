@@ -1,0 +1,32 @@
+{
+  "base_input_hashes": {
+    "data/processed/event_station_hourly_context.csv": "11f1c426a14ba08542b1895a999d71f9ac4dfe5ed63558b14afc41167d8f6468",
+    "data/processed/calendar_baseline/candidate_audit.csv": "a62fd0549da4d607cf061696995712c006b8d6568e12ae9844e13f7ddc4bcef5",
+    "data/processed/station_hourly.parquet": "2bc4c399d8a7ab8ae9672c5c7e31b5a459281acda9f05be6345258f2c3bdb85f",
+    ".local/research_review/2026-10-07-refresh/statistics_snapshot.json": "e9688eb20c03b199bc32a22290a3afdf88e9bd7a844199e9438fbddf807b2aed"
+  },
+  "d1_source_hashes": {
+    "docs/d1_program_sources.json": "12a2535b789ebd5516ed5f901947660824dd8296541f643c9d40df3624b38304",
+    "docs/d1_weather_sources.json": "362c523f2b9763df4079076e10785a23b2fa2dc897a80daa6e4d002b7e3afc88"
+  },
+  "model_code_hashes": {
+    "src/run_analysis_v5.py": "0f5be7cd80d9ccb0940ac526c8a76cb72c944a00ca9f8f6e756963d46a91cb07",
+    "src/analysis_v1/d1_features.py": "01ffb66a6298acdd18c23e6e50761257fba8d204b17cb3ce559245fa4ecde691",
+    "src/analysis_v1/data.py": "4e9c7fdfb17d3eb98dff29117e215cc7a5a0a20a1096882c2ba526198929fa77",
+    "src/analysis_v1/models.py": "9c9bd8e6ae98b08c8c0ba5d8814e0850d3e83168197a07f5c2fcc14cff32e346",
+    "src/analysis_v5/models.py": "aa86487eafaabe41d1aa55b902059ef6cc325e30949c79a7e7135720b12dbd66"
+  },
+  "same_settings_except_feature_groups": true,
+  "all_variants_exclude_historical_baseline": true,
+  "prediction_hashes": {
+    "core": "6e1449b72d07c66c7e213b2b7ba1846c923e21bef5c755e8ca40826ec7eb7cea",
+    "fireworks": "8c4d6116ed01310ce17fdc20adf033241efd32ee4d4f51ec0826a927ee0a3d70",
+    "weather": "fa07378c95cf16ab162a0163297221e82fc9e3829b077c0bc9c8e160339950c0",
+    "both": "9e0945176b9ce6adc6361d7f7ae41686029db150ded7c70d36b1763f04ff6846"
+  },
+  "comparison_scope": "paired_exploratory_temporal_outer_holdouts_not_model_selection",
+  "reporting_code": {
+    "path": "src/analysis_v5/reporting.py",
+    "sha256": "42f6e304997b7d010d4e1c39420be7b0dc3f6215f2af082a1b6c831d87eb8fa7"
+  }
+}

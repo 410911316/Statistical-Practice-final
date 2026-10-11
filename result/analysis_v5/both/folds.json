@@ -1,0 +1,2477 @@
+[
+  {
+    "outer_year": 2024,
+    "train_events": 12,
+    "test_events": 3,
+    "train_end": "2023-08-20",
+    "test_start": "2024-07-17",
+    "weights": {
+      "ols": 0.0,
+      "ridge": 0.2512633309144107,
+      "lasso": 0.0,
+      "xgboost": 0.7487366690855893
+    },
+    "fusion_weights": {
+      "equal": {
+        "ols": 0.25,
+        "ridge": 0.25,
+        "lasso": 0.25,
+        "xgboost": 0.25
+      },
+      "stack": {
+        "ols": 0.0,
+        "ridge": 0.2512633309144107,
+        "lasso": 0.0,
+        "xgboost": 0.7487366690855893
+      },
+      "select_best": {
+        "ols": 0.0,
+        "ridge": 0.0,
+        "lasso": 0.0,
+        "xgboost": 1.0
+      },
+      "select_stack": {
+        "ols": 0.0,
+        "ridge": 0.2512633309144107,
+        "lasso": 0.0,
+        "xgboost": 0.7487366690855892
+      }
+    },
+    "fusion_audit": {
+      "oof_event_mae": {
+        "ols": 13973.082282384637,
+        "ridge": 978.3106355478865,
+        "lasso": 1164.3097581758366,
+        "xgboost": 827.6889486312866
+      },
+      "ranked_models": [
+        "xgboost",
+        "ridge",
+        "lasso",
+        "ols"
+      ],
+      "selected_models": [
+        "xgboost",
+        "ridge"
+      ],
+      "selected_best_model": "xgboost",
+      "top_k": 2,
+      "tie_break": "BASE_MODELS_order_ols_ridge_lasso_xgboost",
+      "lp": {
+        "stack": {
+          "oof_mae": 807.389956696014,
+          "oof_events": 8,
+          "n_models": 4,
+          "solver": "scipy.optimize.linprog(highs)",
+          "scope": "meta_training_loss_not_outer_test_score"
+        },
+        "select_stack": {
+          "oof_mae": 807.3899566960138,
+          "oof_events": 8,
+          "n_models": 2,
+          "solver": "scipy.optimize.linprog(highs)",
+          "scope": "meta_training_loss_not_outer_test_score"
+        }
+      },
+      "oof_events": 8,
+      "oof_rows": 192,
+      "oof_start": "2021-10-16",
+      "oof_end": "2023-08-20",
+      "scope": "meta_training_selection_and_weight_fit_only_not_outer_test_score"
+    },
+    "lp": {
+      "oof_mae": 807.389956696014,
+      "oof_events": 8,
+      "n_models": 4,
+      "solver": "scipy.optimize.linprog(highs)",
+      "scope": "meta_training_loss_not_outer_test_score"
+    },
+    "base_models": {
+      "ols": {
+        "model": "ols",
+        "groups": [
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "columns": [
+          "station=大橋頭站",
+          "station=民權西路",
+          "station=雙連",
+          "hour=19",
+          "hour=20",
+          "hour=21",
+          "hour=22",
+          "hour=23",
+          "station=大橋頭站:hour=19",
+          "station=大橋頭站:hour=20",
+          "station=大橋頭站:hour=21",
+          "station=大橋頭站:hour=22",
+          "station=大橋頭站:hour=23",
+          "station=民權西路:hour=19",
+          "station=民權西路:hour=20",
+          "station=民權西路:hour=21",
+          "station=民權西路:hour=22",
+          "station=民權西路:hour=23",
+          "station=雙連:hour=19",
+          "station=雙連:hour=20",
+          "station=雙連:hour=21",
+          "station=雙連:hour=22",
+          "station=雙連:hour=23",
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct",
+          "planned_fireworks_minutes:missing",
+          "planned_fireworks_start_hour:missing",
+          "forecast_temperature_c:missing"
+        ],
+        "dropped_constants": [],
+        "dropped_dependencies": [
+          {
+            "column": "forecast_wind_speed_m_s:missing",
+            "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+            "scope": "training_design_only_same_restriction_for_all_four_models"
+          },
+          {
+            "column": "forecast_cloud_cover_pct:missing",
+            "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+            "scope": "training_design_only_same_restriction_for_all_four_models"
+          }
+        ],
+        "column_selection": {
+          "priority": [
+            "intercept",
+            "station_and_hour_main_effects",
+            "station_hour_products",
+            "approved_numeric_in_candidate_order",
+            "missing_indicators"
+          ],
+          "rank_tolerance_on_unit_norm_columns": 6.394884621840902e-13,
+          "dropped_constants": [],
+          "dropped_dependencies": [
+            {
+              "column": "forecast_wind_speed_m_s:missing",
+              "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+              "scope": "training_design_only_same_restriction_for_all_four_models"
+            },
+            {
+              "column": "forecast_cloud_cover_pct:missing",
+              "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+              "scope": "training_design_only_same_restriction_for_all_four_models"
+            }
+          ],
+          "uses_y": false
+        },
+        "params": {},
+        "rank": 35,
+        "n_columns_with_intercept": 35,
+        "fallback": null,
+        "includes_historical_baseline": false,
+        "common_station_hour_interactions": true,
+        "imputation": {
+          "planned_fireworks_minutes": {
+            "strategy": "training_median",
+            "fill_value": 8.0,
+            "training_known_rows": 240,
+            "training_unknown_rows": 48,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "planned_fireworks_start_hour": {
+            "strategy": "training_median",
+            "fill_value": 20.333333333333332,
+            "training_known_rows": 216,
+            "training_unknown_rows": 72,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_temperature_c": {
+            "strategy": "training_median",
+            "fill_value": 27.9131035,
+            "training_known_rows": 192,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_wind_speed_m_s": {
+            "strategy": "training_median",
+            "fill_value": 1.2651925,
+            "training_known_rows": 192,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_cloud_cover_pct": {
+            "strategy": "training_median",
+            "fill_value": 86.0,
+            "training_known_rows": 192,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          }
+        },
+        "all_training_values_unknown": [],
+        "missing_indicator_candidates": [
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "coefficients": {
+          "station=大橋頭站": -411.83333333332627,
+          "station=民權西路": 729.5000000000066,
+          "station=雙連": 282.91666666667305,
+          "hour=19": -214.17140750537934,
+          "hour=20": 276.7818655527363,
+          "hour=21": 5038.548940368621,
+          "hour=22": 1233.4214102036979,
+          "hour=23": -503.67425011190755,
+          "station=大橋頭站:hour=19": 94.83333333332095,
+          "station=大橋頭站:hour=20": -251.5000000000068,
+          "station=大橋頭站:hour=21": -3387.83333333334,
+          "station=大橋頭站:hour=22": -754.7500000000075,
+          "station=大橋頭站:hour=23": 235.49999999999017,
+          "station=民權西路:hour=19": -230.50000000000946,
+          "station=民權西路:hour=20": -1142.8333333333403,
+          "station=民權西路:hour=21": -5841.750000000006,
+          "station=民權西路:hour=22": -2223.6666666666733,
+          "station=民權西路:hour=23": -936.3333333333438,
+          "station=雙連:hour=19": 10.833333333322592,
+          "station=雙連:hour=20": -563.1666666666748,
+          "station=雙連:hour=21": -4363.583333333339,
+          "station=雙連:hour=22": -717.0000000000099,
+          "station=雙連:hour=23": -89.5833333333455,
+          "is_weekend": 256.078883142587,
+          "day_of_year": -63.03677057538679,
+          "year_index": 66.70643101028574,
+          "planned_fireworks_minutes": -39.44021804311772,
+          "planned_fireworks_start_hour": 74.09466838116758,
+          "forecast_temperature_c": 575.549206262375,
+          "forecast_wind_speed_m_s": 282.8687532597008,
+          "forecast_cloud_cover_pct": 138.86152945924167,
+          "planned_fireworks_minutes:missing": 867.1308293309853,
+          "planned_fireworks_start_hour:missing": -1237.3104786604924,
+          "forecast_temperature_c:missing": 386.72792005634983
+        },
+        "intercept": 1163.43551095115,
+        "coefficient_scale": "continuous_training_standardized_dummy_and_binary_0_1"
+      },
+      "ridge": {
+        "model": "ridge",
+        "groups": [
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "columns": [
+          "station=大橋頭站",
+          "station=民權西路",
+          "station=雙連",
+          "hour=19",
+          "hour=20",
+          "hour=21",
+          "hour=22",
+          "hour=23",
+          "station=大橋頭站:hour=19",
+          "station=大橋頭站:hour=20",
+          "station=大橋頭站:hour=21",
+          "station=大橋頭站:hour=22",
+          "station=大橋頭站:hour=23",
+          "station=民權西路:hour=19",
+          "station=民權西路:hour=20",
+          "station=民權西路:hour=21",
+          "station=民權西路:hour=22",
+          "station=民權西路:hour=23",
+          "station=雙連:hour=19",
+          "station=雙連:hour=20",
+          "station=雙連:hour=21",
+          "station=雙連:hour=22",
+          "station=雙連:hour=23",
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct",
+          "planned_fireworks_minutes:missing",
+          "planned_fireworks_start_hour:missing",
+          "forecast_temperature_c:missing"
+        ],
+        "dropped_constants": [],
+        "dropped_dependencies": [
+          {
+            "column": "forecast_wind_speed_m_s:missing",
+            "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+            "scope": "training_design_only_same_restriction_for_all_four_models"
+          },
+          {
+            "column": "forecast_cloud_cover_pct:missing",
+            "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+            "scope": "training_design_only_same_restriction_for_all_four_models"
+          }
+        ],
+        "column_selection": {
+          "priority": [
+            "intercept",
+            "station_and_hour_main_effects",
+            "station_hour_products",
+            "approved_numeric_in_candidate_order",
+            "missing_indicators"
+          ],
+          "rank_tolerance_on_unit_norm_columns": 6.394884621840902e-13,
+          "dropped_constants": [],
+          "dropped_dependencies": [
+            {
+              "column": "forecast_wind_speed_m_s:missing",
+              "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+              "scope": "training_design_only_same_restriction_for_all_four_models"
+            },
+            {
+              "column": "forecast_cloud_cover_pct:missing",
+              "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+              "scope": "training_design_only_same_restriction_for_all_four_models"
+            }
+          ],
+          "uses_y": false
+        },
+        "params": {
+          "lambda": 1.0,
+          "sklearn_alpha": 288.0,
+          "n_train_rows": 288
+        },
+        "rank": 35,
+        "n_columns_with_intercept": 35,
+        "fallback": null,
+        "includes_historical_baseline": false,
+        "common_station_hour_interactions": true,
+        "imputation": {
+          "planned_fireworks_minutes": {
+            "strategy": "training_median",
+            "fill_value": 8.0,
+            "training_known_rows": 240,
+            "training_unknown_rows": 48,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "planned_fireworks_start_hour": {
+            "strategy": "training_median",
+            "fill_value": 20.333333333333332,
+            "training_known_rows": 216,
+            "training_unknown_rows": 72,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_temperature_c": {
+            "strategy": "training_median",
+            "fill_value": 27.9131035,
+            "training_known_rows": 192,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_wind_speed_m_s": {
+            "strategy": "training_median",
+            "fill_value": 1.2651925,
+            "training_known_rows": 192,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_cloud_cover_pct": {
+            "strategy": "training_median",
+            "fill_value": 86.0,
+            "training_known_rows": 192,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          }
+        },
+        "all_training_values_unknown": [],
+        "missing_indicator_candidates": [
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "coefficients": {
+          "station=大橋頭站": -87.03736018216128,
+          "station=民權西路": -68.21677852668017,
+          "station=雙連": -5.253803135181405,
+          "hour=19": -40.33994374207499,
+          "hour=20": -53.96089313991164,
+          "hour=21": 201.02229995188497,
+          "hour=22": 7.480982123747264,
+          "hour=23": -137.65216423705002,
+          "station=大橋頭站:hour=19": -25.476508417250155,
+          "station=大橋頭站:hour=20": -24.562241601594735,
+          "station=大橋頭站:hour=21": 28.23016356201114,
+          "station=大橋頭站:hour=22": -12.290128134297857,
+          "station=大橋頭站:hour=23": -37.33987568748461,
+          "station=民權西路:hour=19": 6.410668316530392,
+          "station=民權西路:hour=20": -15.31506486781386,
+          "station=民權西路:hour=21": -25.02599303754126,
+          "station=民權西路:hour=22": -26.146284733850337,
+          "station=民權西路:hour=23": -39.312698953703915,
+          "station=雙連:hour=19": -4.317850699129442,
+          "station=雙連:hour=20": -12.510250550140734,
+          "station=雙連:hour=21": 13.718821280132179,
+          "station=雙連:hour=22": 13.738529583823192,
+          "station=雙連:hour=23": -25.824551302697227,
+          "is_weekend": 21.569736078977503,
+          "day_of_year": -27.977164956738285,
+          "year_index": -57.05169689362547,
+          "planned_fireworks_minutes": 42.83429079057793,
+          "planned_fireworks_start_hour": -0.8751059867496048,
+          "forecast_temperature_c": 123.68598830779014,
+          "forecast_wind_speed_m_s": -28.806975995763253,
+          "forecast_cloud_cover_pct": -19.049748365767933,
+          "planned_fireworks_minutes:missing": -19.756415906662337,
+          "planned_fireworks_start_hour:missing": -29.138416376055986,
+          "forecast_temperature_c:missing": 48.0395534836111
+        },
+        "intercept": 1592.5944397801045,
+        "coefficient_scale": "continuous_training_standardized_dummy_and_binary_0_1"
+      },
+      "lasso": {
+        "model": "lasso",
+        "groups": [
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "columns": [
+          "station=大橋頭站",
+          "station=民權西路",
+          "station=雙連",
+          "hour=19",
+          "hour=20",
+          "hour=21",
+          "hour=22",
+          "hour=23",
+          "station=大橋頭站:hour=19",
+          "station=大橋頭站:hour=20",
+          "station=大橋頭站:hour=21",
+          "station=大橋頭站:hour=22",
+          "station=大橋頭站:hour=23",
+          "station=民權西路:hour=19",
+          "station=民權西路:hour=20",
+          "station=民權西路:hour=21",
+          "station=民權西路:hour=22",
+          "station=民權西路:hour=23",
+          "station=雙連:hour=19",
+          "station=雙連:hour=20",
+          "station=雙連:hour=21",
+          "station=雙連:hour=22",
+          "station=雙連:hour=23",
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct",
+          "planned_fireworks_minutes:missing",
+          "planned_fireworks_start_hour:missing",
+          "forecast_temperature_c:missing"
+        ],
+        "dropped_constants": [],
+        "dropped_dependencies": [
+          {
+            "column": "forecast_wind_speed_m_s:missing",
+            "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+            "scope": "training_design_only_same_restriction_for_all_four_models"
+          },
+          {
+            "column": "forecast_cloud_cover_pct:missing",
+            "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+            "scope": "training_design_only_same_restriction_for_all_four_models"
+          }
+        ],
+        "column_selection": {
+          "priority": [
+            "intercept",
+            "station_and_hour_main_effects",
+            "station_hour_products",
+            "approved_numeric_in_candidate_order",
+            "missing_indicators"
+          ],
+          "rank_tolerance_on_unit_norm_columns": 6.394884621840902e-13,
+          "dropped_constants": [],
+          "dropped_dependencies": [
+            {
+              "column": "forecast_wind_speed_m_s:missing",
+              "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+              "scope": "training_design_only_same_restriction_for_all_four_models"
+            },
+            {
+              "column": "forecast_cloud_cover_pct:missing",
+              "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+              "scope": "training_design_only_same_restriction_for_all_four_models"
+            }
+          ],
+          "uses_y": false
+        },
+        "params": {
+          "alpha": 100,
+          "n_train_rows": 288,
+          "objective": "SSE/(2*n)+alpha*L1",
+          "solver": "sklearn.linear_model.Lasso",
+          "max_iter": 1000000,
+          "solver_tolerance": 1e-10,
+          "optimality_tolerance": 1e-06
+        },
+        "rank": 35,
+        "n_columns_with_intercept": 35,
+        "fallback": null,
+        "includes_historical_baseline": false,
+        "common_station_hour_interactions": true,
+        "imputation": {
+          "planned_fireworks_minutes": {
+            "strategy": "training_median",
+            "fill_value": 8.0,
+            "training_known_rows": 240,
+            "training_unknown_rows": 48,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "planned_fireworks_start_hour": {
+            "strategy": "training_median",
+            "fill_value": 20.333333333333332,
+            "training_known_rows": 216,
+            "training_unknown_rows": 72,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_temperature_c": {
+            "strategy": "training_median",
+            "fill_value": 27.9131035,
+            "training_known_rows": 192,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_wind_speed_m_s": {
+            "strategy": "training_median",
+            "fill_value": 1.2651925,
+            "training_known_rows": 192,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_cloud_cover_pct": {
+            "strategy": "training_median",
+            "fill_value": 86.0,
+            "training_known_rows": 192,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          }
+        },
+        "all_training_values_unknown": [],
+        "missing_indicator_candidates": [
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "coefficients": {
+          "station=大橋頭站": -0.0,
+          "station=民權西路": -0.0,
+          "station=雙連": 0.0,
+          "hour=19": -0.0,
+          "hour=20": -0.0,
+          "hour=21": 951.5828654978144,
+          "hour=22": 0.0,
+          "hour=23": -240.9354372558837,
+          "station=大橋頭站:hour=19": -0.0,
+          "station=大橋頭站:hour=20": -0.0,
+          "station=大橋頭站:hour=21": 0.0,
+          "station=大橋頭站:hour=22": -0.0,
+          "station=大橋頭站:hour=23": -0.0,
+          "station=民權西路:hour=19": 0.0,
+          "station=民權西路:hour=20": -0.0,
+          "station=民權西路:hour=21": -0.0,
+          "station=民權西路:hour=22": -0.0,
+          "station=民權西路:hour=23": -0.0,
+          "station=雙連:hour=19": 0.0,
+          "station=雙連:hour=20": -0.0,
+          "station=雙連:hour=21": -0.0,
+          "station=雙連:hour=22": 0.0,
+          "station=雙連:hour=23": -0.0,
+          "is_weekend": 0.0,
+          "day_of_year": 0.0,
+          "year_index": -59.62970249184933,
+          "planned_fireworks_minutes": 0.0,
+          "planned_fireworks_start_hour": -0.0,
+          "forecast_temperature_c": 182.27230487663454,
+          "forecast_wind_speed_m_s": -0.0,
+          "forecast_cloud_cover_pct": -0.0,
+          "planned_fireworks_minutes:missing": -0.0,
+          "planned_fireworks_start_hour:missing": -0.0,
+          "forecast_temperature_c:missing": 0.0
+        },
+        "intercept": 1440.385150848567,
+        "coefficient_scale": "continuous_training_standardized_dummy_and_binary_0_1",
+        "lasso_zero_columns": [
+          "station=大橋頭站",
+          "station=民權西路",
+          "station=雙連",
+          "hour=19",
+          "hour=20",
+          "hour=22",
+          "station=大橋頭站:hour=19",
+          "station=大橋頭站:hour=20",
+          "station=大橋頭站:hour=21",
+          "station=大橋頭站:hour=22",
+          "station=大橋頭站:hour=23",
+          "station=民權西路:hour=19",
+          "station=民權西路:hour=20",
+          "station=民權西路:hour=21",
+          "station=民權西路:hour=22",
+          "station=民權西路:hour=23",
+          "station=雙連:hour=19",
+          "station=雙連:hour=20",
+          "station=雙連:hour=21",
+          "station=雙連:hour=22",
+          "station=雙連:hour=23",
+          "is_weekend",
+          "day_of_year",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct",
+          "planned_fireworks_minutes:missing",
+          "planned_fireworks_start_hour:missing",
+          "forecast_temperature_c:missing"
+        ],
+        "lasso_nonzero_columns": [
+          "hour=21",
+          "hour=23",
+          "year_index",
+          "forecast_temperature_c"
+        ],
+        "n_iter": 11,
+        "dual_gap": 4.6857167035341263e-07,
+        "optimization_certificate": {
+          "solver": "sklearn.linear_model.Lasso",
+          "certificate_method": "independently_computed_original_objective_KKT_and_feasible_dual",
+          "primal_objective": 899301.0753412992,
+          "feasible_dual_objective": 899301.0753408306,
+          "primal_dual_gap": 4.6857167035341263e-07,
+          "gap_tolerance": 1.9773836365258486,
+          "active_kkt_error": 9.070504347619135e-10,
+          "inactive_kkt_excess": 0.0,
+          "intercept_kkt_error": 7.579122514774402e-14,
+          "kkt_tolerance": 9.999999999999999e-05,
+          "dual_constraint_max_abs": 99.99999999999977,
+          "dual_zero_sum_error": 7.105427357601002e-15,
+          "solver_reported_dual_gap": 4.6793785360124377e-07,
+          "verified": true
+        }
+      },
+      "xgboost": {
+        "model": "xgboost",
+        "groups": [
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "columns": [
+          "station=大橋頭站",
+          "station=民權西路",
+          "station=雙連",
+          "hour=19",
+          "hour=20",
+          "hour=21",
+          "hour=22",
+          "hour=23",
+          "station=大橋頭站:hour=19",
+          "station=大橋頭站:hour=20",
+          "station=大橋頭站:hour=21",
+          "station=大橋頭站:hour=22",
+          "station=大橋頭站:hour=23",
+          "station=民權西路:hour=19",
+          "station=民權西路:hour=20",
+          "station=民權西路:hour=21",
+          "station=民權西路:hour=22",
+          "station=民權西路:hour=23",
+          "station=雙連:hour=19",
+          "station=雙連:hour=20",
+          "station=雙連:hour=21",
+          "station=雙連:hour=22",
+          "station=雙連:hour=23",
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct",
+          "planned_fireworks_minutes:missing",
+          "planned_fireworks_start_hour:missing",
+          "forecast_temperature_c:missing"
+        ],
+        "dropped_constants": [],
+        "dropped_dependencies": [
+          {
+            "column": "forecast_wind_speed_m_s:missing",
+            "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+            "scope": "training_design_only_same_restriction_for_all_four_models"
+          },
+          {
+            "column": "forecast_cloud_cover_pct:missing",
+            "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+            "scope": "training_design_only_same_restriction_for_all_four_models"
+          }
+        ],
+        "column_selection": {
+          "priority": [
+            "intercept",
+            "station_and_hour_main_effects",
+            "station_hour_products",
+            "approved_numeric_in_candidate_order",
+            "missing_indicators"
+          ],
+          "rank_tolerance_on_unit_norm_columns": 6.394884621840902e-13,
+          "dropped_constants": [],
+          "dropped_dependencies": [
+            {
+              "column": "forecast_wind_speed_m_s:missing",
+              "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+              "scope": "training_design_only_same_restriction_for_all_four_models"
+            },
+            {
+              "column": "forecast_cloud_cover_pct:missing",
+              "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+              "scope": "training_design_only_same_restriction_for_all_four_models"
+            }
+          ],
+          "uses_y": false
+        },
+        "params": {
+          "max_depth": 4,
+          "n_estimators": 50,
+          "min_child_weight": 6,
+          "reg_lambda": 10.0
+        },
+        "rank": 35,
+        "n_columns_with_intercept": 35,
+        "fallback": null,
+        "includes_historical_baseline": false,
+        "common_station_hour_interactions": true,
+        "imputation": {
+          "planned_fireworks_minutes": {
+            "strategy": "training_median",
+            "fill_value": 8.0,
+            "training_known_rows": 240,
+            "training_unknown_rows": 48,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "planned_fireworks_start_hour": {
+            "strategy": "training_median",
+            "fill_value": 20.333333333333332,
+            "training_known_rows": 216,
+            "training_unknown_rows": 72,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_temperature_c": {
+            "strategy": "training_median",
+            "fill_value": 27.9131035,
+            "training_known_rows": 192,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_wind_speed_m_s": {
+            "strategy": "training_median",
+            "fill_value": 1.2651925,
+            "training_known_rows": 192,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_cloud_cover_pct": {
+            "strategy": "training_median",
+            "fill_value": 86.0,
+            "training_known_rows": 192,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          }
+        },
+        "all_training_values_unknown": [],
+        "missing_indicator_candidates": [
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ]
+      }
+    }
+  },
+  {
+    "outer_year": 2025,
+    "train_events": 15,
+    "test_events": 3,
+    "train_end": "2024-08-10",
+    "test_start": "2025-08-06",
+    "weights": {
+      "ols": 0.0,
+      "ridge": 0.25126333091441033,
+      "lasso": 0.0,
+      "xgboost": 0.7487366690855897
+    },
+    "fusion_weights": {
+      "equal": {
+        "ols": 0.25,
+        "ridge": 0.25,
+        "lasso": 0.25,
+        "xgboost": 0.25
+      },
+      "stack": {
+        "ols": 0.0,
+        "ridge": 0.25126333091441033,
+        "lasso": 0.0,
+        "xgboost": 0.7487366690855897
+      },
+      "select_best": {
+        "ols": 0.0,
+        "ridge": 0.0,
+        "lasso": 0.0,
+        "xgboost": 1.0
+      },
+      "select_stack": {
+        "ols": 0.0,
+        "ridge": 0.2512633309144102,
+        "lasso": 0.0,
+        "xgboost": 0.7487366690855898
+      }
+    },
+    "fusion_audit": {
+      "oof_event_mae": {
+        "ols": 10390.373758255671,
+        "ridge": 951.7777387555514,
+        "lasso": 1082.1810997096413,
+        "xgboost": 799.6206165660511
+      },
+      "ranked_models": [
+        "xgboost",
+        "ridge",
+        "lasso",
+        "ols"
+      ],
+      "selected_models": [
+        "xgboost",
+        "ridge"
+      ],
+      "selected_best_model": "xgboost",
+      "top_k": 2,
+      "tie_break": "BASE_MODELS_order_ols_ridge_lasso_xgboost",
+      "lp": {
+        "stack": {
+          "oof_mae": 787.3995710016467,
+          "oof_events": 11,
+          "n_models": 4,
+          "solver": "scipy.optimize.linprog(highs)",
+          "scope": "meta_training_loss_not_outer_test_score"
+        },
+        "select_stack": {
+          "oof_mae": 787.3995710016467,
+          "oof_events": 11,
+          "n_models": 2,
+          "solver": "scipy.optimize.linprog(highs)",
+          "scope": "meta_training_loss_not_outer_test_score"
+        }
+      },
+      "oof_events": 11,
+      "oof_rows": 264,
+      "oof_start": "2021-10-16",
+      "oof_end": "2024-08-10",
+      "scope": "meta_training_selection_and_weight_fit_only_not_outer_test_score"
+    },
+    "lp": {
+      "oof_mae": 787.3995710016467,
+      "oof_events": 11,
+      "n_models": 4,
+      "solver": "scipy.optimize.linprog(highs)",
+      "scope": "meta_training_loss_not_outer_test_score"
+    },
+    "base_models": {
+      "ols": {
+        "model": "ols",
+        "groups": [
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "columns": [
+          "station=大橋頭站",
+          "station=民權西路",
+          "station=雙連",
+          "hour=19",
+          "hour=20",
+          "hour=21",
+          "hour=22",
+          "hour=23",
+          "station=大橋頭站:hour=19",
+          "station=大橋頭站:hour=20",
+          "station=大橋頭站:hour=21",
+          "station=大橋頭站:hour=22",
+          "station=大橋頭站:hour=23",
+          "station=民權西路:hour=19",
+          "station=民權西路:hour=20",
+          "station=民權西路:hour=21",
+          "station=民權西路:hour=22",
+          "station=民權西路:hour=23",
+          "station=雙連:hour=19",
+          "station=雙連:hour=20",
+          "station=雙連:hour=21",
+          "station=雙連:hour=22",
+          "station=雙連:hour=23",
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct",
+          "planned_fireworks_minutes:missing",
+          "planned_fireworks_start_hour:missing",
+          "forecast_temperature_c:missing"
+        ],
+        "dropped_constants": [],
+        "dropped_dependencies": [
+          {
+            "column": "forecast_wind_speed_m_s:missing",
+            "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+            "scope": "training_design_only_same_restriction_for_all_four_models"
+          },
+          {
+            "column": "forecast_cloud_cover_pct:missing",
+            "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+            "scope": "training_design_only_same_restriction_for_all_four_models"
+          }
+        ],
+        "column_selection": {
+          "priority": [
+            "intercept",
+            "station_and_hour_main_effects",
+            "station_hour_products",
+            "approved_numeric_in_candidate_order",
+            "missing_indicators"
+          ],
+          "rank_tolerance_on_unit_norm_columns": 7.993605777301127e-13,
+          "dropped_constants": [],
+          "dropped_dependencies": [
+            {
+              "column": "forecast_wind_speed_m_s:missing",
+              "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+              "scope": "training_design_only_same_restriction_for_all_four_models"
+            },
+            {
+              "column": "forecast_cloud_cover_pct:missing",
+              "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+              "scope": "training_design_only_same_restriction_for_all_four_models"
+            }
+          ],
+          "uses_y": false
+        },
+        "params": {},
+        "rank": 35,
+        "n_columns_with_intercept": 35,
+        "fallback": null,
+        "includes_historical_baseline": false,
+        "common_station_hour_interactions": true,
+        "imputation": {
+          "planned_fireworks_minutes": {
+            "strategy": "training_median",
+            "fill_value": 8.0,
+            "training_known_rows": 312,
+            "training_unknown_rows": 48,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "planned_fireworks_start_hour": {
+            "strategy": "training_median",
+            "fill_value": 20.25,
+            "training_known_rows": 288,
+            "training_unknown_rows": 72,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_temperature_c": {
+            "strategy": "training_median",
+            "fill_value": 28.157592,
+            "training_known_rows": 264,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_wind_speed_m_s": {
+            "strategy": "training_median",
+            "fill_value": 1.126436,
+            "training_known_rows": 264,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_cloud_cover_pct": {
+            "strategy": "training_median",
+            "fill_value": 52.9666665,
+            "training_known_rows": 264,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          }
+        },
+        "all_training_values_unknown": [],
+        "missing_indicator_candidates": [
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "coefficients": {
+          "station=大橋頭站": -509.59999999997774,
+          "station=民權西路": 757.8666666666912,
+          "station=雙連": 237.1333333333582,
+          "hour=19": -211.62158604454388,
+          "hour=20": 697.9328110014616,
+          "hour=21": 4811.028943144475,
+          "hour=22": 1002.2782751046527,
+          "hour=23": -649.2800287783007,
+          "station=大橋頭站:hour=19": 117.33333333329846,
+          "station=大橋頭站:hour=20": -594.0666666666923,
+          "station=大橋頭站:hour=21": -3159.4666666666913,
+          "station=大橋頭站:hour=22": -606.4000000000209,
+          "station=大橋頭站:hour=23": 311.3333333333109,
+          "station=民權西路:hour=19": -292.93333333336284,
+          "station=民權西路:hour=20": -1685.8666666666932,
+          "station=民權西路:hour=21": -5751.733333333359,
+          "station=民權西路:hour=22": -2165.9333333333593,
+          "station=民權西路:hour=23": -975.5333333333575,
+          "station=雙連:hour=19": 12.533333333301952,
+          "station=雙連:hour=20": -1006.8666666666945,
+          "station=雙連:hour=21": -4134.200000000026,
+          "station=雙連:hour=22": -638.7333333333578,
+          "station=雙連:hour=23": -68.80000000002448,
+          "is_weekend": 332.31535365142275,
+          "day_of_year": -26.482372262853023,
+          "year_index": 294.9770737982296,
+          "planned_fireworks_minutes": -30.571088888333062,
+          "planned_fireworks_start_hour": -33.27172950028803,
+          "forecast_temperature_c": 525.6927514728483,
+          "forecast_wind_speed_m_s": 220.84344672149024,
+          "forecast_cloud_cover_pct": 147.09696771222204,
+          "planned_fireworks_minutes:missing": 851.5667943382589,
+          "planned_fireworks_start_hour:missing": -1232.9154289320213,
+          "forecast_temperature_c:missing": 707.8620049930612
+        },
+        "intercept": 1195.3308319688815,
+        "coefficient_scale": "continuous_training_standardized_dummy_and_binary_0_1"
+      },
+      "ridge": {
+        "model": "ridge",
+        "groups": [
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "columns": [
+          "station=大橋頭站",
+          "station=民權西路",
+          "station=雙連",
+          "hour=19",
+          "hour=20",
+          "hour=21",
+          "hour=22",
+          "hour=23",
+          "station=大橋頭站:hour=19",
+          "station=大橋頭站:hour=20",
+          "station=大橋頭站:hour=21",
+          "station=大橋頭站:hour=22",
+          "station=大橋頭站:hour=23",
+          "station=民權西路:hour=19",
+          "station=民權西路:hour=20",
+          "station=民權西路:hour=21",
+          "station=民權西路:hour=22",
+          "station=民權西路:hour=23",
+          "station=雙連:hour=19",
+          "station=雙連:hour=20",
+          "station=雙連:hour=21",
+          "station=雙連:hour=22",
+          "station=雙連:hour=23",
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct",
+          "planned_fireworks_minutes:missing",
+          "planned_fireworks_start_hour:missing",
+          "forecast_temperature_c:missing"
+        ],
+        "dropped_constants": [],
+        "dropped_dependencies": [
+          {
+            "column": "forecast_wind_speed_m_s:missing",
+            "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+            "scope": "training_design_only_same_restriction_for_all_four_models"
+          },
+          {
+            "column": "forecast_cloud_cover_pct:missing",
+            "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+            "scope": "training_design_only_same_restriction_for_all_four_models"
+          }
+        ],
+        "column_selection": {
+          "priority": [
+            "intercept",
+            "station_and_hour_main_effects",
+            "station_hour_products",
+            "approved_numeric_in_candidate_order",
+            "missing_indicators"
+          ],
+          "rank_tolerance_on_unit_norm_columns": 7.993605777301127e-13,
+          "dropped_constants": [],
+          "dropped_dependencies": [
+            {
+              "column": "forecast_wind_speed_m_s:missing",
+              "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+              "scope": "training_design_only_same_restriction_for_all_four_models"
+            },
+            {
+              "column": "forecast_cloud_cover_pct:missing",
+              "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+              "scope": "training_design_only_same_restriction_for_all_four_models"
+            }
+          ],
+          "uses_y": false
+        },
+        "params": {
+          "lambda": 1.0,
+          "sklearn_alpha": 360.0,
+          "n_train_rows": 360
+        },
+        "rank": 35,
+        "n_columns_with_intercept": 35,
+        "fallback": null,
+        "includes_historical_baseline": false,
+        "common_station_hour_interactions": true,
+        "imputation": {
+          "planned_fireworks_minutes": {
+            "strategy": "training_median",
+            "fill_value": 8.0,
+            "training_known_rows": 312,
+            "training_unknown_rows": 48,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "planned_fireworks_start_hour": {
+            "strategy": "training_median",
+            "fill_value": 20.25,
+            "training_known_rows": 288,
+            "training_unknown_rows": 72,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_temperature_c": {
+            "strategy": "training_median",
+            "fill_value": 28.157592,
+            "training_known_rows": 264,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_wind_speed_m_s": {
+            "strategy": "training_median",
+            "fill_value": 1.126436,
+            "training_known_rows": 264,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_cloud_cover_pct": {
+            "strategy": "training_median",
+            "fill_value": 52.9666665,
+            "training_known_rows": 264,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          }
+        },
+        "all_training_values_unknown": [],
+        "missing_indicator_candidates": [
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "coefficients": {
+          "station=大橋頭站": -92.95965870510284,
+          "station=民權西路": -69.86560948810066,
+          "station=雙連": -8.984983089890157,
+          "hour=19": -36.3356738588082,
+          "hour=20": -36.42412301760715,
+          "hour=21": 194.78090057292505,
+          "hour=22": -6.848585990908468,
+          "hour=23": -146.6811991151462,
+          "station=大橋頭站:hour=19": -25.85304334777341,
+          "station=大橋頭站:hour=20": -23.41562870665163,
+          "station=大橋頭站:hour=21": 27.75369671780979,
+          "station=大橋頭站:hour=22": -15.361447724100712,
+          "station=大橋頭站:hour=23": -39.754451658619985,
+          "station=民權西路:hour=19": 7.5111946835464325,
+          "station=民權西路:hour=20": -17.312724008665096,
+          "station=民權西路:hour=21": -26.16206525087004,
+          "station=民權西路:hour=22": -27.967876359447757,
+          "station=民權西路:hour=23": -41.45421362730033,
+          "station=雙連:hour=19": -3.5346970390487247,
+          "station=雙連:hour=20": -13.41728239792684,
+          "station=雙連:hour=21": 15.274709693201357,
+          "station=雙連:hour=22": 9.855565251290884,
+          "station=雙連:hour=23": -28.449438683228653,
+          "is_weekend": 35.18993495893674,
+          "day_of_year": -15.995026637955338,
+          "year_index": -4.968598925873414,
+          "planned_fireworks_minutes": 53.668861988617536,
+          "planned_fireworks_start_hour": -35.81083814203334,
+          "forecast_temperature_c": 125.00382134463291,
+          "forecast_wind_speed_m_s": -31.002421297095196,
+          "forecast_cloud_cover_pct": -44.71285954789854,
+          "planned_fireworks_minutes:missing": -24.109679360586846,
+          "planned_fireworks_start_hour:missing": -32.93488759265397,
+          "forecast_temperature_c:missing": 28.779724470589663
+        },
+        "intercept": 1671.3805958100127,
+        "coefficient_scale": "continuous_training_standardized_dummy_and_binary_0_1"
+      },
+      "lasso": {
+        "model": "lasso",
+        "groups": [
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "columns": [
+          "station=大橋頭站",
+          "station=民權西路",
+          "station=雙連",
+          "hour=19",
+          "hour=20",
+          "hour=21",
+          "hour=22",
+          "hour=23",
+          "station=大橋頭站:hour=19",
+          "station=大橋頭站:hour=20",
+          "station=大橋頭站:hour=21",
+          "station=大橋頭站:hour=22",
+          "station=大橋頭站:hour=23",
+          "station=民權西路:hour=19",
+          "station=民權西路:hour=20",
+          "station=民權西路:hour=21",
+          "station=民權西路:hour=22",
+          "station=民權西路:hour=23",
+          "station=雙連:hour=19",
+          "station=雙連:hour=20",
+          "station=雙連:hour=21",
+          "station=雙連:hour=22",
+          "station=雙連:hour=23",
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct",
+          "planned_fireworks_minutes:missing",
+          "planned_fireworks_start_hour:missing",
+          "forecast_temperature_c:missing"
+        ],
+        "dropped_constants": [],
+        "dropped_dependencies": [
+          {
+            "column": "forecast_wind_speed_m_s:missing",
+            "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+            "scope": "training_design_only_same_restriction_for_all_four_models"
+          },
+          {
+            "column": "forecast_cloud_cover_pct:missing",
+            "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+            "scope": "training_design_only_same_restriction_for_all_four_models"
+          }
+        ],
+        "column_selection": {
+          "priority": [
+            "intercept",
+            "station_and_hour_main_effects",
+            "station_hour_products",
+            "approved_numeric_in_candidate_order",
+            "missing_indicators"
+          ],
+          "rank_tolerance_on_unit_norm_columns": 7.993605777301127e-13,
+          "dropped_constants": [],
+          "dropped_dependencies": [
+            {
+              "column": "forecast_wind_speed_m_s:missing",
+              "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+              "scope": "training_design_only_same_restriction_for_all_four_models"
+            },
+            {
+              "column": "forecast_cloud_cover_pct:missing",
+              "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+              "scope": "training_design_only_same_restriction_for_all_four_models"
+            }
+          ],
+          "uses_y": false
+        },
+        "params": {
+          "alpha": 100,
+          "n_train_rows": 360,
+          "objective": "SSE/(2*n)+alpha*L1",
+          "solver": "sklearn.linear_model.Lasso",
+          "max_iter": 1000000,
+          "solver_tolerance": 1e-10,
+          "optimality_tolerance": 1e-06
+        },
+        "rank": 35,
+        "n_columns_with_intercept": 35,
+        "fallback": null,
+        "includes_historical_baseline": false,
+        "common_station_hour_interactions": true,
+        "imputation": {
+          "planned_fireworks_minutes": {
+            "strategy": "training_median",
+            "fill_value": 8.0,
+            "training_known_rows": 312,
+            "training_unknown_rows": 48,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "planned_fireworks_start_hour": {
+            "strategy": "training_median",
+            "fill_value": 20.25,
+            "training_known_rows": 288,
+            "training_unknown_rows": 72,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_temperature_c": {
+            "strategy": "training_median",
+            "fill_value": 28.157592,
+            "training_known_rows": 264,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_wind_speed_m_s": {
+            "strategy": "training_median",
+            "fill_value": 1.126436,
+            "training_known_rows": 264,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_cloud_cover_pct": {
+            "strategy": "training_median",
+            "fill_value": 52.9666665,
+            "training_known_rows": 264,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          }
+        },
+        "all_training_values_unknown": [],
+        "missing_indicator_candidates": [
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "coefficients": {
+          "station=大橋頭站": -34.91851851851852,
+          "station=民權西路": -0.0,
+          "station=雙連": -0.0,
+          "hour=19": -0.0,
+          "hour=20": -0.0,
+          "hour=21": 888.2874091947056,
+          "hour=22": 0.0,
+          "hour=23": -330.05530592282844,
+          "station=大橋頭站:hour=19": -0.0,
+          "station=大橋頭站:hour=20": -0.0,
+          "station=大橋頭站:hour=21": 0.0,
+          "station=大橋頭站:hour=22": -0.0,
+          "station=大橋頭站:hour=23": -0.0,
+          "station=民權西路:hour=19": 0.0,
+          "station=民權西路:hour=20": -0.0,
+          "station=民權西路:hour=21": -0.0,
+          "station=民權西路:hour=22": -0.0,
+          "station=民權西路:hour=23": -0.0,
+          "station=雙連:hour=19": -0.0,
+          "station=雙連:hour=20": -0.0,
+          "station=雙連:hour=21": -0.0,
+          "station=雙連:hour=22": 0.0,
+          "station=雙連:hour=23": -0.0,
+          "is_weekend": 0.0,
+          "day_of_year": 0.0,
+          "year_index": -0.0,
+          "planned_fireworks_minutes": 35.53681377628995,
+          "planned_fireworks_start_hour": -0.0,
+          "forecast_temperature_c": 191.6850585584952,
+          "forecast_wind_speed_m_s": -0.0,
+          "forecast_cloud_cover_pct": -0.0,
+          "planned_fireworks_minutes:missing": -0.0,
+          "planned_fireworks_start_hour:missing": -0.0,
+          "forecast_temperature_c:missing": 0.0
+        },
+        "intercept": 1547.0798346398722,
+        "coefficient_scale": "continuous_training_standardized_dummy_and_binary_0_1",
+        "lasso_zero_columns": [
+          "station=民權西路",
+          "station=雙連",
+          "hour=19",
+          "hour=20",
+          "hour=22",
+          "station=大橋頭站:hour=19",
+          "station=大橋頭站:hour=20",
+          "station=大橋頭站:hour=21",
+          "station=大橋頭站:hour=22",
+          "station=大橋頭站:hour=23",
+          "station=民權西路:hour=19",
+          "station=民權西路:hour=20",
+          "station=民權西路:hour=21",
+          "station=民權西路:hour=22",
+          "station=民權西路:hour=23",
+          "station=雙連:hour=19",
+          "station=雙連:hour=20",
+          "station=雙連:hour=21",
+          "station=雙連:hour=22",
+          "station=雙連:hour=23",
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "planned_fireworks_start_hour",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct",
+          "planned_fireworks_minutes:missing",
+          "planned_fireworks_start_hour:missing",
+          "forecast_temperature_c:missing"
+        ],
+        "lasso_nonzero_columns": [
+          "station=大橋頭站",
+          "hour=21",
+          "hour=23",
+          "planned_fireworks_minutes",
+          "forecast_temperature_c"
+        ],
+        "n_iter": 12,
+        "dual_gap": 3.0011869966983795e-07,
+        "optimization_certificate": {
+          "solver": "sklearn.linear_model.Lasso",
+          "certificate_method": "independently_computed_original_objective_KKT_and_feasible_dual",
+          "primal_objective": 955510.880255635,
+          "feasible_dual_objective": 955510.8802553349,
+          "primal_dual_gap": 3.0011869966983795e-07,
+          "gap_tolerance": 2.0885927432098765,
+          "active_kkt_error": 4.4934722609468736e-10,
+          "inactive_kkt_excess": 0.0,
+          "intercept_kkt_error": 6.063298011819522e-14,
+          "kkt_tolerance": 9.999999999999999e-05,
+          "dual_constraint_max_abs": 99.99999999999982,
+          "dual_zero_sum_error": 4.973799150320701e-14,
+          "solver_reported_dual_gap": 2.996789084540473e-07,
+          "verified": true
+        }
+      },
+      "xgboost": {
+        "model": "xgboost",
+        "groups": [
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "columns": [
+          "station=大橋頭站",
+          "station=民權西路",
+          "station=雙連",
+          "hour=19",
+          "hour=20",
+          "hour=21",
+          "hour=22",
+          "hour=23",
+          "station=大橋頭站:hour=19",
+          "station=大橋頭站:hour=20",
+          "station=大橋頭站:hour=21",
+          "station=大橋頭站:hour=22",
+          "station=大橋頭站:hour=23",
+          "station=民權西路:hour=19",
+          "station=民權西路:hour=20",
+          "station=民權西路:hour=21",
+          "station=民權西路:hour=22",
+          "station=民權西路:hour=23",
+          "station=雙連:hour=19",
+          "station=雙連:hour=20",
+          "station=雙連:hour=21",
+          "station=雙連:hour=22",
+          "station=雙連:hour=23",
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct",
+          "planned_fireworks_minutes:missing",
+          "planned_fireworks_start_hour:missing",
+          "forecast_temperature_c:missing"
+        ],
+        "dropped_constants": [],
+        "dropped_dependencies": [
+          {
+            "column": "forecast_wind_speed_m_s:missing",
+            "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+            "scope": "training_design_only_same_restriction_for_all_four_models"
+          },
+          {
+            "column": "forecast_cloud_cover_pct:missing",
+            "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+            "scope": "training_design_only_same_restriction_for_all_four_models"
+          }
+        ],
+        "column_selection": {
+          "priority": [
+            "intercept",
+            "station_and_hour_main_effects",
+            "station_hour_products",
+            "approved_numeric_in_candidate_order",
+            "missing_indicators"
+          ],
+          "rank_tolerance_on_unit_norm_columns": 7.993605777301127e-13,
+          "dropped_constants": [],
+          "dropped_dependencies": [
+            {
+              "column": "forecast_wind_speed_m_s:missing",
+              "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+              "scope": "training_design_only_same_restriction_for_all_four_models"
+            },
+            {
+              "column": "forecast_cloud_cover_pct:missing",
+              "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+              "scope": "training_design_only_same_restriction_for_all_four_models"
+            }
+          ],
+          "uses_y": false
+        },
+        "params": {
+          "max_depth": 4,
+          "n_estimators": 50,
+          "min_child_weight": 6,
+          "reg_lambda": 10.0
+        },
+        "rank": 35,
+        "n_columns_with_intercept": 35,
+        "fallback": null,
+        "includes_historical_baseline": false,
+        "common_station_hour_interactions": true,
+        "imputation": {
+          "planned_fireworks_minutes": {
+            "strategy": "training_median",
+            "fill_value": 8.0,
+            "training_known_rows": 312,
+            "training_unknown_rows": 48,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "planned_fireworks_start_hour": {
+            "strategy": "training_median",
+            "fill_value": 20.25,
+            "training_known_rows": 288,
+            "training_unknown_rows": 72,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_temperature_c": {
+            "strategy": "training_median",
+            "fill_value": 28.157592,
+            "training_known_rows": 264,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_wind_speed_m_s": {
+            "strategy": "training_median",
+            "fill_value": 1.126436,
+            "training_known_rows": 264,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_cloud_cover_pct": {
+            "strategy": "training_median",
+            "fill_value": 52.9666665,
+            "training_known_rows": 264,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          }
+        },
+        "all_training_values_unknown": [],
+        "missing_indicator_candidates": [
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ]
+      }
+    }
+  },
+  {
+    "outer_year": 2026,
+    "train_events": 18,
+    "test_events": 3,
+    "train_end": "2025-08-30",
+    "test_start": "2026-07-25",
+    "weights": {
+      "ols": 0.0,
+      "ridge": 0.16517127674881626,
+      "lasso": 0.0,
+      "xgboost": 0.8348287232511837
+    },
+    "fusion_weights": {
+      "equal": {
+        "ols": 0.25,
+        "ridge": 0.25,
+        "lasso": 0.25,
+        "xgboost": 0.25
+      },
+      "stack": {
+        "ols": 0.0,
+        "ridge": 0.16517127674881626,
+        "lasso": 0.0,
+        "xgboost": 0.8348287232511837
+      },
+      "select_best": {
+        "ols": 0.0,
+        "ridge": 0.0,
+        "lasso": 0.0,
+        "xgboost": 1.0
+      },
+      "select_stack": {
+        "ols": 0.0,
+        "ridge": 0.16517127674881632,
+        "lasso": 0.0,
+        "xgboost": 0.8348287232511837
+      }
+    },
+    "fusion_audit": {
+      "oof_event_mae": {
+        "ols": 8310.124356051934,
+        "ridge": 934.9102922931744,
+        "lasso": 1023.2161615538429,
+        "xgboost": 773.620453970773
+      },
+      "ranked_models": [
+        "xgboost",
+        "ridge",
+        "lasso",
+        "ols"
+      ],
+      "selected_models": [
+        "xgboost",
+        "ridge"
+      ],
+      "selected_best_model": "xgboost",
+      "top_k": 2,
+      "tie_break": "BASE_MODELS_order_ols_ridge_lasso_xgboost",
+      "lp": {
+        "stack": {
+          "oof_mae": 770.1303892009606,
+          "oof_events": 14,
+          "n_models": 4,
+          "solver": "scipy.optimize.linprog(highs)",
+          "scope": "meta_training_loss_not_outer_test_score"
+        },
+        "select_stack": {
+          "oof_mae": 770.1303892009607,
+          "oof_events": 14,
+          "n_models": 2,
+          "solver": "scipy.optimize.linprog(highs)",
+          "scope": "meta_training_loss_not_outer_test_score"
+        }
+      },
+      "oof_events": 14,
+      "oof_rows": 336,
+      "oof_start": "2021-10-16",
+      "oof_end": "2025-08-30",
+      "scope": "meta_training_selection_and_weight_fit_only_not_outer_test_score"
+    },
+    "lp": {
+      "oof_mae": 770.1303892009606,
+      "oof_events": 14,
+      "n_models": 4,
+      "solver": "scipy.optimize.linprog(highs)",
+      "scope": "meta_training_loss_not_outer_test_score"
+    },
+    "base_models": {
+      "ols": {
+        "model": "ols",
+        "groups": [
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "columns": [
+          "station=大橋頭站",
+          "station=民權西路",
+          "station=雙連",
+          "hour=19",
+          "hour=20",
+          "hour=21",
+          "hour=22",
+          "hour=23",
+          "station=大橋頭站:hour=19",
+          "station=大橋頭站:hour=20",
+          "station=大橋頭站:hour=21",
+          "station=大橋頭站:hour=22",
+          "station=大橋頭站:hour=23",
+          "station=民權西路:hour=19",
+          "station=民權西路:hour=20",
+          "station=民權西路:hour=21",
+          "station=民權西路:hour=22",
+          "station=民權西路:hour=23",
+          "station=雙連:hour=19",
+          "station=雙連:hour=20",
+          "station=雙連:hour=21",
+          "station=雙連:hour=22",
+          "station=雙連:hour=23",
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct",
+          "planned_fireworks_minutes:missing",
+          "planned_fireworks_start_hour:missing",
+          "forecast_temperature_c:missing"
+        ],
+        "dropped_constants": [],
+        "dropped_dependencies": [
+          {
+            "column": "forecast_wind_speed_m_s:missing",
+            "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+            "scope": "training_design_only_same_restriction_for_all_four_models"
+          },
+          {
+            "column": "forecast_cloud_cover_pct:missing",
+            "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+            "scope": "training_design_only_same_restriction_for_all_four_models"
+          }
+        ],
+        "column_selection": {
+          "priority": [
+            "intercept",
+            "station_and_hour_main_effects",
+            "station_hour_products",
+            "approved_numeric_in_candidate_order",
+            "missing_indicators"
+          ],
+          "rank_tolerance_on_unit_norm_columns": 9.592326932761353e-13,
+          "dropped_constants": [],
+          "dropped_dependencies": [
+            {
+              "column": "forecast_wind_speed_m_s:missing",
+              "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+              "scope": "training_design_only_same_restriction_for_all_four_models"
+            },
+            {
+              "column": "forecast_cloud_cover_pct:missing",
+              "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+              "scope": "training_design_only_same_restriction_for_all_four_models"
+            }
+          ],
+          "uses_y": false
+        },
+        "params": {},
+        "rank": 35,
+        "n_columns_with_intercept": 35,
+        "fallback": null,
+        "includes_historical_baseline": false,
+        "common_station_hour_interactions": true,
+        "imputation": {
+          "planned_fireworks_minutes": {
+            "strategy": "training_median",
+            "fill_value": 7.0,
+            "training_known_rows": 384,
+            "training_unknown_rows": 48,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "planned_fireworks_start_hour": {
+            "strategy": "training_median",
+            "fill_value": 20.166666666666668,
+            "training_known_rows": 360,
+            "training_unknown_rows": 72,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_temperature_c": {
+            "strategy": "training_median",
+            "fill_value": 27.8808535,
+            "training_known_rows": 336,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_wind_speed_m_s": {
+            "strategy": "training_median",
+            "fill_value": 1.1610225,
+            "training_known_rows": 336,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_cloud_cover_pct": {
+            "strategy": "training_median",
+            "fill_value": 43.400000000000006,
+            "training_known_rows": 336,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          }
+        },
+        "all_training_values_unknown": [],
+        "missing_indicator_candidates": [
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "coefficients": {
+          "station=大橋頭站": -526.7777777778007,
+          "station=民權西路": 838.9444444444165,
+          "station=雙連": 238.72222222219375,
+          "hour=19": -318.95944444547706,
+          "hour=20": 884.6340548556693,
+          "hour=21": 4620.151490800023,
+          "hour=22": 757.2182928521662,
+          "hour=23": -884.9095801326841,
+          "station=大橋頭站:hour=19": 123.66666666670777,
+          "station=大橋頭站:hour=20": -853.8888888888536,
+          "station=大橋頭站:hour=21": -3128.333333333307,
+          "station=大橋頭站:hour=22": -579.6666666666514,
+          "station=大橋頭站:hour=23": 328.4444444444579,
+          "station=民權西路:hour=19": -333.72222222217897,
+          "station=民權西路:hour=20": -2118.999999999961,
+          "station=民權西路:hour=21": -5807.05555555553,
+          "station=民權西路:hour=22": -2226.444444444428,
+          "station=民權西路:hour=23": -1062.7777777777621,
+          "station=雙連:hour=19": 18.500000000042018,
+          "station=雙連:hour=20": -1346.6666666666326,
+          "station=雙連:hour=21": -4112.722222222194,
+          "station=雙連:hour=22": -665.8333333333147,
+          "station=雙連:hour=23": -83.99999999998134,
+          "is_weekend": 97.22392982366934,
+          "day_of_year": -169.77100265120276,
+          "year_index": 488.21008384615254,
+          "planned_fireworks_minutes": 154.19317461681698,
+          "planned_fireworks_start_hour": -29.424027281555524,
+          "forecast_temperature_c": 288.99785988278273,
+          "forecast_wind_speed_m_s": 216.8327229469988,
+          "forecast_cloud_cover_pct": 101.3438513869421,
+          "planned_fireworks_minutes:missing": 705.8931924240768,
+          "planned_fireworks_start_hour:missing": -985.3182273773257,
+          "forecast_temperature_c:missing": 1146.8969115087866
+        },
+        "intercept": 1393.490417095181,
+        "coefficient_scale": "continuous_training_standardized_dummy_and_binary_0_1"
+      },
+      "ridge": {
+        "model": "ridge",
+        "groups": [
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "columns": [
+          "station=大橋頭站",
+          "station=民權西路",
+          "station=雙連",
+          "hour=19",
+          "hour=20",
+          "hour=21",
+          "hour=22",
+          "hour=23",
+          "station=大橋頭站:hour=19",
+          "station=大橋頭站:hour=20",
+          "station=大橋頭站:hour=21",
+          "station=大橋頭站:hour=22",
+          "station=大橋頭站:hour=23",
+          "station=民權西路:hour=19",
+          "station=民權西路:hour=20",
+          "station=民權西路:hour=21",
+          "station=民權西路:hour=22",
+          "station=民權西路:hour=23",
+          "station=雙連:hour=19",
+          "station=雙連:hour=20",
+          "station=雙連:hour=21",
+          "station=雙連:hour=22",
+          "station=雙連:hour=23",
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct",
+          "planned_fireworks_minutes:missing",
+          "planned_fireworks_start_hour:missing",
+          "forecast_temperature_c:missing"
+        ],
+        "dropped_constants": [],
+        "dropped_dependencies": [
+          {
+            "column": "forecast_wind_speed_m_s:missing",
+            "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+            "scope": "training_design_only_same_restriction_for_all_four_models"
+          },
+          {
+            "column": "forecast_cloud_cover_pct:missing",
+            "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+            "scope": "training_design_only_same_restriction_for_all_four_models"
+          }
+        ],
+        "column_selection": {
+          "priority": [
+            "intercept",
+            "station_and_hour_main_effects",
+            "station_hour_products",
+            "approved_numeric_in_candidate_order",
+            "missing_indicators"
+          ],
+          "rank_tolerance_on_unit_norm_columns": 9.592326932761353e-13,
+          "dropped_constants": [],
+          "dropped_dependencies": [
+            {
+              "column": "forecast_wind_speed_m_s:missing",
+              "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+              "scope": "training_design_only_same_restriction_for_all_four_models"
+            },
+            {
+              "column": "forecast_cloud_cover_pct:missing",
+              "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+              "scope": "training_design_only_same_restriction_for_all_four_models"
+            }
+          ],
+          "uses_y": false
+        },
+        "params": {
+          "lambda": 1.0,
+          "sklearn_alpha": 432.0,
+          "n_train_rows": 432
+        },
+        "rank": 35,
+        "n_columns_with_intercept": 35,
+        "fallback": null,
+        "includes_historical_baseline": false,
+        "common_station_hour_interactions": true,
+        "imputation": {
+          "planned_fireworks_minutes": {
+            "strategy": "training_median",
+            "fill_value": 7.0,
+            "training_known_rows": 384,
+            "training_unknown_rows": 48,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "planned_fireworks_start_hour": {
+            "strategy": "training_median",
+            "fill_value": 20.166666666666668,
+            "training_known_rows": 360,
+            "training_unknown_rows": 72,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_temperature_c": {
+            "strategy": "training_median",
+            "fill_value": 27.8808535,
+            "training_known_rows": 336,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_wind_speed_m_s": {
+            "strategy": "training_median",
+            "fill_value": 1.1610225,
+            "training_known_rows": 336,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_cloud_cover_pct": {
+            "strategy": "training_median",
+            "fill_value": 43.400000000000006,
+            "training_known_rows": 336,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          }
+        },
+        "all_training_values_unknown": [],
+        "missing_indicator_candidates": [
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "coefficients": {
+          "station=大橋頭站": -95.93701154297538,
+          "station=民權西路": -69.77810028272174,
+          "station=雙連": -13.984215122393607,
+          "hour=19": -38.36882543791932,
+          "hour=20": -23.011174630992553,
+          "hour=21": 192.90722684041256,
+          "hour=22": -15.91413298411154,
+          "hour=23": -152.31402325183308,
+          "station=大橋頭站:hour=19": -27.115037842315473,
+          "station=大橋頭站:hour=20": -21.562995947359973,
+          "station=大橋頭站:hour=21": 27.26804038462573,
+          "station=大橋頭站:hour=22": -17.22686651353817,
+          "station=大橋頭站:hour=23": -40.91339148241336,
+          "station=民權西路:hour=19": 8.17193904060778,
+          "station=民權西路:hour=20": -18.584907953325636,
+          "station=民權西路:hour=21": -26.298316065784398,
+          "station=民權西路:hour=22": -29.515445186170588,
+          "station=民權西路:hour=23": -42.97974793282354,
+          "station=雙連:hour=19": -3.9798163658054695,
+          "station=雙連:hour=20": -13.932218915294323,
+          "station=雙連:hour=21": 15.234372972247055,
+          "station=雙連:hour=22": 6.668354962971899,
+          "station=雙連:hour=23": -30.069281117014263,
+          "is_weekend": 34.72598057548288,
+          "day_of_year": -5.039489592767936,
+          "year_index": 24.648990639568446,
+          "planned_fireworks_minutes": 64.74194265058323,
+          "planned_fireworks_start_hour": -44.276253965767,
+          "forecast_temperature_c": 119.89262918632869,
+          "forecast_wind_speed_m_s": -11.644686366648493,
+          "forecast_cloud_cover_pct": -55.89427146232829,
+          "planned_fireworks_minutes:missing": -21.878283577559653,
+          "planned_fireworks_start_hour:missing": -31.713624409490308,
+          "forecast_temperature_c:missing": 23.364839692755236
+        },
+        "intercept": 1726.684565068371,
+        "coefficient_scale": "continuous_training_standardized_dummy_and_binary_0_1"
+      },
+      "lasso": {
+        "model": "lasso",
+        "groups": [
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "columns": [
+          "station=大橋頭站",
+          "station=民權西路",
+          "station=雙連",
+          "hour=19",
+          "hour=20",
+          "hour=21",
+          "hour=22",
+          "hour=23",
+          "station=大橋頭站:hour=19",
+          "station=大橋頭站:hour=20",
+          "station=大橋頭站:hour=21",
+          "station=大橋頭站:hour=22",
+          "station=大橋頭站:hour=23",
+          "station=民權西路:hour=19",
+          "station=民權西路:hour=20",
+          "station=民權西路:hour=21",
+          "station=民權西路:hour=22",
+          "station=民權西路:hour=23",
+          "station=雙連:hour=19",
+          "station=雙連:hour=20",
+          "station=雙連:hour=21",
+          "station=雙連:hour=22",
+          "station=雙連:hour=23",
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct",
+          "planned_fireworks_minutes:missing",
+          "planned_fireworks_start_hour:missing",
+          "forecast_temperature_c:missing"
+        ],
+        "dropped_constants": [],
+        "dropped_dependencies": [
+          {
+            "column": "forecast_wind_speed_m_s:missing",
+            "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+            "scope": "training_design_only_same_restriction_for_all_four_models"
+          },
+          {
+            "column": "forecast_cloud_cover_pct:missing",
+            "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+            "scope": "training_design_only_same_restriction_for_all_four_models"
+          }
+        ],
+        "column_selection": {
+          "priority": [
+            "intercept",
+            "station_and_hour_main_effects",
+            "station_hour_products",
+            "approved_numeric_in_candidate_order",
+            "missing_indicators"
+          ],
+          "rank_tolerance_on_unit_norm_columns": 9.592326932761353e-13,
+          "dropped_constants": [],
+          "dropped_dependencies": [
+            {
+              "column": "forecast_wind_speed_m_s:missing",
+              "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+              "scope": "training_design_only_same_restriction_for_all_four_models"
+            },
+            {
+              "column": "forecast_cloud_cover_pct:missing",
+              "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+              "scope": "training_design_only_same_restriction_for_all_four_models"
+            }
+          ],
+          "uses_y": false
+        },
+        "params": {
+          "alpha": 100,
+          "n_train_rows": 432,
+          "objective": "SSE/(2*n)+alpha*L1",
+          "solver": "sklearn.linear_model.Lasso",
+          "max_iter": 1000000,
+          "solver_tolerance": 1e-10,
+          "optimality_tolerance": 1e-06
+        },
+        "rank": 35,
+        "n_columns_with_intercept": 35,
+        "fallback": null,
+        "includes_historical_baseline": false,
+        "common_station_hour_interactions": true,
+        "imputation": {
+          "planned_fireworks_minutes": {
+            "strategy": "training_median",
+            "fill_value": 7.0,
+            "training_known_rows": 384,
+            "training_unknown_rows": 48,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "planned_fireworks_start_hour": {
+            "strategy": "training_median",
+            "fill_value": 20.166666666666668,
+            "training_known_rows": 360,
+            "training_unknown_rows": 72,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_temperature_c": {
+            "strategy": "training_median",
+            "fill_value": 27.8808535,
+            "training_known_rows": 336,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_wind_speed_m_s": {
+            "strategy": "training_median",
+            "fill_value": 1.1610225,
+            "training_known_rows": 336,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_cloud_cover_pct": {
+            "strategy": "training_median",
+            "fill_value": 43.400000000000006,
+            "training_known_rows": 336,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          }
+        },
+        "all_training_values_unknown": [],
+        "missing_indicator_candidates": [
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "coefficients": {
+          "station=大橋頭站": -52.089506172839414,
+          "station=民權西路": -0.0,
+          "station=雙連": -0.0,
+          "hour=19": -0.0,
+          "hour=20": -0.0,
+          "hour=21": 856.6501494920834,
+          "hour=22": -0.0,
+          "hour=23": -396.5149244688301,
+          "station=大橋頭站:hour=19": -0.0,
+          "station=大橋頭站:hour=20": -0.0,
+          "station=大橋頭站:hour=21": 0.0,
+          "station=大橋頭站:hour=22": -0.0,
+          "station=大橋頭站:hour=23": -0.0,
+          "station=民權西路:hour=19": 0.0,
+          "station=民權西路:hour=20": -0.0,
+          "station=民權西路:hour=21": -0.0,
+          "station=民權西路:hour=22": -0.0,
+          "station=民權西路:hour=23": -0.0,
+          "station=雙連:hour=19": -0.0,
+          "station=雙連:hour=20": -0.0,
+          "station=雙連:hour=21": -0.0,
+          "station=雙連:hour=22": 0.0,
+          "station=雙連:hour=23": -0.0,
+          "is_weekend": 0.0,
+          "day_of_year": 0.0,
+          "year_index": 0.0,
+          "planned_fireworks_minutes": 42.720033937126146,
+          "planned_fireworks_start_hour": -8.211865698314895,
+          "forecast_temperature_c": 156.9231452159607,
+          "forecast_wind_speed_m_s": -0.0,
+          "forecast_cloud_cover_pct": -5.430495827060341,
+          "planned_fireworks_minutes:missing": -0.0,
+          "planned_fireworks_start_hour:missing": -0.0,
+          "forecast_temperature_c:missing": 0.0
+        },
+        "intercept": 1617.86326496526,
+        "coefficient_scale": "continuous_training_standardized_dummy_and_binary_0_1",
+        "lasso_zero_columns": [
+          "station=民權西路",
+          "station=雙連",
+          "hour=19",
+          "hour=20",
+          "hour=22",
+          "station=大橋頭站:hour=19",
+          "station=大橋頭站:hour=20",
+          "station=大橋頭站:hour=21",
+          "station=大橋頭站:hour=22",
+          "station=大橋頭站:hour=23",
+          "station=民權西路:hour=19",
+          "station=民權西路:hour=20",
+          "station=民權西路:hour=21",
+          "station=民權西路:hour=22",
+          "station=民權西路:hour=23",
+          "station=雙連:hour=19",
+          "station=雙連:hour=20",
+          "station=雙連:hour=21",
+          "station=雙連:hour=22",
+          "station=雙連:hour=23",
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "forecast_wind_speed_m_s",
+          "planned_fireworks_minutes:missing",
+          "planned_fireworks_start_hour:missing",
+          "forecast_temperature_c:missing"
+        ],
+        "lasso_nonzero_columns": [
+          "station=大橋頭站",
+          "hour=21",
+          "hour=23",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_cloud_cover_pct"
+        ],
+        "n_iter": 14,
+        "dual_gap": 1.166248694062233e-06,
+        "optimization_certificate": {
+          "solver": "sklearn.linear_model.Lasso",
+          "certificate_method": "independently_computed_original_objective_KKT_and_feasible_dual",
+          "primal_objective": 981129.498754716,
+          "feasible_dual_objective": 981129.4987535498,
+          "primal_dual_gap": 1.166248694062233e-06,
+          "gap_tolerance": 2.132551212057399,
+          "active_kkt_error": 6.47006004328432e-10,
+          "inactive_kkt_excess": 0.0,
+          "intercept_kkt_error": 2.5263741715914672e-14,
+          "kkt_tolerance": 9.999999999999999e-05,
+          "dual_constraint_max_abs": 99.99999999999977,
+          "dual_zero_sum_error": 4.973799150320701e-14,
+          "solver_reported_dual_gap": 1.1661538371333368e-06,
+          "verified": true
+        }
+      },
+      "xgboost": {
+        "model": "xgboost",
+        "groups": [
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ],
+        "columns": [
+          "station=大橋頭站",
+          "station=民權西路",
+          "station=雙連",
+          "hour=19",
+          "hour=20",
+          "hour=21",
+          "hour=22",
+          "hour=23",
+          "station=大橋頭站:hour=19",
+          "station=大橋頭站:hour=20",
+          "station=大橋頭站:hour=21",
+          "station=大橋頭站:hour=22",
+          "station=大橋頭站:hour=23",
+          "station=民權西路:hour=19",
+          "station=民權西路:hour=20",
+          "station=民權西路:hour=21",
+          "station=民權西路:hour=22",
+          "station=民權西路:hour=23",
+          "station=雙連:hour=19",
+          "station=雙連:hour=20",
+          "station=雙連:hour=21",
+          "station=雙連:hour=22",
+          "station=雙連:hour=23",
+          "is_weekend",
+          "day_of_year",
+          "year_index",
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct",
+          "planned_fireworks_minutes:missing",
+          "planned_fireworks_start_hour:missing",
+          "forecast_temperature_c:missing"
+        ],
+        "dropped_constants": [],
+        "dropped_dependencies": [
+          {
+            "column": "forecast_wind_speed_m_s:missing",
+            "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+            "scope": "training_design_only_same_restriction_for_all_four_models"
+          },
+          {
+            "column": "forecast_cloud_cover_pct:missing",
+            "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+            "scope": "training_design_only_same_restriction_for_all_four_models"
+          }
+        ],
+        "column_selection": {
+          "priority": [
+            "intercept",
+            "station_and_hour_main_effects",
+            "station_hour_products",
+            "approved_numeric_in_candidate_order",
+            "missing_indicators"
+          ],
+          "rank_tolerance_on_unit_norm_columns": 9.592326932761353e-13,
+          "dropped_constants": [],
+          "dropped_dependencies": [
+            {
+              "column": "forecast_wind_speed_m_s:missing",
+              "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+              "scope": "training_design_only_same_restriction_for_all_four_models"
+            },
+            {
+              "column": "forecast_cloud_cover_pct:missing",
+              "reason": "exact_linear_dependency_with_intercept_and_prior_training_columns",
+              "scope": "training_design_only_same_restriction_for_all_four_models"
+            }
+          ],
+          "uses_y": false
+        },
+        "params": {
+          "max_depth": 5,
+          "n_estimators": 100,
+          "min_child_weight": 1,
+          "reg_lambda": 10.0
+        },
+        "rank": 35,
+        "n_columns_with_intercept": 35,
+        "fallback": null,
+        "includes_historical_baseline": false,
+        "common_station_hour_interactions": true,
+        "imputation": {
+          "planned_fireworks_minutes": {
+            "strategy": "training_median",
+            "fill_value": 7.0,
+            "training_known_rows": 384,
+            "training_unknown_rows": 48,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "planned_fireworks_start_hour": {
+            "strategy": "training_median",
+            "fill_value": 20.166666666666668,
+            "training_known_rows": 360,
+            "training_unknown_rows": 72,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_temperature_c": {
+            "strategy": "training_median",
+            "fill_value": 27.8808535,
+            "training_known_rows": 336,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_wind_speed_m_s": {
+            "strategy": "training_median",
+            "fill_value": 1.1610225,
+            "training_known_rows": 336,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          },
+          "forecast_cloud_cover_pct": {
+            "strategy": "training_median",
+            "fill_value": 43.400000000000006,
+            "training_known_rows": 336,
+            "training_unknown_rows": 96,
+            "scope": "training_fold_only_unknown_is_not_observed_zero"
+          }
+        },
+        "all_training_values_unknown": [],
+        "missing_indicator_candidates": [
+          "planned_fireworks_minutes",
+          "planned_fireworks_start_hour",
+          "forecast_temperature_c",
+          "forecast_wind_speed_m_s",
+          "forecast_cloud_cover_pct"
+        ]
+      }
+    }
+  }
+]
