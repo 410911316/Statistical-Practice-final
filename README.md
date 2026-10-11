@@ -2,179 +2,183 @@
 
 ## 專案目的與目前進度
 
-整理北捷逐時 OD、活動、天氣及社群資料，分析煙火活動人流，銜接候車與列車容量情境。**第五版已加入 Lasso，統一四模型的候選變數與車站 × 時段交互作用，並實作「先選模型，再融合」。**
+整理北捷逐時 OD、活動、天氣及社群資料，分析煙火活動人流，銜接候車與列車容量情境。**第六版新增 GAM，比較 Ridge＋GAM＋XGBoost 的等權與學權重融合，並保留原八種方法作同樣本對照。**
 
-先看 [本次完整結果](result/analysis_v5/report.md)／[平均人次圖](result/analysis_v5/figures/mean_event_counts.png)，實作看 [process.md 第 16 節](process.md#16-第五版共同設計lasso-與先選模型再融合)。新圖在根目錄 `result/analysis_v5/`；舊版保留，沒有覆蓋。
+先看 [完整結果](result/analysis_v6/report.md)／[平均人次圖](result/analysis_v6/figures/mean_event_counts.png)，細節看 [process 第 17 節](process.md#17-第六版gam-與三模型融合)。新圖放在根目錄 `result/analysis_v6/`，舊版保留。
 
 | 項目 | 本版規格 |
 |---|---|
-| 預測目標 | 北門、大橋頭站、雙連、民權西路，活動日 18–23 時的來源時段起站人次，暫作進站需求代理 |
-| 資料與評估 | 2017–2026 年 21 場、504 列；外層比較 2024–2026 年共 9 場、216 列，整年向前切分 |
-| 事前截止 | 活動前一天 18:00（臺北時間），新輸入須有截止前的公告／預報版本證據 |
-| 共同設計 | OLS、Ridge、Lasso、XGBoost 共用同一訓練矩陣，包含 15 個車站 × 時段交互項 |
-| 四組輸入 | 基本變數／另加煙火時間／另加天氣預報／兩組都加 |
-| 人流基準 | 近 56 天一般日人流的發布時間未核實，四組一律排除 |
+| 目標 | 北門、大橋頭站、雙連、民權西路，活動日 18–23 時的來源時段起站人次，暫作進站需求代理 |
+| 資料與評估 | 21 場、504 列；外層比較 2024–2026 年 9 場、216 列，整年度向前切分 |
+| 事前截止 | 活動前一天 18:00（臺北時間），新增節目／天氣須有截止前的發布證據 |
+| 四組輸入 | 基本變數／只加煙火時間／只加天氣預報／煙火＋天氣 |
+| 公平比較 | 共用候選資訊、訓練期補值及 15 個車站 × 時段交互項；GAM 再展開部分 spline 基底，所以不是完全相同的最終矩陣 |
+| 排除 | 發布時間未核實的近 56 天一般日人流、當日實測天氣、事後整月聲量、年度實支 |
 | 限制 | 504 列不是 504 場獨立活動；早年訓練標籤發布時間、日曆歷史版本及已辦活動篩選仍有限制，尚非完整 D−1 上線驗證 |
 
-## 為什麼比較這四個模型？
+## 為什麼選 Ridge、GAM、XGBoost 融合？
 
-| 模型 | 直覺：它在解決什麼問題？ | 能解釋什麼、不能解釋什麼？ |
+| 模型 | 直覺理由 | 本專案如何解讀？ |
 |---|---|---|
-| 完整設計 OLS | 先問「線性變數加上指定交互作用，是否已足夠？」提供無收縮的參考線 | 係數是控制其餘欄位後的線性關聯；有交互作用時要連主效果一起解讀。共線性可能讓係數不穩定 |
-| Ridge | 變數彼此相關時，保留訊息並把過大的係數縮小，降低估計變動 | 可看方向與相對大小，但係數有偏且依標準化方式；不是變數篩選，也不保證更準 |
-| Lasso | 除了縮小係數，也把部分係數壓成零，問「較精簡的線性規則夠不夠？」 | 可指出本次懲罰下留下哪些欄位；零係數不代表真實影響為零，相關變數的入選也可能不穩定 |
-| XGBoost | 用多棵樹逐步修正誤差，捕捉非線性、門檻及多變數的條件組合 | 例如「北門、晚間、較長煙火」可以有不同規則，不必手寫所有非線性項；但沒有單一固定斜率，樹切分或特徵重要性不等於因果效果 |
-| 融合 | 問「不同模型的預測誤差能不能互相補足？」 | 權重表示本次過去驗證的預測組合，不是各種機制的真實占比；融合不保證勝過最佳單模型 |
+| **Ridge** | 線性關係＋係數收縮，保留相關訊號並降低估計變動 | 車站、時段、煙火與天氣共同加總，保留指定交互作用；係數有偏，不是因果效果 |
+| **GAM** | 允許連續變數呈現平滑的彎曲關係，仍可逐項畫圖 | 氣溫增加一度的預測變化不必固定；站別與時段結構保留，但不自動加入天氣 × 車站等交互作用 |
+| **XGBoost** | 用條件切分學習門檻與多變數組合 | 特定車站、時段與節目條件可有不同預測規則；沒有單一固定斜率，也不代表發現因果 |
+| OLS、Lasso（對照） | 分別檢查無收縮完整線性設計、L1 收縮與稀疏選變數 | 用來評估新增非線性與融合是否值得，不強迫每個模型都放進主要融合 |
 
-**向老師說明可以用這段：**「本研究不是假定某個演算法最好，而是比較無收縮線性、L2 收縮、L1 稀疏選擇與非線性樹模型。四者使用相同事前資訊，再用相同的時間留出資料比較預測。融合則另外檢查誤差互補是否帶來增益。」相關原始文獻列於文末。
+**向老師可以說：**「我們依不同函數結構選模型：Ridge 提供收縮後的線性基準，GAM 刻畫可解釋的平滑非線性，XGBoost 捕捉門檻與條件組合；再用較晚年度檢查不同預測誤差是否能互補。」
 
-本版的 OLS **不做 Forward Selection**，以免和 Ridge／Lasso 的差異同時來自不同候選矩陣。舊版 Forward OLS 仍保留。Lasso 的選變數是模型本身的一部分；「提供相同候選」不代表最後每個係數都非零。Adaptive Lasso、Elastic Net 可作未來擴充，但本次沒有執行，也不宣稱它們不適用。
-
-連續欄位在訓練折內標準化，0/1 欄位保留原編碼；缺值補值也只用訓練資料。精確線性相依的欄位採共同規則移除，僅高度相關者不刪。這些選擇會影響懲罰結果，詳見 process。普通 Lasso 沒有強制「保留交互作用就必須保留主效果」的階層限制。**本版沒有計算 SHAP，也不使用選模後的普通 p 值宣稱顯著影響。**
+本版 OLS 延續第五版完整設計，不做 Forward Selection。Lasso 的變數選擇與融合的模型權重是兩件事；相關欄位的入選可能不穩定，普通 Lasso 也未強制交互作用的階層限制。**模型名稱不同，不代表誤差必定互補；權重不是各因素真實影響的比例。**
 
 ## 活動前一天可用哪些輸入？
 
-| 變數 | 可核對的場次 | 處理 |
+| 變數 | 可核對場次 | 處理 |
 |---|---:|---|
-| 車站、時段、週末、年內日期、年度趨勢 | 21/21 的分析欄位 | 各組共同候選；日曆欄由分析活動日期推導，歷史預定日期版本仍待補核 |
-| 預定純煙火分鐘／開始時間 | 19/21、16/21 | 用事前公告；整套節目開始不能冒充煙火開始 |
-| 預報氣溫、風速、雲量 | 各 17/21，每場 6 時點 | 當年已公開的 GFS 操作型預報；不用當天實測 |
-| 預定無人機／整套展演分鐘 | 各 2/21 | 外層訓練期全未知，未列候選；尚不能估計無人機效果 |
-| 實測天氣、事後整月聲量、年度實支 | 不符合本次事前輸入口徑 | 不放入預測；年度費用也不能當成每場獨立經費 |
+| 車站、時段、週末、年內日期、年度趨勢 | 21/21 的分析欄位 | 共同候選；日曆由分析活動日期推導，歷史預定日期版本仍待補核 |
+| 預定純煙火分鐘／開始時間 | 19/21、16/21 | 使用事前公告，整套節目開始不冒充煙火開始 |
+| 預報氣溫、風速、雲量 | 各 17/21，每場 6 時點 | 已公開的歷史 GFS 操作型預報，不是當日實測 |
+| 預定無人機／整套展演分鐘 | 各 2/21 | 外層訓練期全未知，未列候選，尚不能估計無人機效果 |
 
-未知保留缺值，未提無人機不當成「沒有」。四站天氣共用附近 0.25° 網格，不是站口微氣候。[節目證據](docs/d1_program_sources.json)／[天氣取得與發布稽核](docs/d1_weather_audit.md)／[逐筆輸入檢查](result/analysis_v5/both/tables/d1_feature_audit.csv)。
+未知保留缺值，未提無人機不視為沒有；補值、標準化、欄位識別與 spline 節點都只用訓練期。精確線性相依欄位採共同規則移除，僅高度相關不刪。四站天氣共用附近 0.25° 網格，不是站口微氣候。[節目證據](docs/d1_program_sources.json)／[天氣發布稽核](docs/d1_weather_audit.md)／[逐筆輸入檢查](result/analysis_v6/both/tables/d1_feature_audit.csv)。
 
 ## 重跑後的實際結果
 
-同九場外層活動，**北門逐時 MAE（人次／小時，越小越好）**：
+同九場外層活動，**北門逐時 MAE（人次／小時，越低越好）**：
 
 | 模型 | 基本變數 | 只加煙火 | 只加天氣 | 煙火＋天氣 |
-|---|---|---|---|---|
-| 完整設計 OLS | 1,265 | 1,267 | 1,221 | 1,301 |
+|---|---:|---:|---:|---:|
+| OLS | 1,265 | 1,267 | 1,221 | 1,301 |
 | Ridge | 1,486 | 1,700 | 1,622 | 1,686 |
 | Lasso | 1,350 | 1,330 | 1,573 | 1,571 |
+| **GAM（新增）** | **1,227** | **1,206** | **1,255** | **1,356** |
 | XGBoost | 962 | 901 | 1,131 | 1,216 |
+| **新三模型等權** | **1,139** | **1,135** | **1,213** | **1,271** |
+| **新三模型學權重** | **1,134** | **1,062** | **1,312** | **1,263** |
+
+<details>
+<summary>展開原四種選擇／融合方法的同樣本對照</summary>
+
+| 舊方法 | 基本變數 | 只加煙火 | 只加天氣 | 煙火＋天氣 |
+|---|---:|---:|---:|---:|
 | 四模型等權 | 1,193 | 1,191 | 1,274 | 1,295 |
-| 四模型 Stacking | 1,138 | 1,062 | 1,312 | 1,263 |
-| 過去驗證選一 | 1,075 | 901 | 1,131 | 1,216 |
-| 先選前二再融合 | 1,032 | 989 | 1,312 | 1,263 |
+| 四模型學權重 | 1,138 | 1,062 | 1,312 | 1,263 |
+| 過去 OOF 選一 | 1,075 | 901 | 1,131 | 1,216 |
+| 過去 OOF 前二融合 | 1,032 | 989 | 1,312 | 1,263 |
 
-- **Lasso 沒有勝出。** 合併組三年均選 α=100，15 個站別 × 時段係數全部變成零，失去各站不同時段曲線的彈性；北門 MAE 1,571，比同設計 OLS 1,301、XGBoost 1,216 高。這是目前資料、編碼及選參目標的結果，不是 Lasso 普遍不好。
-- **只加煙火的 XGBoost 跨年平均最低：** 全站 MAE 475、北門 901。但此表已被用來反覆修訂，不能當成全新確認性測試，也沒有依此自動更換正式模型。
-- **先選前二可以改善四模型融合，但未勝過 XGBoost。** 基本組北門 1,138 → 1,032；煙火組 1,062 → 989；天氣與合併組則相同。不能為了使用融合而強迫融合。
-- **尖峰仍未解決。** 下表同時檢查實際尖峰所在時刻，避免只看平均總量。合併組 Lasso 的尖峰比 OLS、XGBoost 差。
+原模型與選參設定未改；四組舊八方法已逐值核對，最大差異為 0。對照 [第五版結果](result/analysis_v5/report.md)。
 
-| 模型 | 北門逐時 MAE | 實際尖峰時刻絕對誤差 |
-|---|---|---|
-| 完整設計 OLS | 1,301 | 3,127 |
+</details>
+
+- **GAM 基本組、煙火組略優於 OLS；加天氣後反而較差。** 煙火組只有年內日期達到平滑條件，煙火本身仍是線性項，因此不能把改善說成「證實煙火效果非線性」。
+- **新學權重沒有帶來穩定增益。** 基本組北門由舊融合 1,138 降至 1,134；煙火、天氣與合併組均給 GAM 零權重，和舊四模型學權重結果相同（數值精度內）。
+- **合併組：** 新等權全站 MAE **675.36**、北門 **1,270.94**；新學權重 **649.95／1,263.43**，等於舊學權重；XGBoost 單模型為 **620.97／1,216.43**。
+- **各組目前仍以 XGBoost 單模型的平均 MAE 最低。** 這是反覆查看同九場後的探索性比較，不代表未見活動仍會勝出，也未據此自動更換正式模型。
+
+![四組輸入與十一種預測方式](result/analysis_v6/figures/model_comparison.png)
+
+尖峰仍有誤差。固定「煙火＋天氣」組，在每場**實際尖峰所在時刻**評分：
+
+| 模型 | 北門逐時 MAE | 尖峰時刻平均絕對誤差 |
+|---|---:|---:|
+| OLS | 1,301 | 3,127 |
 | Ridge | 1,686 | 5,171 |
 | Lasso | 1,571 | 4,825 |
+| GAM | 1,356 | 3,220 |
 | XGBoost | 1,216 | 3,104 |
-| 四模型 Stacking | 1,263 | 3,431 |
-| 先選前二再融合 | 1,263 | 3,431 |
+| 舊四模型學權重 | 1,263 | 3,431 |
+| 新三模型等權 | 1,271 | 3,403 |
+| 新三模型學權重 | 1,263 | 3,431 |
 
-![四組輸入與全部模型比較](result/analysis_v5/figures/model_comparison.png)
+[完整指標](result/analysis_v6/tables/metrics_by_variant.csv)／[逐年度結果](result/analysis_v6/tables/yearly.csv)／[北門九場基模型曲線](result/analysis_v6/figures/beimen_profiles.png)／[北門九場融合曲線](result/analysis_v6/figures/beimen_fusion_profiles.png)。
 
-本版也統一了 XGBoost 的交互項及共同精確相依篩除，因此與 v4 的差異不能全部歸因於「多一個 Lasso」。[逐年度／全站指標](result/analysis_v5/tables/yearly.csv)／[全部尖峰及誤差指標](result/analysis_v5/tables/metrics_by_variant.csv)／[舊版結果](result/analysis_v4/report.md)。
+## GAM 與融合如何設定？
 
-## 可以先選模型，再做融合嗎？
+1. **GAM 採 Gaussian identity 的平方損失預測。** 不把人次宣稱為常態、獨立樣本，不用此模型的 p 值作推論。車站、時段、交互項、缺值指標及年度趨勢保留無懲罰線性項。
+2. **只對足夠有資料的連續變數平滑：** 訓練期至少 6 場有值、至少 8 種不同值，才用 5 個 cubic P-spline 基底與二階係數差分懲罰；不足則維持線性。六個晚間時段不做週期平滑。
+3. **所有平滑項共用 λ：** 從 0.1／1／10／100／1000，依過去內層向前驗證的活動等權 MAE 選擇；不用 GCV，也不看外層挑複雜度。此 λ 對應總平方誤差尺度，不能直接和 Ridge λ 比大小。
+4. **融合成員事先固定 Ridge、GAM、XGBoost。** 等權各占 1/3；學權重以過去時間留出預測（OOF）最小化活動等權 MAE，限制非負、總和為 1，允許零權重；沒有每站、每小時各學一套。
+5. 每個 OOF 模型的選參也只能用當時更早的資料；OOF 是訓練權重的資料，其誤差不是最終測試成績。到外層整年度才計分。
 
-**已實作，流程固定為以下四步：**
+「煙火＋天氣」組的實際設定：
 
-1. 在外層測試年之前，產生「用更早年份訓練、預測較晚年份」的留出預測（OOF）；每次調參也只用當時更早的資料。
-2. 依過去 OOF 四站全部時段的活動等權 MAE 排名，**預先固定保留前二名**；不是看測試年的成績挑模型，也未特別優化北門尖峰。
-3. 用這兩個模型的過去 OOF，學非負且總和為 1 的 MAE 最小權重，再預測外層年。
-4. 和四模型等權、四模型學權重、只選第一名一起比較。**入選兩個仍可能有一個權重為零。**
+| 外層年 | GAM λ | GAM 有效自由度 | Ridge 權重 | GAM 權重 | XGBoost 權重 |
+|---|---:|---:|---:|---:|---:|
+| 2024 | 0.1 | 38.92 | 25.13% | 0% | 74.87% |
+| 2025 | 1000 | 35.00 | 25.13% | 0% | 74.87% |
+| 2026 | 1000 | 35.01 | 16.52% | 0% | 83.48% |
 
-「煙火＋天氣」組實際選擇如下；OLS、Lasso 在這組前二融合的權重都是零：
+基本組 GAM 三年權重為 16.48%、5.37%、11.29%；其餘三組皆為零。**把模型放入候選，不代表應強迫給它正權重。** 原本先選前二機制仍保留作對照，並未用它決定新三模型的成員。[全部融合權重圖](result/analysis_v6/figures/fusion_weights.png)／[權重數值](result/analysis_v6/tables/fusion_weights.csv)。
 
-| 外層年 | 過去驗證入選模型 | Ridge 權重 | XGBoost 權重 | Lasso α／非零係數數 |
-|---|---|---|---|---|
-| 2024 | XGBoost、Ridge | 25.1% | 74.9% | 100／4（共 34 欄） |
-| 2025 | XGBoost、Ridge | 25.1% | 74.9% | 100／5（共 34 欄） |
-| 2026 | XGBoost、Ridge | 16.5% | 83.5% | 100／7（共 34 欄） |
+下圖固定用 2026 外層模型（訓練至 2025 年），只畫訓練範圍。曲線是**非負截斷之前的加法預測分量**，以訓練平均分量為零點；不是完整人流預測、因果效果或推論信賴區間。範圍外採線性延伸並留下稽核。此模型選到 λ=1000，圖中平滑項接近直線，表示懲罰壓低彎曲程度，不能宣稱已發現明顯非線性。
 
-這組四模型 Stacking 最後也只給 Ridge、XGBoost 非零權重，因此與前二融合預測相同；只選第一名則每年都選到 XGBoost。全四模型 Stacking 在四組共 12 個外層設定中都給 Lasso 零權重，但煙火組前二規則在 2025、2026 年曾選入 Lasso，兩種機制不可混為一談。
+![GAM 可解釋的預測分量](result/analysis_v6/figures/gam_effect_curves.png)
 
-**前二是可重現的簡單規則，不是已證明最佳的模型子集合。** 排名可能排除單獨誤差較大、但能補足另一模型的成員；是否有幫助要看外層表現。排名與權重共用過去 OOF 是訓練流程，該 OOF 分數不能再當無偏的最終成績。權重公式與線性規劃見 [process 第 16 節](process.md#16-第五版共同設計lasso-與先選模型再融合)。
+<details>
+<summary>原模型調參與數值檢查</summary>
 
-![各年度的選擇與融合權重](result/analysis_v5/figures/fusion_selection.png)
+- OLS 完整擬合；Ridge λ = 0.001／0.01／0.1／1／10，`sklearn alpha = 訓練列數 × λ`。
+- Lasso α = 0.1／1／5／10／25／50／100／250，目標 `SSE/(2n) + α × L1`。
+- XGBoost 樹深 1–5 × 樹數 50／100／250 × 葉節點門檻 1／6／24 × L2 懲罰 1／10，共 90 組；學習率 0.05。每個截止選一組，不是融合 90 個模型，也不是全部參數空間的全域最佳。
+- 合併組 XGBoost 2024、2025 年選深度 4／50 棵／葉門檻 6／L2=10；2026 年為 5／100／1／10，與第五版相同。
+- Lasso 用 KKT／primal–dual gap、GAM 用停止條件／帶懲罰的正規方程檢查數值收斂，不接受未收斂候選。各組 `folds.json` 與 `tables/inner_selection.csv` 保存證據。
+
+</details>
 
 ## 實際與模型估計的平均人次
 
-固定展示「煙火＋天氣」版：**每場先加總 18–23 時，再平均同九場外層活動**。這是起站人次，不是活動現場獨立參加人數；用外測預測，不是訓練擬合值。類別平均適合長條圖，並非分布直方圖。
+固定展示「煙火＋天氣」組：每場先加總 18–23 時，再平均同九場外層活動。這是起站人次，不是現場獨立參加人數；使用外測預測。類別平均應用長條圖，不是分布直方圖；總量接近也可能是逐時高低估互相抵銷。
 
-![實際與四模型、兩種融合的平均人次](result/analysis_v5/figures/mean_event_counts.png)
+![實際、Ridge／GAM／XGBoost 與新舊融合的平均人次](result/analysis_v6/figures/mean_event_counts.png)
 
-總量接近也可能是逐時高低估互相抵銷。[完整平均值](result/analysis_v5/tables/mean_event_counts.csv)／[北門全部九場曲線](result/analysis_v5/figures/beimen_profiles.png)／[融合曲線](result/analysis_v5/figures/beimen_fusion_profiles.png)。
-
-<details>
-<summary>調參方式與本次 XGBoost 設定</summary>
-
-- Ridge：λ = 0.001／0.01／0.1／1／10；程式用 `sklearn alpha = 訓練列數 × λ`。
-- Lasso：α = 0.1／1／5／10／25／50／100／250；目標為 `SSE/(2n) + α × L1`，不能直接與 Ridge 的 λ 比大小。
-- XGBoost：樹深 1–5 × 樹數 50／100／250 × 葉節點門檻 1／6／24 × L2 懲罰 1／10，共 **90 組**；學習率 0.05。
-- 每個訓練截止各以較早年度的內層活動等權 MAE 選一組；不是融合 90 棵模型，也不是保證所有參數空間的全域最佳。
-
-合併組選出的 XGBoost 設定：
-
-| 外層年 | 樹深 | 樹數 | 葉節點門檻 | L2 懲罰 |
-|---|---|---|---|---|
-| 2024 | 4 | 50 | 6 | 10.0 |
-| 2025 | 4 | 50 | 6 | 10.0 |
-| 2026 | 5 | 100 | 1 | 10.0 |
-
-![合併組 XGBoost 內層調參](result/analysis_v5/both/figures/xgb_tuning_heatmap.png)
-
-Lasso 統一使用較高迭代上限與精度，所有候選另以 KKT 與 primal–dual gap 檢查收斂；不是接受未收斂模型，也沒有改候選格來追求結果。詳細分數、數值診斷、零係數及 VIF 分別在各組 `tables/inner_selection.csv`、`folds.json`、`tables/training_coefficients.csv`、`tables/training_vif.csv`。
-
-</details>
+[完整平均值](result/analysis_v6/tables/mean_event_counts.csv)。六張圖均在根目錄 [result/analysis_v6/figures](result/analysis_v6/figures/)。
 
 ## 分析流程
 
 ```mermaid
 flowchart TD
-    A["整理活動 × 車站 × 小時<br/>檢查資料與 D−1 18:00 可得性"]
-    B["四組候選變數分開比較<br/>共同車站 × 時段交互作用"]
-    C["整年度向前切分<br/>補值、編碼與調參只用較早資料"]
-    D["完整設計 OLS<br/>無懲罰線性基準"]
-    E["Ridge<br/>內層選 L2 強度"]
-    F["Lasso<br/>內層選 L1 強度"]
-    G["XGBoost<br/>內層搜尋 90 組"]
-    H["產生過去 OOF 預測<br/>四模型融合／前二融合／選一／等權"]
-    I["共同外層年度評估<br/>逐時、尖峰、平均總量與逐年穩定性"]
-    J["補方向、分鐘到達及剩餘容量<br/>列車批次登車情境"]
-    K["取得營運限制後<br/>比較可行班表與成本"]
+    A["整理活動 × 車站 × 小時<br/>檢查 D−1 18:00 資訊可得性"]
+    B["四組事前候選資訊<br/>共同車站 × 時段結構"]
+    C["整年度向前切分<br/>補值、編碼、節點、調參只用過去"]
+    D["Ridge<br/>線性收縮"]
+    E["GAM<br/>受懲罰的平滑非線性"]
+    F["XGBoost<br/>門檻與條件組合"]
+    G["過去時間留出預測<br/>新三模型等權／學權重"]
+    H["共同外層年度比較<br/>同時保留 OLS、Lasso 及原融合"]
+    I["逐時、尖峰、年度與平均總量<br/>未見活動再確認"]
+    J["另補方向與分鐘到達、剩餘容量<br/>才接列車批次登車與調度"]
     A --> B --> C
-    C --> D & E & F & G
-    D & E & F & G --> H --> I
-    I -.-> J -.-> K
+    C --> D & E & F
+    D & E & F --> G --> H --> I
+    I -.-> J
 ```
 
 ### 詳細 workflow
 
 | 步驟 | 目前做法 |
 |---|---|
-| 1. 確定預測問題 | 活動前一天固定截止，預測四站 18–23 時；新公告／預報逐筆查發布時點 |
-| 2. 準備相同輸入 | 四組各自執行；一組內四模型共用同一編碼、缺值處理及交互項，不先用全資料篩變數 |
-| 3. 調整基模型 | OLS 完整擬合；其餘三者用訓練內時間驗證選參，不能隨機把同場不同列拆兩邊 |
-| 4. 選模型與融合 | 更早資料產生 OOF；前二規則與融合權重在這裡訓練，和固定四模型、選一作對照 |
-| 5. 評估 | 外層整年才計分；看全站、北門、逐年、實際尖峰和總量，不只挑漂亮個案 |
-| 6. 新場次確認 | 本次九場已反覆檢查，先固定下一次實驗規格；補未知發布時間再談完整事前驗證 |
-| 7. 接排隊與調度 | 還需來源時間定義、方向比例、分鐘到達、閘門到月台延遲、列車剩餘容量與班表限制；目前僅有舊版容量假設情境，不能直接當營運調度 |
+| 1. 固定問題 | D−1 18:00 預測四站 18–23 時，新欄位逐筆查發布時點 |
+| 2. 準備資料 | 各組提供相同候選資訊；訓練期補值、編碼及相依檢查，GAM 另外檢查平滑支持度 |
+| 3. 調基模型 | 訓練期整年度向前驗證；用共同 MAE 選 Ridge／Lasso／GAM／XGBoost 參數 |
+| 4. 學融合 | 更早資料生成 OOF；固定新三模型，分別等權與學共同 simplex 權重，保留舊方法對照 |
+| 5. 外層評分 | 在共同九場比較全站、北門、逐年、尖峰與總量；不只挑漂亮個案 |
+| 6. 再驗證 | 此批測試已反覆檢查，需未見活動確認，並補齊未知發布時間 |
+| 7. 排隊與調度 | 還需方向比例、分鐘到達、閘門至月台延遲、列車剩餘容量及班表限制；目前不能直接當營運調度 |
 
 ## 快速開始
 
-在專案根目錄執行：
+在專案根目錄執行。第六版比較器會核對第五版逐筆預測；換一台電腦時，若沒有私有第五版結果，需先重跑第五版：
 
 ```powershell
 uv sync --group analysis
-uv run --group analysis python -X utf8 src/run_analysis_v5.py --validate-only
+uv run --group analysis python -X utf8 src/run_analysis_v6.py --validate-only
 foreach ($variant in @('core', 'fireworks', 'weather', 'both')) {
-    uv run --group analysis python -X utf8 src/run_analysis_v5.py --config "configs/analysis_v5_$variant.json"
-    if ($LASTEXITCODE -ne 0) { throw "分析失敗：$variant" }
+    if (!(Test-Path ".local/analysis_v5/$variant/outer_predictions.csv")) {
+        uv run --group analysis python -X utf8 src/run_analysis_v5.py --config "configs/analysis_v5_$variant.json"
+        if ($LASTEXITCODE -ne 0) { throw "第五版分析失敗：$variant" }
+    }
+    uv run --group analysis python -X utf8 src/run_analysis_v6.py --config "configs/analysis_v6_$variant.json"
+    if ($LASTEXITCODE -ne 0) { throw "第六版分析失敗：$variant" }
 }
-uv run --group analysis python -X utf8 src/compare_analysis_v5.py
+uv run --group analysis python -X utf8 src/compare_analysis_v6.py
 uv run --group analysis python -X utf8 -m unittest discover -s tests -p 'test_analysis_v*.py'
 ```
 
@@ -184,9 +188,9 @@ uv run --group analysis python -X utf8 -m unittest discover -s tests -p 'test_an
 - `data/processed/calendar_baseline/candidate_audit.csv`
 - `data/processed/station_hourly.parquet`
 
-分析不用連 MySQL，也不會寫回 SQL；已附公開公告／預報來源。SQL、原始資料、逐筆預測及模型不提交，**只看 README、報告與 PNG 不需要資料庫**。比較程式核對共同來源、程式雜湊、完整四站六小時、真值、訓練截止、共同欄位與融合權重。[核對紀錄](result/analysis_v5/comparison_audit.json)。
+分析不用連 MySQL，也不寫回 SQL；公開公告／預報證據已附。SQL、原始資料、逐筆預測及模型不提交。**只看 README、報告與 PNG 不需要資料庫，也不用執行程式。** 比較器會查共同來源、雜湊、測試鍵、真值、時間切分及第五版逐筆重現；若舊結果來源不符，須以同一份輸入重跑第五版。[核對紀錄](result/analysis_v6/comparison_audit.json)。
 
-`--require-d1` 在整套資訊可得性尚未核實時會停止。可選舊 EDA 快照不參與預測。舊版重現命令保留在 `process.md`；第五版不需先跑舊版。125 項分析測試通過，包含時間隔離、共用矩陣、Lasso 數值收斂、融合及報表核對。
+`--require-d1` 在整套資訊可得性未核實時會停止。146 項分析測試通過，涵蓋時間隔離、共同輸入、Lasso／GAM 數值檢查、融合、舊結果重現與報表。
 
 <details>
 <summary>既有網站、前處理與文字雲操作</summary>
@@ -209,36 +213,34 @@ uv sync --group analysis --group notebook --extra social --extra web --extra app
 ```text
 統計實務/
 │
-├── README.md                       # 本次結果、流程與方法理由
+├── README.md                       # 結果、流程與選模型理由
 ├── process.md                      # 各版細節、公式與限制
 ├── pyproject.toml / uv.lock         # 套件與鎖定版本
-├── configs/analysis_v5_*.json       # 四組共用設計與調參設定
-├── scripts/collect_d1_gfs.py        # 歷史操作型預報與公開時間稽核
+├── configs/analysis_v6_*.json       # 四組 GAM 與融合設定
+├── scripts/collect_d1_gfs.py        # 歷史操作型預報及發布稽核
 │
 ├── src/
-│   ├── run_analysis_v5.py          # 第五版分析入口
-│   ├── compare_analysis_v5.py      # 共同樣本比較與報告
-│   ├── analysis_v5/
-│   │   ├── models.py              # 共同矩陣、四模型、選擇及融合
-│   │   └── reporting.py           # 核對、平均圖、尖峰曲線與報告
-│   ├── run_analysis.py            # 第一至四版入口，保留重現
-│   ├── analysis_v1/               # 共用資料、事前閘門及舊版分析
+│   ├── run_analysis_v6.py          # 第六版分析入口
+│   ├── compare_analysis_v6.py      # 核對第五版並比較共同樣本
+│   ├── analysis_v6/
+│   │   ├── models.py              # GAM、三模型融合及數值稽核
+│   │   └── reporting.py           # 指標、效果曲線、尖峰與平均圖
+│   ├── analysis_v5/               # 原四模型及選擇機制，保持不變
+│   ├── analysis_v1/               # 共用資料與 D−1 閘門
 │   └── main.py                    # 既有捷運前處理
 │
-├── result/analysis_v5/
-│   ├── report.md                  # 四組八種預測方式的實際比較
-│   ├── figures/                   # 模型、平均人次、融合權重及尖峰圖
-│   ├── tables/                    # 四組共同指標與年度選擇
+├── result/analysis_v6/
+│   ├── report.md                  # 四組十一種預測方式的比較
+│   ├── figures/                   # 六張分析圖
+│   ├── tables/                    # 共同指標、平均值及權重
 │   └── core/ fireworks/ weather/ both/
-│                                  # 各組選參、係數、稽核與執行紀錄
-├── result/analysis_v1/              # 第一版結果
-├── result/analysis_v2/              # 第二版交互作用比較
-├── result/analysis_v3/              # 第三版事前變數比較
-├── result/analysis_v4/              # 第四版煙火／天氣比較
+│                                  # 各組選參、稽核及執行紀錄
+├── result/analysis_v1/ ... analysis_v5/
+│                                  # 舊版結果，保留重現
 ├── app/                            # 前端、FastAPI 與 Tailscale
 ├── data/                           # 原始與整理資料，私下共享
-├── .local/analysis_v5/              # 私有逐筆預測及模型，不提交
-├── tests/                          # 資料、時間切分、模型與報表測試
+├── .local/analysis_v5/ analysis_v6/ # 私有逐筆預測與模型，不提交
+├── tests/                          # 資料、時間、模型及報表測試
 ├── docs/                           # 來源證據、資料規格及文獻
 ├── mysql/                          # 匯入程式；SQL 留本機
 └── results/                        # 舊前處理、社群與研究結果
@@ -246,7 +248,8 @@ uv sync --group analysis --group notebook --extra social --extra web --extra app
 
 ## 詳細說明與參考資料
 
-- [第五版完整報告](result/analysis_v5/report.md)／[實作細節與公式](process.md#16-第五版共同設計lasso-與先選模型再融合)
+- [第六版完整報告](result/analysis_v6/report.md)／[實作細節與公式](process.md#17-第六版gam-與三模型融合)
+- [第五版：Lasso 與先選後融合](result/analysis_v5/report.md)
 - [第四版：煙火／天氣分組](result/analysis_v4/report.md)／[第三版](result/analysis_v3/version_report.md)／[第二版交互作用比較](result/analysis_v2/comparison/report.md)／[第一版](result/analysis_v1/report.md)
 - [網站啟動](app/README.md)／[資料前處理](docs/data_preprocessing.md)／[資料庫結構](docs/database_schema.dbml)
 - [Threads](docs/threads_collection.md)／[PTT](docs/ptt_collection.md)／[Google Trends](mysql/GOOGLE_TRENDS_README.md)
@@ -255,6 +258,9 @@ uv sync --group analysis --group notebook --extra social --extra web --extra app
 | 原始文獻 | 本版用途與界線 |
 |---|---|
 | [Hoerl & Kennard（1970）](https://doi.org/10.1080/00401706.1970.10488634) | Ridge 的係數收縮與偏差／變異取捨；不保證本資料勝 OLS |
+| [Hastie & Tibshirani（1986）](https://doi.org/10.1214/ss/1177013604) | GAM 的加法平滑結構；不保證比線性模型準 |
+| [Eilers & Marx（1996）](https://doi.org/10.1214/ss/1038425655) | B-spline 基底與係數差分懲罰；本版用 5 個 cubic 基底的低複雜度設定 |
+| [pyGAM LinearGAM](https://pygam.readthedocs.io/en/latest/reference/_autosummary/pygam.pygam.LinearGAM.html)／[penalties 原始碼](https://github.com/dswah/pyGAM/blob/main/pygam/penalties.py) | 核對 Gaussian identity、P-spline 二階係數差分及無懲罰線性項；本版時間 MAE 選參，不用預設 GCV |
 | [Tibshirani（1996）](https://doi.org/10.1111/j.2517-6161.1996.tb02080.x) | Lasso 的 L1 收縮與稀疏係數；零係數不等於無因果影響 |
 | [Chen & Guestrin（2016），§2](https://arxiv.org/abs/1603.02754) | 正則化加法樹；非線性與條件分支的建模依據，本案 90 組網格為自行設定 |
 | [Breiman（1996），§1、2、5、7](https://statistics.berkeley.edu/sites/default/files/tech-reports/367.pdf) | 用留出預測學融合權重；原文主要是非負最小平方，本版活動平衡 MAE、總和為 1、先選前二是明示延伸，非原文保證最優 |

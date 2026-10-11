@@ -757,6 +757,18 @@ wheels = [
 ]
 
 [[package]]
+name = "progressbar2"
+version = "4.6.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "python-utils" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/0c/1e/5bd376abe32a392e74fffd82feb42ee1472d263bd358d628af20663d0346/progressbar2-4.6.0.tar.gz", hash = "sha256:fe48c8955a84428af77bff2642ba47041e1b8f7c867a5b7cc94f8bc255a8f0cf", size = 542464, upload-time = "2026-08-14T01:07:30.008Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/70/4c/ba64c450164fa4feaa9c4bb1c6445811d89d6a1995bfc58d039273b698af/progressbar2-4.6.0-py3-none-any.whl", hash = "sha256:2d78bdeb1debef92a39dd9042e0689542bd72d6e2f30b13432db371aa9d8ee4e", size = 104185, upload-time = "2026-08-14T01:07:28.474Z" },
+]
+
+[[package]]
 name = "prompt-toolkit"
 version = "3.0.53"
 source = { registry = "https://pypi.org/simple" }
@@ -864,6 +876,20 @@ wheels = [
 ]
 
 [[package]]
+name = "pygam"
+version = "0.11.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+    { name = "progressbar2" },
+    { name = "scipy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e4/cd/1395e0a802693503802fbf445b286bf66ce1fe375481dce2e44f806e06b3/pygam-0.11.0.tar.gz", hash = "sha256:fa8a08f377a458eceb992e3c68d01c258e02d30c196ba746bd5d4a77329c3b8c", size = 79198, upload-time = "2025-11-18T07:58:47.334Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a7/43/dc7e5969bb4cb3c2ce68b2635afd54f5ee894e735540a749dcbbd1303f35/pygam-0.11.0-py3-none-any.whl", hash = "sha256:da22b4e479391405ed1a2b04116246ebcb986f01020bdf4477602c7be2207ed3", size = 80345, upload-time = "2025-11-18T07:58:46.254Z" },
+]
+
+[[package]]
 name = "pygments"
 version = "2.21.0"
 source = { registry = "https://pypi.org/simple" }
@@ -891,6 +917,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/66/c0/0c8b6ad9f17a802ee498c46e004a0eb49bc148f2fd230864601a86dcf6db/python-dateutil-2.9.0.post0.tar.gz", hash = "sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3", size = 342432, upload-time = "2024-03-01T18:36:20.211Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ec/57/56b9bcc3c9c6a792fcbaf139543cee77261f3651ca9da0c93f5c1221264b/python_dateutil-2.9.0.post0-py2.py3-none-any.whl", hash = "sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427", size = 229892, upload-time = "2024-03-01T18:36:18.57Z" },
+]
+
+[[package]]
+name = "python-utils"
+version = "4.1.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/84/78/5d078acb5d1df9f0a9c783a5042d6ca97dd1c4d6cddaabff4a93a06e6ca2/python_utils-4.1.1.tar.gz", hash = "sha256:caa4b24521216ab385e160bf48aa01b0157c24c98b07d6442894ec9d34af8435", size = 77721, upload-time = "2026-10-11T07:05:53.83Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/41/7e/420e8a68be1b2b3e026c505ba621db26d9a885695f242d80250116821b83/python_utils-4.1.1-py3-none-any.whl", hash = "sha256:4096bd50aaef640308f3a2d230a76519557c05a0cbb031599482cb91723da9bb", size = 49516, upload-time = "2026-10-11T07:05:52.277Z" },
 ]
 
 [[package]]
@@ -1104,6 +1142,7 @@ analysis = [
     { name = "matplotlib" },
     { name = "numpy" },
     { name = "pandas" },
+    { name = "pygam" },
     { name = "scikit-learn" },
     { name = "scipy" },
     { name = "xgboost" },
@@ -1134,6 +1173,7 @@ analysis = [
     { name = "matplotlib", specifier = ">=3.10.9" },
     { name = "numpy", specifier = ">=2.2.6" },
     { name = "pandas", specifier = ">=2.3.3" },
+    { name = "pygam", specifier = ">=0.10,<0.12" },
     { name = "scikit-learn", specifier = ">=1.7,<1.8" },
     { name = "scipy", specifier = ">=1.15.3" },
     { name = "xgboost", specifier = ">=3.1,<3.2" },

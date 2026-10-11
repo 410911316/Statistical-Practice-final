@@ -1,0 +1,4 @@
+﻿outer_year,column,rows,below_training_range_rows,above_training_range_rows,outside_training_range_events,behavior
+2024,day_of_year,72,0,0,0,linear_extrapolation_not_clipping_or_refitting_knots
+2025,day_of_year,72,0,0,0,linear_extrapolation_not_clipping_or_refitting_knots
+2026,day_of_year,72,0,0,0,linear_extrapolation_not_clipping_or_refitting_knots
