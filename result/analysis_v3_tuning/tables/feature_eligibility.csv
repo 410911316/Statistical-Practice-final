@@ -1,0 +1,12 @@
+﻿feature,use,d1_deployable,reason
+baseline_hourly_56d,retrospective_model,False,
+station,retrospective_model,True,
+hour,retrospective_model,True,
+is_weekend,retrospective_model,True,
+day_of_year,retrospective_model,True,
+year_index,retrospective_model,True,
+observed_weather,EDA_only,,Measured after forecast cutoff; no historical forecast vintage supplied.
+observed_has_drone_show,EDA_only,,Sparse actual event status; not a verified pre-event announcement.
+observed_fireworks_seconds,EDA_only,,"Actual duration, not verified planned duration available at D-1."
+annual_finance,excluded,,Annual-level sparse funding and unverified release timing.
+social_trends,excluded,,No comparable complete historical D-1 series.

@@ -72,6 +72,22 @@ def run(args):
     print(json.dumps(data_info["activity_counts"], ensure_ascii=False), flush=True)
     output, private, reference, reference_manifest = resolve_run_paths(args, config)
     comparison_info = verify_comparison_inputs(reference, reference_manifest, data_info) if reference else None
+    d1_audit = None
+    if config.get("d1_features"):
+        from analysis_v1.d1_features import attach_d1_features
+        frame, data_info, d1_audit = attach_d1_features(
+            frame, data_info, ROOT, config["d1_source_files"], config["d1_features"],
+            cutoff_hour=config.get("d1_cutoff_hour", 18))
+        if comparison_info is not None:
+            comparison_info["same_input_hashes"] = False
+            comparison_info["same_existing_input_hashes"] = True
+            comparison_info["added_source_files"] = data_info["audit"]["new_d1_source_files"]
+    if not config.get("include_historical_baseline", True):
+        data_info["feature_eligibility"]["baseline_hourly_56d"] = {
+            "use": "retrospective_comparator_only_excluded_from_models",
+            "reason": "Historical OD publication timestamps are unverified; no baseline enters any fitted model."}
+        data_info["audit"]["model_feature_whitelist"].remove("baseline_hourly_56d")
+        data_info["audit"]["baseline_excluded_from_fitted_models"] = True
     if args.require_d1 and not data_info["audit"]["d1_deployable"]:
         raise ValueError("尚未核實歷史 OD／日曆發布版本，不能宣稱已驗證 D−1 預測。請補齊 available_at 與預報版本後再建立正式部署資料。")
     if args.validate_only:
@@ -79,6 +95,8 @@ def run(args):
         return
     for path in (output / "figures", output / "tables", private):
         path.mkdir(parents=True, exist_ok=True)
+    if d1_audit is not None:
+        write_csv(d1_audit, output / "tables/d1_feature_audit.csv")
     trainer = Trainer(config)
     predictions, folds, meta, fitted = trainer.backtest(frame, progress=lambda message: print(message, flush=True))
     metrics = metrics_table(predictions)
@@ -142,16 +160,24 @@ def run(args):
     if reference is not None:
         from analysis_v1.comparison import write_comparison
         original = pd.read_csv(reference, parse_dates=["event_date"])
-        # OLS and the historical baseline are unchanged experimental controls.
+        # New features may change OLS; baseline remains a paired control.
+        controls = config.get("comparison_unchanged_models", ["baseline", "ols"])
+        if "baseline" not in controls or not set(controls) <= {"baseline", "ols", "ridge", "xgboost"}:
+            raise ValueError("Comparison must retain the baseline control")
         keys = ["event_date", "station", "hour"]
         before = original.sort_values(keys).reset_index(drop=True)
         after = predictions.sort_values(keys).reset_index(drop=True)
         if not before[keys].equals(after[keys]) or not np.allclose(
-                before[["baseline", "ols"]], after[["baseline", "ols"]], rtol=0, atol=1e-8):
-            raise ValueError("Unchanged OLS/baseline controls differ; comparison requires investigation")
-        write_comparison(original, predictions, output / "comparison")
-        manifest["comparison"] = {**comparison_info, "ols_and_baseline_controls_match": True,
+                before[controls], after[controls], rtol=0, atol=1e-8):
+            raise ValueError("Unchanged model controls differ; comparison requires investigation")
+        write_comparison(original, predictions, output / "comparison",
+                         title=config.get("comparison_title"))
+        manifest["comparison"] = {**comparison_info, "matched_unchanged_models": controls,
+                                  "ols_and_baseline_controls_match": "ols" in controls,
                                   "report": "comparison/report.md", "confirmatory_test": False}
+    if config.get("tuning_diagnostics"):
+        from analysis_v1.d1_reporting import build_tuning_figures
+        build_tuning_figures(choices, folds, output, d1_audit)
     write_json(output / "run_manifest.json", manifest)
     write_report(output, metrics, folds, data_info, queue, config=config, private_output=private)
     print(metrics.to_string(index=False), flush=True)

@@ -15,7 +15,12 @@ from xgboost import XGBRegressor
 BASE_MODELS = ("ols", "ridge", "xgboost")
 ALL_MODELS = ("baseline", *BASE_MODELS, "equal", "stack")
 CORE_NUMERIC = ("baseline_hourly_56d",)
-ALLOWED_CANDIDATES = {"is_weekend", "day_of_year", "year_index"}
+MISSING_ALLOWED_CANDIDATES = {
+    "planned_drone", "planned_fireworks_minutes", "planned_fireworks_start_hour",
+    "planned_program_minutes", "forecast_temperature_c", "forecast_precip_probability",
+    "forecast_wind_speed_m_s", "forecast_cloud_cover_pct",
+}
+ALLOWED_CANDIDATES = {"is_weekend", "day_of_year", "year_index"} | MISSING_ALLOWED_CANDIDATES
 
 
 def event_mae(frame: pd.DataFrame, prediction: np.ndarray) -> float:
@@ -36,19 +41,51 @@ def temporal_splits(frame: pd.DataFrame, min_events: int):
 class Encoder:
     """Fit numeric scaling, reference levels and constants on this train only."""
 
-    def fit(self, frame: pd.DataFrame, groups: tuple[str, ...], station_hour_interaction: bool = False):
+    def fit(self, frame: pd.DataFrame, groups: tuple[str, ...], station_hour_interaction: bool = False,
+            include_historical_baseline: bool = True):
         if not set(groups) <= ALLOWED_CANDIDATES:
             raise ValueError("Unapproved or post-event feature in model")
         self.groups = groups
         self.station_hour_interaction = station_hour_interaction
-        self.numeric = list(CORE_NUMERIC) + list(groups)
-        self.mean = frame[self.numeric].mean()
-        self.scale = frame[self.numeric].std(ddof=0).replace(0, 1)
+        self.include_historical_baseline = include_historical_baseline
+        self.numeric = (list(CORE_NUMERIC) if include_historical_baseline else []) + list(groups)
+        # Only independently approved D-1 fields may be unknown. Their source
+        # timing is checked by the loader; this encoder must never use holdout
+        # values to learn an imputation, scale, or missingness effect.
+        self.imputation_values = {}
+        self.imputation_audit = {}
+        self.missing_indicator_numeric = [name for name in self.numeric
+                                          if name in MISSING_ALLOWED_CANDIDATES]
+        self.all_missing_numeric = []
+        for name in self.missing_indicator_numeric:
+            values = pd.to_numeric(frame[name], errors="raise")
+            known = values.dropna()
+            self._validate_optional_values(name, known)
+            if known.empty:
+                value, strategy = 0.0, "all_training_values_unknown_placeholder_dropped"
+                self.all_missing_numeric.append(name)
+            elif name == "planned_drone":
+                value, strategy = float(known.mode().iloc[0]), "training_mode_tie_choose_zero"
+            else:
+                value, strategy = float(known.median()), "training_median"
+            self.imputation_values[name] = value
+            self.imputation_audit[name] = {
+                "strategy": strategy, "fill_value": value,
+                "training_known_rows": int(values.notna().sum()),
+                "training_unknown_rows": int(values.isna().sum()),
+                "scope": "training_fold_only_unknown_is_not_observed_zero",
+            }
+        values = self._numeric_values(frame)
+        self.mean = values.mean()
+        self.scale = values.std(ddof=0).replace(0, 1)
         # Dummy/binary columns stay on their 0/1 scale, as specified in the PDF.
         if "is_weekend" in self.numeric:
             self.mean["is_weekend"], self.scale["is_weekend"] = 0.0, 1.0
+        if "planned_drone" in self.numeric:
+            self.mean["planned_drone"], self.scale["planned_drone"] = 0.0, 1.0
         self.categories = {c: sorted(frame[c].unique()) for c in ("station", "hour")}
-        self.all_names = self.numeric + [f"{c}={v}" for c, cats in self.categories.items() for v in cats[1:]]
+        self.all_names = self.numeric + [f"{name}:missing" for name in self.missing_indicator_numeric]
+        self.all_names += [f"{c}={v}" for c, cats in self.categories.items() for v in cats[1:]]
         if self.station_hour_interaction:
             # Treatment coding retains both main effects. The reference station
             # and hour are learned from this training subset, never the holdout.
@@ -63,8 +100,27 @@ class Encoder:
         self.dropped_constants = [n for n, keep in zip(self.all_names, self.keep) if not keep]
         return self
 
+    @staticmethod
+    def _validate_optional_values(name, known):
+        if not np.isfinite(known.to_numpy(float)).all():
+            raise ValueError(f"Nonfinite approved feature {name}; infinity is not missing")
+        if name == "planned_drone" and not known.isin([0, 1]).all():
+            raise ValueError("planned_drone must be 0, 1, or unknown")
+
+    def _numeric_values(self, frame):
+        values = frame[self.numeric].copy()
+        # Old joblib encoders have no imputation attributes; their design and
+        # predictions retain the original strictly complete-input behavior.
+        for name, fill in getattr(self, "imputation_values", {}).items():
+            column = pd.to_numeric(values[name], errors="raise")
+            self._validate_optional_values(name, column.dropna())
+            values[name] = column.fillna(fill)
+        return values
+
     def _raw(self, frame):
-        arrays = [((frame[self.numeric] - self.mean) / self.scale).to_numpy(float)]
+        arrays = [((self._numeric_values(frame) - self.mean) / self.scale).to_numpy(float)]
+        arrays.extend([frame[name].isna().to_numpy(float)[:, None]
+                       for name in getattr(self, "missing_indicator_numeric", [])])
         for col, cats in self.categories.items():
             arrays.extend([(frame[col].to_numpy() == val).astype(float)[:, None] for val in cats[1:]])
         # Previously saved v1 encoders do not have this attribute.
@@ -95,9 +151,12 @@ class Fitted:
     rank: int
     columns: int
     fallback: str | None = None
+    fallback_constant: float | None = None
 
     def predict(self, frame):
         if self.fallback:
+            if getattr(self, "fallback_constant", None) is not None:
+                return np.full(len(frame), max(0., self.fallback_constant))
             return np.maximum(0, frame.baseline_hourly_56d.to_numpy(float))
         x = self.encoder.transform(frame)
         if self.name == "ols":
@@ -107,22 +166,32 @@ class Fitted:
         return np.maximum(0, np.asarray(pred, dtype=float))
 
     def info(self):
-        return {"model": self.name, "groups": list(self.encoder.groups), "columns": self.encoder.names,
-                "dropped_constants": self.encoder.dropped_constants, "params": self.params,
-                "rank": self.rank, "n_columns_with_intercept": self.columns, "fallback": self.fallback}
+        result = {"model": self.name, "groups": list(self.encoder.groups), "columns": self.encoder.names,
+                  "dropped_constants": self.encoder.dropped_constants, "params": self.params,
+                  "rank": self.rank, "n_columns_with_intercept": self.columns, "fallback": self.fallback,
+                  "includes_historical_baseline": getattr(self.encoder, "include_historical_baseline", True),
+                  "fallback_constant": getattr(self, "fallback_constant", None)}
+        if getattr(self.encoder, "imputation_audit", {}):
+            result["imputation"] = self.encoder.imputation_audit
+            result["all_training_values_unknown"] = self.encoder.all_missing_numeric
+            result["missing_indicator_candidates"] = self.encoder.missing_indicator_numeric
+        return result
 
 
 def fit_one(frame, name, groups, params, config):
     encoder = Encoder().fit(frame, tuple(groups), station_hour_interaction=(
-        name == "ridge" and config.get("ridge_station_hour_interaction", False)))
+        name == "ridge" and config.get("ridge_station_hour_interaction", False)),
+        include_historical_baseline=config.get("include_historical_baseline", True))
     x = encoder.transform(frame)
     design = np.column_stack([np.ones(len(x)), x])
     rank = int(np.linalg.matrix_rank(design))
     y = frame.y.to_numpy(float)
-    fallback = None
+    fallback, fallback_constant = None, None
     if name == "ols":
         if rank < design.shape[1]:
             fallback, estimator = "rank_deficient_use_historical_baseline", None
+            if not config.get("include_historical_baseline", True):
+                fallback, fallback_constant = "rank_deficient_use_training_mean", float(y.mean())
         else:
             estimator = np.linalg.lstsq(design, y, rcond=None)[0]
     elif name == "ridge":
@@ -138,7 +207,7 @@ def fit_one(frame, name, groups, params, config):
         estimator = XGBRegressor(**xgb_params).fit(x, y)
     else:
         raise ValueError(name)
-    return Fitted(name, encoder, estimator, params, rank, design.shape[1], fallback)
+    return Fitted(name, encoder, estimator, params, rank, design.shape[1], fallback, fallback_constant)
 
 
 def solve_stack(predictions, truth, event_dates):
@@ -215,7 +284,15 @@ class Trainer:
         for _ in range(self.config["max_forward_groups"]):
             candidates = []
             for candidate in self.config["candidate_groups"]:
-                if candidate in groups or frame[candidate].nunique() < 2:
+                if candidate in groups:
+                    continue
+                values = frame[candidate]
+                # A missingness effect can be learned when a binary field has
+                # one known level plus unknowns. Entirely unknown columns cannot
+                # contribute, and future values must not activate them.
+                missing_varies = (candidate in MISSING_ALLOWED_CANDIDATES
+                                  and values.isna().any() and values.notna().any())
+                if values.nunique(dropna=True) < 2 and not missing_varies:
                     continue
                 trial = groups + [candidate]
                 full = fit_one(frame, "ols", trial, {}, self.config)

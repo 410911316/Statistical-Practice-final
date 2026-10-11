@@ -147,6 +147,25 @@ def write_report(output, metrics, folds, data_info, queue, config=None, private_
     interaction_note = ("本版 Ridge 在原主效果外新增 15 個車站 × 小時交互項；OLS 保持原設計作對照。"
                         f"XGBoost 不另加這組乘積欄，改由樹分裂學習交互，使用 {len(config.get('xgb_grid', []))} 組預先指定的參數搜尋。"
                         if config.get("ridge_station_hour_interaction") else "本版線性模型只有站別與小時主效果，尚未加入交互作用。")
+    if config.get("d1_features"):
+        interaction_note = ("Ridge 保留 15 個站別 × 時段交互項；三模型均可使用經時間閘門核對的新候選，"
+                            "OLS 另在訓練內選變數。XGBoost 透過樹分裂學交互作用，"
+                            f"搜尋 {len(config['xgb_grid'])} 組預先固定設定。")
+    core_note = ("固定核心為同站同時段一般日基準、站別及小時" if config.get("include_historical_baseline", True)
+                 else "固定核心只有站別及小時；發布時間未核實的一般日基準只列為回顧式對照，不進入三模型或融合")
+    candidate_note = "、".join(config.get("candidate_groups", ["is_weekend", "day_of_year", "year_index"]))
+    d1_note = ""
+    if config.get("d1_features"):
+        d1_note = ("\n\n新節目／天氣輸入逐筆要求可核對的來源版本在活動前一天 18:00（臺北時間）以前發布；"
+                   "預報須另核對初始化、有效時間及發布時間。未知保留 NaN，補值與缺值指標只在訓練折學習；"
+                   "整欄未知會被丟棄，不能把未知無人機當成沒有。歷史 OD 訓練標籤發布時間、日曆版本與已辦活動篩選仍屬回顧條件，"
+                   "新增輸入通過時間檢查不代表全流程已驗證部署。\n\n"
+                   "[逐筆來源與截止時間](tables/d1_feature_audit.csv)\n\n"
+                   "![新增變數可用率](figures/d1_feature_coverage.png)")
+    tuning_note = ("\n\n![XGBoost 訓練內調參熱圖](figures/xgb_tuning_heatmap.png)\n\n"
+                   "熱圖每格是在該樹深／樹數下，其他參數取最低內層 MAE；不使用外層真值。"
+                   "[選定參數](tables/xgb_selected_params.csv)／[完整熱圖數值](tables/xgb_tuning_surface.csv)。"
+                   if config.get("tuning_diagnostics") else "")
     comparison_note = ("原版與本版的同日期比較見 [改版比較報告](comparison/report.md)。本次改動由第一版結果啟發，"
                        "同一批外層年份已被檢視，因此是探索式回顧比較，不能當作全新未接觸的確認性測試。"
                        if config.get("comparison_reference") else "")
@@ -181,11 +200,15 @@ MAE／RMSE 先按活動平均；目前每場同為 24 列。尖峰低估先找�
 
 ## 3. 變數、選模與權重
 
-固定核心為同站同時段一般日基準、站別及小時；候選為週末、年內日序與年度趨勢。OLS 用內層時間 MAE 做 Forward Selection，Ridge／XGBoost 使用全部合格候選。連續欄位標準化只使用當次訓練資料；VIF 是設計診斷，不作機械式刪欄門檻。年度與日序可能代表活動型態差異，不是因果效果。
+{core_note}；候選為 {candidate_note}。OLS 用內層時間 MAE 做 Forward Selection，Ridge／XGBoost 使用全部合格候選。連續欄位標準化只使用當次訓練資料；VIF 是設計診斷，不作機械式刪欄門檻。年度與日序可能代表活動型態差異，不是因果效果。
+
+{d1_note}
 
 {interaction_note}
 
 {markdown_table(pd.DataFrame(rows))}
+
+{tuning_note}
 
 ![權重](figures/stack_weights.png)
 ![VIF](figures/training_vif.png)

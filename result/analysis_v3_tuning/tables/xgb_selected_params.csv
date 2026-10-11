@@ -1,0 +1,4 @@
+﻿outer_year,train_end,max_depth,n_estimators,min_child_weight,reg_lambda,inner_event_mae,candidate_count,selection_scope
+2024,2023-08-20,5,50,1,10.0,651.5013491312662,90,inner_event_balanced_mae_training_only_not_outer_test
+2025,2024-08-10,5,100,1,10.0,626.7204597668768,90,inner_event_balanced_mae_training_only_not_outer_test
+2026,2025-08-30,5,250,1,10.0,585.322292606036,90,inner_event_balanced_mae_training_only_not_outer_test

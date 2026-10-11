@@ -173,7 +173,7 @@ def _figures(old, new, tables, output):
     save(fig, figures / "metrics_before_after.png")
 
 
-def _report(tables, old, output):
+def _report(tables, old, output, title=None):
     changes = tables["metrics_change"]
     peaks = tables["beimen_event_peaks"]
     summary = tables["beimen_peak_summary"].set_index("model")
@@ -202,7 +202,8 @@ def _report(tables, old, output):
                            "XGB 前": x.prediction_at_actual_peak_before,
                            "XGB 後": x.prediction_at_actual_peak_after})
     years = "、".join(map(str, sorted(old.event_date.dt.year.unique())))
-    text = f"""# 車站 × 時段 Ridge 與 XGBoost 調參：改版前後比較
+    title = title or "車站 × 時段 Ridge 與 XGBoost 調參：改版前後比較"
+    text = f"""# {title}
 
 ## 比較範圍
 
@@ -239,7 +240,7 @@ def _report(tables, old, output):
     (output / "report.md").write_text(text, encoding="utf-8")
 
 
-def write_comparison(old: pd.DataFrame, new: pd.DataFrame, output: Path):
+def write_comparison(old: pd.DataFrame, new: pd.DataFrame, output: Path, title=None):
     """Write four aggregate tables, four figures, and a self-contained report."""
     old, new = align_predictions(old, new)
     tables = comparison_tables(old, new)
@@ -249,5 +250,5 @@ def write_comparison(old: pd.DataFrame, new: pd.DataFrame, output: Path):
     for name, table in tables.items():
         table.to_csv(output / "tables" / f"{name}.csv", index=False, encoding="utf-8-sig", date_format="%Y-%m-%d")
     _figures(old, new, tables, output)
-    _report(tables, old, output)
+    _report(tables, old, output, title=title)
     return tables

@@ -1,0 +1,659 @@
+{
+  "version": "analysis_v3_20261011",
+  "evaluation_kind": "exploratory_retrospective_forward_comparison_after_v1_diagnostics_not_verified_D_minus_1",
+  "seed": 20261010,
+  "outer_years": [
+    2024,
+    2025,
+    2026
+  ],
+  "min_inner_train_events": 2,
+  "min_base_train_events": 4,
+  "min_inner_folds": 2,
+  "max_forward_groups": 2,
+  "min_forward_improvement": 0.0,
+  "candidate_groups": [
+    "is_weekend",
+    "day_of_year",
+    "year_index",
+    "planned_drone",
+    "planned_fireworks_minutes",
+    "planned_fireworks_start_hour",
+    "planned_program_minutes",
+    "forecast_temperature_c",
+    "forecast_wind_speed_m_s",
+    "forecast_cloud_cover_pct"
+  ],
+  "ridge_lambdas": [
+    0.001,
+    0.01,
+    0.1,
+    1.0,
+    10.0
+  ],
+  "xgb_grid": [
+    {
+      "max_depth": 1,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 1,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 2,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 3,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 4,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 50,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 50,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 50,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 100,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 100,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 100,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 250,
+      "min_child_weight": 1,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 250,
+      "min_child_weight": 6,
+      "reg_lambda": 10.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 1.0
+    },
+    {
+      "max_depth": 5,
+      "n_estimators": 250,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0
+    }
+  ],
+  "xgb_fixed": {
+    "learning_rate": 0.05,
+    "min_child_weight": 24,
+    "reg_lambda": 10.0,
+    "subsample": 1.0,
+    "colsample_bytree": 1.0
+  },
+  "stack_objective": "event_balanced_mae_simplex_lp",
+  "queue_example": {
+    "event_date": "2026-08-15",
+    "station": "北門",
+    "forecast_model": "stack",
+    "direction_shares": {
+      "方向A_假設": 0.6,
+      "方向B_假設": 0.4
+    },
+    "walk_delay_minutes": 5,
+    "scenarios": [
+      {
+        "name": "假設每6分鐘",
+        "headway_minutes": 6,
+        "first_train_minutes": 6,
+        "available_capacity": 300,
+        "clearance_minutes": 120,
+        "assumptions": [
+          "純教學情境：每班剩餘300人、均勻分鐘到達、未驗證北捷營運可行性。"
+        ]
+      },
+      {
+        "name": "假設每4分鐘",
+        "headway_minutes": 4,
+        "first_train_minutes": 4,
+        "available_capacity": 300,
+        "clearance_minutes": 120,
+        "assumptions": [
+          "純教學情境：每班剩餘300人、均勻分鐘到達、未驗證北捷營運可行性。"
+        ]
+      },
+      {
+        "name": "假設每3分鐘",
+        "headway_minutes": 3,
+        "first_train_minutes": 3,
+        "available_capacity": 300,
+        "clearance_minutes": 120,
+        "assumptions": [
+          "純教學情境：每班剩餘300人、均勻分鐘到達、未驗證北捷營運可行性。"
+        ]
+      }
+    ]
+  },
+  "report_title": "第三版：事前公告與歷史預報，排除未核實發布時間的 OD 基準",
+  "ridge_station_hour_interaction": true,
+  "output_dir": "result/analysis_v3",
+  "private_output_dir": ".local/analysis_v3",
+  "comparison_reference": ".local/analysis_v2/outer_predictions.csv",
+  "comparison_manifest": "result/analysis_v2/run_manifest.json",
+  "experiment_notes": [
+    "New covariate values require independently verified source publication before D-1 18:00 Taipei.",
+    "Unknown and post-cutoff values remain missing, imputation is learned within each training fold.",
+    "Historical baseline excluded from fitted models.",
+    "Fixed 90 XGBoost candidates; inner event-balanced MAE only, not outer peak tuning.",
+    "Earlier training-label publication and held-event sample selection remain retrospective limitations."
+  ],
+  "comparison_unchanged_models": [
+    "baseline"
+  ],
+  "comparison_title": "第三版：事前公告與歷史預報，排除未核實發布時間的 OD 基準：與對照版本比较",
+  "tuning_diagnostics": true,
+  "d1_features": [
+    "planned_drone",
+    "planned_fireworks_minutes",
+    "planned_fireworks_start_hour",
+    "planned_program_minutes",
+    "forecast_temperature_c",
+    "forecast_wind_speed_m_s",
+    "forecast_cloud_cover_pct"
+  ],
+  "d1_source_files": [
+    "docs/d1_program_sources.json",
+    "docs/d1_weather_sources.json"
+  ],
+  "d1_cutoff_hour": 18,
+  "include_historical_baseline": false
+}
