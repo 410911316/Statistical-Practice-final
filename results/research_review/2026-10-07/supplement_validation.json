@@ -1,0 +1,16 @@
+{
+  "database_counts": {
+    "calendar": 3652,
+    "timing_rows": 26,
+    "event_calendar": 26,
+    "eligible_beimen": 21,
+    "unverified_cloud": 0,
+    "verified_weather": 1008,
+    "calendar_baseline": 104,
+    "verified_midnight": 42
+  },
+  "context_rows": 624,
+  "held_context_weather_rows": 504,
+  "source_od_rows": 140789493,
+  "unit_tests_passed": 72
+}

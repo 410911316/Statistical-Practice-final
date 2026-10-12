@@ -1,0 +1,23 @@
+{
+  "snapshot_sha256": "3c45a0ca040ae3c33037f2a5e0202bbd68af07f9945ba3e163344e25835239be",
+  "input_manifest_sha256": "930449fd0599b93d0aff3a821c81dc9f77deeb842d619e2a6e4140f55ea2e7ff",
+  "baseline_policy": "same_weekday_calendar_56d_nearest4_v1",
+  "script_sha256": "b4a8c49045bd495987772ca2af30a110d80064ff0490d7f285e7b0eb94ba73f0",
+  "outputs": {
+    "01_beimen_event_totals.png": "bb3fdbb66901a9cc28a55c1ed4206f8a224dd3b68261d43478485d0311de07ff",
+    "02_station_hour_profiles.png": "f39a9992b72173c06e6b1b9bfb9a569b5e4fab490bff2923396dd5053607ed7e",
+    "03_contrast_diagnostics.png": "da12dcd80f20834af2802cc51fa3d1809138c48e5a7a01843e3f7d99935ed902",
+    "baseline_candidates.csv": "a62fd0549da4d607cf061696995712c006b8d6568e12ae9844e13f7ddc4bcef5",
+    "calendar_baseline_windows.csv": "17540051f8736153caba1d073ecc1e89d7ca7efc38e68851ff82cbedac09ae86",
+    "cancelled_postponed.csv": "bfc4bd1a5d2a8d745adf0f0cf5a8d9136be64f67dd4be088ffcd9219a4577aef",
+    "event_station_summary.csv": "c89a37defb6e8ee74932b4c2c6039cce05f39b58328d9c791676d7391b344517",
+    "hourly_profile.csv": "37ddf572d3b85cb3cda33f0bd0fac9e3a2cedb6f358127496e5a5c12226202b2",
+    "hourly_window_reconciliation.csv": "edd6ecc57762d8afcf4a320c101bba7d6d72fbf2728f3fe4f8c186e31a1c561c",
+    "leave_one_year_out.csv": "78aa940b200c90a4e677b479d3c7d4954d658220bf8949b96f65065ad18d96db",
+    "primary_beimen_events.csv": "236a7bb07af311d61470e142d391a2d72ee82d65c002e2331603a3f48adcb111",
+    "selected_baseline_source_hours.csv": "1b5cd9265a140e56fff3d28ceb392d5ac8129185739bccd00ab1d7792b8759a2",
+    "station_descriptive.csv": "62b0cd4ffc1cf2fc589dc4c3cb9ac014367c68520eabfd9ef88460f2eed0fb59",
+    "summary.json": "dd0d0a8a84e58f75c70a13c9d37807c85a71c9c78a1154febb9bfcf16599abac",
+    "year_mean_contrasts.csv": "76d395bcee0f80f84bac017c37b89f68e3e7896378d7b3b32ab23cde6fd7b840"
+  }
+}

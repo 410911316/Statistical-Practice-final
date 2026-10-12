@@ -1,0 +1,419 @@
+{
+  "data_source": "original fixed snapshot; no author functions used",
+  "n": 13,
+  "dates": [
+    "2017-08-26",
+    "2018-08-18",
+    "2020-08-29",
+    "2021-10-16",
+    "2022-07-30",
+    "2023-08-20",
+    "2024-07-17",
+    "2024-07-31",
+    "2024-08-10",
+    "2025-08-30",
+    "2026-07-25",
+    "2026-08-05",
+    "2026-08-15"
+  ],
+  "friedman": {
+    "Q": 39.0,
+    "W": 1.0,
+    "tie_correction": 1.0,
+    "ranks_mean": [
+      4.0,
+      3.0,
+      2.0,
+      1.0
+    ],
+    "B": 199999,
+    "seed": 20261006,
+    "extreme": 0,
+    "p_mc": 5e-06
+  },
+  "station_sign_tests": {
+    "大橋頭站": {
+      "positive": 13,
+      "negative": 0,
+      "ties": 0,
+      "p": 0.000244140625,
+      "median": 0.4242696936303556,
+      "mean": 0.46679670336661955,
+      "holm3": 0.000732421875
+    },
+    "雙連": {
+      "positive": 13,
+      "negative": 0,
+      "ties": 0,
+      "p": 0.000244140625,
+      "median": 0.9746128786383217,
+      "mean": 0.880288734835948,
+      "holm3": 0.000732421875
+    },
+    "民權西路": {
+      "positive": 13,
+      "negative": 0,
+      "ties": 0,
+      "p": 0.000244140625,
+      "median": 1.1552809432178197,
+      "mean": 1.1531780107403198,
+      "holm3": 0.000732421875
+    }
+  },
+  "late_share": {
+    "positive": 13,
+    "negative": 0,
+    "ties": 0,
+    "p": 0.000244140625,
+    "median": 0.33638937731846497,
+    "mean": 0.3116534629695685
+  },
+  "peak": {
+    "北門": {
+      "n": 21,
+      "median_peak_share": 0.4201264050259244,
+      "mean_peak_share": 0.41506526867974103,
+      "tied_events": 0,
+      "hours_frequency": {
+        "18": 0,
+        "19": 0,
+        "20": 3,
+        "21": 18,
+        "22": 0,
+        "23": 0
+      }
+    },
+    "大橋頭站": {
+      "n": 21,
+      "median_peak_share": 0.28242537812876456,
+      "mean_peak_share": 0.3293765829571573,
+      "tied_events": 0,
+      "hours_frequency": {
+        "18": 6,
+        "19": 0,
+        "20": 0,
+        "21": 15,
+        "22": 0,
+        "23": 0
+      }
+    },
+    "雙連": {
+      "n": 21,
+      "median_peak_share": 0.279125764030376,
+      "mean_peak_share": 0.2760270963086909,
+      "tied_events": 0,
+      "hours_frequency": {
+        "18": 11,
+        "19": 0,
+        "20": 0,
+        "21": 8,
+        "22": 2,
+        "23": 0
+      }
+    },
+    "民權西路": {
+      "n": 21,
+      "median_peak_share": 0.2726164350158498,
+      "mean_peak_share": 0.3095186662889645,
+      "tied_events": 0,
+      "hours_frequency": {
+        "18": 21,
+        "19": 0,
+        "20": 0,
+        "21": 0,
+        "22": 0,
+        "23": 0
+      }
+    }
+  },
+  "ols": {
+    "beta": [
+      5.035740352131201,
+      0.5532055590228933
+    ],
+    "SE": [
+      3.548517413245821,
+      0.4229879784567784
+    ],
+    "CI": [
+      [
+        -2.7744938147187836,
+        12.845974518981187
+      ],
+      [
+        -0.37778470445396206,
+        1.4841958224997485
+      ]
+    ],
+    "R2": 0.13457215338012374,
+    "loyo_log1p_MAE": 0.3824373346154231,
+    "loyo_log1p_RMSE": 0.46298325574794563,
+    "loyo_trainmean_MAE": 0.3004256420444751,
+    "loyo_trainmean_RMSE": 0.40167594213193447
+  },
+  "status": "passed_for_conditional_exploratory_reporting",
+  "weather_independent": {
+    "queried_at_utc": "2026-10-05T07:52:05.064857+00:00",
+    "sql": "SELECT JSON_OBJECT('event_date',CAST(m.event_date AS CHAR),'station_id',m.station_id,'observed_at',CAST(w.observed_at AS CHAR),'temperature',w.air_temperature_c,'wind',w.mean_wind_speed_m_s,'rain',w.hourly_precipitation_mm,'rain_status',w.precipitation_status,'time_alignment_status',w.time_alignment_status,'cloud_review',w.cloud_method_review_required) FROM taipei_metro_analysis.event_weather_station m JOIN taipei_metro_analysis.weather_observation w ON m.station_id=w.station_id AND DATE(w.observed_at)=m.event_date WHERE m.station_role='primary' ORDER BY m.event_date,w.observed_at;",
+    "raw_primary_rows": 504,
+    "held_events": 21,
+    "exact_hour_points": 126,
+    "year_event_weather": {
+      "2017-08-26": {
+        "temperature": 31.11666666666667,
+        "wind": 4.283333333333332,
+        "has_positive_or_trace_rain": false,
+        "rain_has_unassigned": false,
+        "n_points": 6
+      },
+      "2018-08-18": {
+        "temperature": 27.73333333333333,
+        "wind": 1.2,
+        "has_positive_or_trace_rain": true,
+        "rain_has_unassigned": false,
+        "n_points": 6
+      },
+      "2019-08-03": {
+        "temperature": 29.73333333333333,
+        "wind": 3.3166666666666664,
+        "has_positive_or_trace_rain": false,
+        "rain_has_unassigned": false,
+        "n_points": 6
+      },
+      "2020-08-29": {
+        "temperature": 29.516666666666666,
+        "wind": 3.5666666666666664,
+        "has_positive_or_trace_rain": false,
+        "rain_has_unassigned": false,
+        "n_points": 6
+      },
+      "2021-10-16": {
+        "temperature": 24.533333333333335,
+        "wind": 3.1333333333333333,
+        "has_positive_or_trace_rain": true,
+        "rain_has_unassigned": false,
+        "n_points": 6
+      },
+      "2022-07-30": {
+        "temperature": 30.03333333333333,
+        "wind": 1.8499999999999999,
+        "has_positive_or_trace_rain": false,
+        "rain_has_unassigned": false,
+        "n_points": 6
+      },
+      "2023-07-05": {
+        "temperature": 32.38333333333333,
+        "wind": 2.4000000000000004,
+        "has_positive_or_trace_rain": false,
+        "rain_has_unassigned": false,
+        "n_points": 6
+      },
+      "2023-07-12": {
+        "temperature": 30.600000000000005,
+        "wind": 1.5166666666666668,
+        "has_positive_or_trace_rain": false,
+        "rain_has_unassigned": false,
+        "n_points": 6
+      },
+      "2023-07-19": {
+        "temperature": 27.933333333333334,
+        "wind": 1.5833333333333333,
+        "has_positive_or_trace_rain": true,
+        "rain_has_unassigned": false,
+        "n_points": 6
+      },
+      "2023-08-09": {
+        "temperature": 31.3,
+        "wind": 1.2666666666666668,
+        "has_positive_or_trace_rain": false,
+        "rain_has_unassigned": false,
+        "n_points": 6
+      },
+      "2023-08-16": {
+        "temperature": 28.200000000000003,
+        "wind": 0.8166666666666668,
+        "has_positive_or_trace_rain": false,
+        "rain_has_unassigned": false,
+        "n_points": 6
+      },
+      "2023-08-20": {
+        "temperature": 26.383333333333336,
+        "wind": 1.1833333333333333,
+        "has_positive_or_trace_rain": true,
+        "rain_has_unassigned": false,
+        "n_points": 6
+      },
+      "2024-07-17": {
+        "temperature": 31.86666666666667,
+        "wind": 1.0999999999999999,
+        "has_positive_or_trace_rain": false,
+        "rain_has_unassigned": false,
+        "n_points": 6
+      },
+      "2024-07-31": {
+        "temperature": 27.25,
+        "wind": 1.0833333333333333,
+        "has_positive_or_trace_rain": true,
+        "rain_has_unassigned": false,
+        "n_points": 6
+      },
+      "2024-08-10": {
+        "temperature": 28.049999999999997,
+        "wind": 1.3333333333333333,
+        "has_positive_or_trace_rain": true,
+        "rain_has_unassigned": false,
+        "n_points": 6
+      },
+      "2025-08-06": {
+        "temperature": 29.45,
+        "wind": 0.9,
+        "has_positive_or_trace_rain": true,
+        "rain_has_unassigned": false,
+        "n_points": 6
+      },
+      "2025-08-20": {
+        "temperature": 26.466666666666665,
+        "wind": 1.3166666666666667,
+        "has_positive_or_trace_rain": false,
+        "rain_has_unassigned": false,
+        "n_points": 6
+      },
+      "2025-08-30": {
+        "temperature": 30.166666666666668,
+        "wind": 2.266666666666666,
+        "has_positive_or_trace_rain": false,
+        "rain_has_unassigned": false,
+        "n_points": 6
+      },
+      "2026-07-25": {
+        "temperature": 31.183333333333334,
+        "wind": 2.183333333333333,
+        "has_positive_or_trace_rain": false,
+        "rain_has_unassigned": false,
+        "n_points": 6
+      },
+      "2026-08-05": {
+        "temperature": 30.233333333333338,
+        "wind": 2.65,
+        "has_positive_or_trace_rain": false,
+        "rain_has_unassigned": false,
+        "n_points": 6
+      },
+      "2026-08-15": {
+        "temperature": 27.416666666666668,
+        "wind": 0.9333333333333332,
+        "has_positive_or_trace_rain": false,
+        "rain_has_unassigned": false,
+        "n_points": 6
+      }
+    },
+    "correlations": {
+      "temperature": {
+        "n": 13,
+        "rho": 0.21428571428571425,
+        "p_mc_abs_two_sided": 0.48383,
+        "seed": 20261007,
+        "B": 99999,
+        "extreme": 48382,
+        "leave_year_rho_min": 0.0,
+        "leave_year_rho_max": 0.3939393939393939,
+        "holm2": 0.6304
+      },
+      "wind": {
+        "n": 13,
+        "rho": 0.3021978021978022,
+        "p_mc_abs_two_sided": 0.3152,
+        "seed": 20261008,
+        "B": 99999,
+        "extreme": 31519,
+        "leave_year_rho_min": 0.12727272727272726,
+        "leave_year_rho_max": 0.5174825174825175,
+        "holm2": 0.6304
+      }
+    },
+    "live_data_not_yet_compared_with_author_snapshot": false,
+    "live_means_match_author_raw_snapshot": true
+  },
+  "review_checks": {
+    "station_time": {
+      "non_manifest_outputs_bitwise_identical": 17,
+      "manifest_output_hashes_match": true
+    },
+    "weather_regression": {
+      "non_manifest_outputs_bitwise_identical": 12,
+      "manifest_output_hashes_match": true
+    },
+    "extended_summary": {
+      "summary_and_csv_bitwise_identical": true,
+      "seven_holm_matches_independent_loop": true,
+      "seven_adjusted_p": [
+        3.5000000000000004e-05,
+        0.00146484375,
+        0.00146484375,
+        0.00146484375,
+        0.00146484375,
+        0.62748,
+        0.62748
+      ]
+    },
+    "independent_source_reconciliation": {
+      "event_station_features": 84,
+      "hourly_shares": 504,
+      "annual_station_rows": 9,
+      "station_leave_year_rows": 27,
+      "weather_exact_points": 126,
+      "weather_event_means": 13,
+      "weather_full_held_means": 21,
+      "regression_diagnostics_rows": 13,
+      "all_passed": true
+    }
+  },
+  "reviewed_sources": {
+    "scripts/research_review/station_time_statistics.py": "9714a7076ddd751716b25e6d717c44b94faaf3e338ef77f9047db09f60b8b1e3",
+    "scripts/research_review/weather_regression_statistics.py": "f97d4bf47c3fbc95034f5a72220352f1bc420cce52ac2628aad42359ce2612c4",
+    "scripts/research_review/extended_summary.py": "b73654c53be397faf8fe35f9e953c93f490921825bd7598296a7425106113ac8",
+    "docs/research_review/station_time_statistics.md": "3d74a7b976a129caa22e152bd45f9877a615cc79afc17662ce1cc8615788be9e",
+    "docs/research_review/weather_regression_statistics.md": "d67ec282539dfb86478cd229e5d4d34fcd69c44be8449e8481cf54ef77066c96",
+    "docs/research_review/extended_statistics.md": "2adf7857f0d583464c3e79f843a7c2b80da846675ce5222b3ae9f8e703200fa4",
+    ".local/research_review/2026-10-05/statistics_snapshot.json": "02a659a46830b0de890a1d917866174e01f6fff0739ce8385cbbd5890da84c15",
+    ".local/research_review/2026-10-05/weather_extended/weather_snapshot.json": "dac1011e68dcb7bc63e86dd5b67651e7c3570641435896d039279cc8685113c1"
+  },
+  "reviewed_at_utc": "2026-10-05T08:00:52.918028+00:00",
+  "weather_author_snapshot_extracted_at_utc": "2026-10-05T07:53:03.000796+00:00",
+  "open_blocking_findings": [],
+  "visual_review": {
+    "images_opened": [
+      "station_time/01_paired_station_contrasts.png",
+      "station_time/02_hourly_share_profiles.png",
+      "station_time/03_beimen_late_share_pairs.png",
+      "weather_regression/01_weather_associations.png",
+      "weather_regression/02_baseline_regression.png",
+      "weather_regression/03_regression_diagnostics.png"
+    ],
+    "labels_and_clipping": "passed",
+    "paired_lines_not_individual_trajectories": true
+  },
+  "limitations": [
+    "event independence and station exchangeability not established",
+    "13 comparable held events from 21 held among 26 dates; same-year and shared baseline dependence",
+    "2-4 baseline dates with no official holiday/makeup-workday adjustment",
+    "source-hour labels are not verified exact event-egress or boarding times",
+    "observed weather is not a forecast; six 10-minute wind values do not cover six continuous hours",
+    "cloud method flags unresolved; no cloud inference",
+    "estimated-baseline uncertainty omitted in conditional OLS CI; retrospective LOYO may train on future years",
+    "seven-question Holm does not correct all earlier selection or invalid marginal p-values",
+    "review did not re-download full OD data or independently audit every activity announcement"
+  ],
+  "report_sha256": "3b8abb035d9bff606204a24477c18b79f24e073984d91e71bf24fb113488890a",
+  "review_completed_at_utc": "2026-10-05T08:03:56.242965+00:00",
+  "method_sources_checked_on": "2026-10-05",
+  "method_sources": [
+    "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.friedmanchisquare.html",
+    "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.permutation_test.html",
+    "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.spearmanr.html",
+    "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binomtest.html",
+    "https://stat.ethz.ch/R-manual/R-devel/library/stats/html/p.adjust.html",
+    "https://codis.cwa.gov.tw/pdf_data/Readme.pdf",
+    "https://data.gov.tw/dataset/14718"
+  ]
+}

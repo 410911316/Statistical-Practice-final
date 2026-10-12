@@ -1,0 +1,701 @@
+{
+  "design": {
+    "stations": [
+      "北門",
+      "大橋頭站",
+      "雙連",
+      "民權西路"
+    ],
+    "source_hours": [
+      18,
+      24
+    ],
+    "late_source_hours": [
+      21,
+      24
+    ],
+    "minimum_baseline_days": 2,
+    "unit": "event_date; repeated stations within each event",
+    "station_tests": "one Friedman omnibus plus three Beimen paired sign tests, Holm family of three",
+    "time_test": "one pre-specified two-sided Beimen late-share sign test; other stations descriptive",
+    "cross_question_multiplicity": "module retains family-of-three pairwise Holm; overall extension report additionally adjusts seven planned questions. No whole-study FWER guarantee.",
+    "design_timing": "fixed for this extension after prior descriptive results had been seen; not pre-registration or independent confirmation",
+    "inference": "conditional exploratory; neither station exchangeability nor independence is established",
+    "fixed_seed": 20261005
+  },
+  "coverage": {
+    "snapshot_extracted_at_utc": "2026-10-07T11:02:46.746536+00:00",
+    "scheduled_dates": 26,
+    "held_dates": 21,
+    "paired_events": 19,
+    "paired_years": [
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "paired_dates": [
+      "2017-08-26",
+      "2018-08-18",
+      "2019-08-03",
+      "2020-08-29",
+      "2021-10-16",
+      "2022-07-30",
+      "2023-07-05",
+      "2023-07-12",
+      "2023-07-19",
+      "2023-08-20",
+      "2024-07-17",
+      "2024-07-31",
+      "2024-08-10",
+      "2025-08-06",
+      "2025-08-20",
+      "2025-08-30",
+      "2026-07-25",
+      "2026-08-05",
+      "2026-08-15"
+    ],
+    "hourly_rows_validated": 624,
+    "window_rows_validated": 104,
+    "origin_missing_rows": 0
+  },
+  "station_omnibus": {
+    "n_blocks": 19,
+    "k_stations": 4,
+    "friedman_Q": 57.0,
+    "df_asymptotic": 3,
+    "asymptotic_p_reference_only": 2.569880218855555e-12,
+    "tie_correction": 1.0,
+    "kendall_W": 1.0,
+    "mean_ranks": [
+      4.0,
+      3.0,
+      2.0,
+      1.0
+    ],
+    "permutation": {
+      "method": "independent station-label permutation within each block; Q upper tail",
+      "repetitions": 199999,
+      "seed": 20261005,
+      "exceedances": 0,
+      "p_plus_one": 5e-06,
+      "resolution": 5e-06,
+      "mc_tail_probability_ci95": [
+        0.0,
+        1.8444319394279296e-05
+      ],
+      "mc_ci_meaning": "Monte Carlo sampling error only, conditional on supplied data and exchangeability model; not an effect CI"
+    }
+  },
+  "station_pairwise": [
+    {
+      "reference": "北門",
+      "comparison": "大橋頭站",
+      "n_total": 19,
+      "positive": 19,
+      "negative": 0,
+      "ties_omitted": 0,
+      "n_nonzero": 19,
+      "p_two_sided_exact": 3.814697265625e-06,
+      "positive_proportion": 1.0,
+      "positive_probability_ci95": [
+        0.823533088192828,
+        1.0
+      ],
+      "mean_difference": 0.4578863780915766,
+      "median_difference": 0.4242696936303556,
+      "difference_q25": 0.36359471938887644,
+      "difference_q75": 0.5610587566828276,
+      "geometric_ratio_of_plus_one_ratios": 1.5807293873677803,
+      "p_holm_three_comparisons": 1.1444091796875e-05
+    },
+    {
+      "reference": "北門",
+      "comparison": "雙連",
+      "n_total": 19,
+      "positive": 19,
+      "negative": 0,
+      "ties_omitted": 0,
+      "n_nonzero": 19,
+      "p_two_sided_exact": 3.814697265625e-06,
+      "positive_proportion": 1.0,
+      "positive_probability_ci95": [
+        0.823533088192828,
+        1.0
+      ],
+      "mean_difference": 0.8127254657777103,
+      "median_difference": 0.8055925840742244,
+      "difference_q25": 0.5808440958861567,
+      "difference_q75": 1.0331089535454794,
+      "geometric_ratio_of_plus_one_ratios": 2.254042939469924,
+      "p_holm_three_comparisons": 1.1444091796875e-05
+    },
+    {
+      "reference": "北門",
+      "comparison": "民權西路",
+      "n_total": 19,
+      "positive": 19,
+      "negative": 0,
+      "ties_omitted": 0,
+      "n_nonzero": 19,
+      "p_two_sided_exact": 3.814697265625e-06,
+      "positive_proportion": 1.0,
+      "positive_probability_ci95": [
+        0.823533088192828,
+        1.0
+      ],
+      "mean_difference": 1.0567485702462442,
+      "median_difference": 1.050275179828514,
+      "difference_q25": 0.7545388628250524,
+      "difference_q75": 1.3624515221335125,
+      "geometric_ratio_of_plus_one_ratios": 2.877001397292589,
+      "p_holm_three_comparisons": 1.1444091796875e-05
+    }
+  ],
+  "station_descriptive": [
+    {
+      "station": "北門",
+      "n": 19,
+      "mean_log1p_contrast": 1.1592161427761793,
+      "geometric_ratio_plus_one": 3.187433803616962,
+      "mean_rank": 4.0,
+      "observed_late_share_mean": 0.5905361602075901,
+      "baseline_late_share_mean": 0.29046673651147425,
+      "late_share_difference_mean": 0.30006942369611583,
+      "late_share_difference_median": 0.31696010873392616
+    },
+    {
+      "station": "大橋頭站",
+      "n": 19,
+      "mean_log1p_contrast": 0.7013297646846027,
+      "geometric_ratio_plus_one": 2.016432305927237,
+      "mean_rank": 3.0,
+      "observed_late_share_mean": 0.5340279292029795,
+      "baseline_late_share_mean": 0.3171920751593808,
+      "late_share_difference_mean": 0.21683585404359873,
+      "late_share_difference_median": 0.21906265953408416
+    },
+    {
+      "station": "雙連",
+      "n": 19,
+      "mean_log1p_contrast": 0.346490676998469,
+      "geometric_ratio_plus_one": 1.4140963101468425,
+      "mean_rank": 2.0,
+      "observed_late_share_mean": 0.4979330575112104,
+      "baseline_late_share_mean": 0.35541354400409336,
+      "late_share_difference_mean": 0.14251951350711695,
+      "late_share_difference_median": 0.15052849583509975
+    },
+    {
+      "station": "民權西路",
+      "n": 19,
+      "mean_log1p_contrast": 0.10246757252993523,
+      "geometric_ratio_plus_one": 1.1079013748886277,
+      "mean_rank": 1.0,
+      "observed_late_share_mean": 0.32813005467301426,
+      "baseline_late_share_mean": 0.31246955801325965,
+      "late_share_difference_mean": 0.01566049665975463,
+      "late_share_difference_median": 0.01163364304001624
+    }
+  ],
+  "year_equal_weight_sensitivity": {
+    "omnibus": {
+      "n_blocks": 10,
+      "k_stations": 4,
+      "friedman_Q": 30.0,
+      "df_asymptotic": 3,
+      "asymptotic_p_reference_only": 1.3800570312932553e-06,
+      "tie_correction": 1.0,
+      "kendall_W": 1.0,
+      "mean_ranks": [
+        4.0,
+        3.0,
+        2.0,
+        1.0
+      ],
+      "permutation": {
+        "method": "independent station-label permutation within each block; Q upper tail",
+        "repetitions": 199999,
+        "seed": 20261006,
+        "exceedances": 0,
+        "p_plus_one": 5e-06,
+        "resolution": 5e-06,
+        "mc_tail_probability_ci95": [
+          0.0,
+          1.8444319394279296e-05
+        ],
+        "mc_ci_meaning": "Monte Carlo sampling error only, conditional on supplied data and exchangeability model; not an effect CI"
+      }
+    },
+    "pairwise": [
+      {
+        "comparison": "大橋頭站",
+        "n_total": 10,
+        "positive": 10,
+        "negative": 0,
+        "ties_omitted": 0,
+        "n_nonzero": 10,
+        "p_two_sided_exact": 0.001953125,
+        "positive_proportion": 1.0,
+        "positive_probability_ci95": [
+          0.6915028921812371,
+          1.0
+        ],
+        "mean_difference": 0.4992962404907216,
+        "median_difference": 0.49224890513397423,
+        "difference_q25": 0.36216324882997963,
+        "difference_q75": 0.6143485283465302,
+        "p_holm_three_comparisons": 0.005859375
+      },
+      {
+        "comparison": "雙連",
+        "n_total": 10,
+        "positive": 10,
+        "negative": 0,
+        "ties_omitted": 0,
+        "n_nonzero": 10,
+        "p_two_sided_exact": 0.001953125,
+        "positive_proportion": 1.0,
+        "positive_probability_ci95": [
+          0.6915028921812371,
+          1.0
+        ],
+        "mean_difference": 0.8553060146488545,
+        "median_difference": 0.8426621269869914,
+        "difference_q25": 0.7470079557158514,
+        "difference_q75": 0.9772965822295236,
+        "p_holm_three_comparisons": 0.005859375
+      },
+      {
+        "comparison": "民權西路",
+        "n_total": 10,
+        "positive": 10,
+        "negative": 0,
+        "ties_omitted": 0,
+        "n_nonzero": 10,
+        "p_two_sided_exact": 0.001953125,
+        "positive_proportion": 1.0,
+        "positive_probability_ci95": [
+          0.6915028921812371,
+          1.0
+        ],
+        "mean_difference": 1.1466000839403963,
+        "median_difference": 1.0452332810214888,
+        "difference_q25": 0.9897443597750708,
+        "difference_q75": 1.441950214401353,
+        "p_holm_three_comparisons": 0.005859375
+      }
+    ]
+  },
+  "leave_year_out_station": [
+    {
+      "excluded_year": 2017,
+      "remaining_events": 18,
+      "comparison": "大橋頭站",
+      "mean_log1p_difference_of_contrasts": 0.44128799385897527,
+      "positive_events": 18,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2017,
+      "remaining_events": 18,
+      "comparison": "雙連",
+      "mean_log1p_difference_of_contrasts": 0.8037317206187874,
+      "positive_events": 18,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2017,
+      "remaining_events": 18,
+      "comparison": "民權西路",
+      "mean_log1p_difference_of_contrasts": 1.03161102211594,
+      "positive_events": 18,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2018,
+      "remaining_events": 18,
+      "comparison": "大橋頭站",
+      "mean_log1p_difference_of_contrasts": 0.4569172923653779,
+      "positive_events": 18,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2018,
+      "remaining_events": 18,
+      "comparison": "雙連",
+      "mean_log1p_difference_of_contrasts": 0.8131217369834596,
+      "positive_events": 18,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2018,
+      "remaining_events": 18,
+      "comparison": "民權西路",
+      "mean_log1p_difference_of_contrasts": 1.0571082030472292,
+      "positive_events": 18,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2019,
+      "remaining_events": 18,
+      "comparison": "大橋頭站",
+      "mean_log1p_difference_of_contrasts": 0.4498432326213683,
+      "positive_events": 18,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2019,
+      "remaining_events": 18,
+      "comparison": "雙連",
+      "mean_log1p_difference_of_contrasts": 0.8035329277601799,
+      "positive_events": 18,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2019,
+      "remaining_events": 18,
+      "comparison": "民權西路",
+      "mean_log1p_difference_of_contrasts": 1.040675671106972,
+      "positive_events": 18,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2020,
+      "remaining_events": 18,
+      "comparison": "大橋頭站",
+      "mean_log1p_difference_of_contrasts": 0.4489776376738717,
+      "positive_events": 18,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2020,
+      "remaining_events": 18,
+      "comparison": "雙連",
+      "mean_log1p_difference_of_contrasts": 0.7993203029414369,
+      "positive_events": 18,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2020,
+      "remaining_events": 18,
+      "comparison": "民權西路",
+      "mean_log1p_difference_of_contrasts": 1.0335727481700678,
+      "positive_events": 18,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2021,
+      "remaining_events": 18,
+      "comparison": "大橋頭站",
+      "mean_log1p_difference_of_contrasts": 0.4697951809167777,
+      "positive_events": 18,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2021,
+      "remaining_events": 18,
+      "comparison": "雙連",
+      "mean_log1p_difference_of_contrasts": 0.8291367985110716,
+      "positive_events": 18,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2021,
+      "remaining_events": 18,
+      "comparison": "民權西路",
+      "mean_log1p_difference_of_contrasts": 1.081559041282628,
+      "positive_events": 18,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2022,
+      "remaining_events": 18,
+      "comparison": "大橋頭站",
+      "mean_log1p_difference_of_contrasts": 0.4445642260301008,
+      "positive_events": 18,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2022,
+      "remaining_events": 18,
+      "comparison": "雙連",
+      "mean_log1p_difference_of_contrasts": 0.7954225050760206,
+      "positive_events": 18,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2022,
+      "remaining_events": 18,
+      "comparison": "民權西路",
+      "mean_log1p_difference_of_contrasts": 1.0268243012806768,
+      "positive_events": 18,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2023,
+      "remaining_events": 15,
+      "comparison": "大橋頭站",
+      "mean_log1p_difference_of_contrasts": 0.4442113084880516,
+      "positive_events": 15,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2023,
+      "remaining_events": 15,
+      "comparison": "雙連",
+      "mean_log1p_difference_of_contrasts": 0.845336550103926,
+      "positive_events": 15,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2023,
+      "remaining_events": 15,
+      "comparison": "民權西路",
+      "mean_log1p_difference_of_contrasts": 1.111812508849526,
+      "positive_events": 15,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2024,
+      "remaining_events": 16,
+      "comparison": "大橋頭站",
+      "mean_log1p_difference_of_contrasts": 0.4776244479477605,
+      "positive_events": 16,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2024,
+      "remaining_events": 16,
+      "comparison": "雙連",
+      "mean_log1p_difference_of_contrasts": 0.8283253196312694,
+      "positive_events": 16,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2024,
+      "remaining_events": 16,
+      "comparison": "民權西路",
+      "mean_log1p_difference_of_contrasts": 1.0703471123796042,
+      "positive_events": 16,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2025,
+      "remaining_events": 16,
+      "comparison": "大橋頭站",
+      "mean_log1p_difference_of_contrasts": 0.4788148418294127,
+      "positive_events": 16,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2025,
+      "remaining_events": 16,
+      "comparison": "雙連",
+      "mean_log1p_difference_of_contrasts": 0.8152140367634271,
+      "positive_events": 16,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2025,
+      "remaining_events": 16,
+      "comparison": "民權西路",
+      "mean_log1p_difference_of_contrasts": 1.0662061016995437,
+      "positive_events": 16,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2026,
+      "remaining_events": 16,
+      "comparison": "大橋頭站",
+      "mean_log1p_difference_of_contrasts": 0.4704645154692228,
+      "positive_events": 16,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2026,
+      "remaining_events": 16,
+      "comparison": "雙連",
+      "mean_log1p_difference_of_contrasts": 0.8001618025048263,
+      "positive_events": 16,
+      "negative_events": 0
+    },
+    {
+      "excluded_year": 2026,
+      "remaining_events": 16,
+      "comparison": "民權西路",
+      "mean_log1p_difference_of_contrasts": 1.0598530430022028,
+      "positive_events": 16,
+      "negative_events": 0
+    }
+  ],
+  "peak_and_time_descriptive": [
+    {
+      "station": "北門",
+      "events": 21,
+      "events_with_tied_peak": 0,
+      "peak_share_median": 0.4201264050259244,
+      "peak_share_q25": 0.3305326117915124,
+      "peak_share_q75": 0.47877307274701414,
+      "late_share_median": 0.606062899746433,
+      "peak_includes_18_events": 0,
+      "peak_includes_19_events": 0,
+      "peak_includes_20_events": 3,
+      "peak_includes_21_events": 18,
+      "peak_includes_22_events": 0,
+      "peak_includes_23_events": 0
+    },
+    {
+      "station": "大橋頭站",
+      "events": 21,
+      "events_with_tied_peak": 0,
+      "peak_share_median": 0.28242537812876456,
+      "peak_share_q25": 0.27117669605212724,
+      "peak_share_q75": 0.38537662550094054,
+      "late_share_median": 0.465714789353076,
+      "peak_includes_18_events": 6,
+      "peak_includes_19_events": 0,
+      "peak_includes_20_events": 0,
+      "peak_includes_21_events": 15,
+      "peak_includes_22_events": 0,
+      "peak_includes_23_events": 0
+    },
+    {
+      "station": "雙連",
+      "events": 21,
+      "events_with_tied_peak": 0,
+      "peak_share_median": 0.279125764030376,
+      "peak_share_q25": 0.266740556017364,
+      "peak_share_q75": 0.28949286681245445,
+      "late_share_median": 0.4246839511463467,
+      "peak_includes_18_events": 11,
+      "peak_includes_19_events": 0,
+      "peak_includes_20_events": 0,
+      "peak_includes_21_events": 8,
+      "peak_includes_22_events": 2,
+      "peak_includes_23_events": 0
+    },
+    {
+      "station": "民權西路",
+      "events": 21,
+      "events_with_tied_peak": 0,
+      "peak_share_median": 0.2726164350158498,
+      "peak_share_q25": 0.25115491222667075,
+      "peak_share_q75": 0.37359874279727606,
+      "late_share_median": 0.3387747937510971,
+      "peak_includes_18_events": 21,
+      "peak_includes_19_events": 0,
+      "peak_includes_20_events": 0,
+      "peak_includes_21_events": 0,
+      "peak_includes_22_events": 0,
+      "peak_includes_23_events": 0
+    }
+  ],
+  "beimen_late_share": {
+    "event_sign_test": {
+      "n_total": 19,
+      "positive": 19,
+      "negative": 0,
+      "ties_omitted": 0,
+      "n_nonzero": 19,
+      "p_two_sided_exact": 3.814697265625e-06,
+      "positive_proportion": 1.0,
+      "positive_probability_ci95": [
+        0.823533088192828,
+        1.0
+      ],
+      "mean_difference": 0.30006942369611583,
+      "median_difference": 0.31696010873392616,
+      "difference_q25": 0.2085521986181123,
+      "difference_q75": 0.36039695515156733
+    },
+    "year_mean_sign_test": {
+      "n_total": 10,
+      "positive": 10,
+      "negative": 0,
+      "ties_omitted": 0,
+      "n_nonzero": 10,
+      "p_two_sided_exact": 0.001953125,
+      "positive_proportion": 1.0,
+      "positive_probability_ci95": [
+        0.6915028921812371,
+        1.0
+      ],
+      "mean_difference": 0.31367433536729383,
+      "median_difference": 0.32548255645380264,
+      "difference_q25": 0.2455565134680317,
+      "difference_q75": 0.4029745683821814
+    },
+    "leave_year_out": [
+      {
+        "excluded_year": 2017,
+        "remaining_events": 18,
+        "mean_share_difference": 0.29124931601278214
+      },
+      {
+        "excluded_year": 2018,
+        "remaining_events": 18,
+        "mean_share_difference": 0.29805164849487426
+      },
+      {
+        "excluded_year": 2019,
+        "remaining_events": 18,
+        "mean_share_difference": 0.300930072965557
+      },
+      {
+        "excluded_year": 2020,
+        "remaining_events": 18,
+        "mean_share_difference": 0.29167795922910256
+      },
+      {
+        "excluded_year": 2021,
+        "remaining_events": 18,
+        "mean_share_difference": 0.3118273113526532
+      },
+      {
+        "excluded_year": 2022,
+        "remaining_events": 18,
+        "mean_share_difference": 0.2936052153232533
+      },
+      {
+        "excluded_year": 2023,
+        "remaining_events": 15,
+        "mean_share_difference": 0.28338853660020025
+      },
+      {
+        "excluded_year": 2024,
+        "remaining_events": 16,
+        "mean_share_difference": 0.32047708784786094
+      },
+      {
+        "excluded_year": 2025,
+        "remaining_events": 16,
+        "mean_share_difference": 0.3127294208250156
+      },
+      {
+        "excluded_year": 2026,
+        "remaining_events": 16,
+        "mean_share_difference": 0.29734949021617374
+      }
+    ]
+  },
+  "checks": {
+    "tied_friedman_permutations_verified": 36,
+    "holm": "passed",
+    "sign_ties": "passed",
+    "fixed_seed": "passed"
+  },
+  "refresh_context": {
+    "analysis_date": "2026-10-07",
+    "baseline_policy": "original_previous_7_14_21_28_days",
+    "role": "primary_same_rules_as_2026_10_05",
+    "weather_timing_sensitivity": false,
+    "multiplicity_scope": "Seven-question Holm applies to each legacy-label scenario separately; aligned weather has only two-test Holm. Neither covers all sensitivities or all historical research."
+  }
+}

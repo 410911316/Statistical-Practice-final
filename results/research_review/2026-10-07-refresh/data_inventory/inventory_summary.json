@@ -1,0 +1,135 @@
+{
+  "generated_at_utc": "2026-10-07T11:01:29.586338+00:00",
+  "source_extracted_at_utc": "2026-10-07T11:00:28.635822+00:00",
+  "source_snapshot_sha256": "29ba61821e1b12286ee0539728c175ee207f1dbf615f936a92433505d48277e5",
+  "script_sha256": "42098125d4649ff1f052f51bce2d52e78bb70a25ec3332c0f8b05d65c85940d5",
+  "file_sha256": {
+    "results\\preprocessing\\summary.json": "14cbd01965891bb340e5102bafafeeb08539c0d7d4a7877eadaeca7bdf8b46a6",
+    "data\\processed\\event_station_hourly_context.csv": "11f1c426a14ba08542b1895a999d71f9ac4dfe5ed63558b14afc41167d8f6468",
+    "results\\preprocessing\\monthly\\201701.json": "37c155c4b4c31dd282b1416535f656c077bb5a1f6485465d0f14b1bb5175cf2e",
+    "results\\preprocessing\\monthly\\201708.json": "b1c0d984da433657f2ac449cd23e19ed3f34669d946fa8fc808450c42fa257b6",
+    "results\\preprocessing\\monthly\\201808.json": "7ab4d291c68e422a1f93171e91f3cecce6cbd8b620628c3d9eaeb17accef837d",
+    "results\\preprocessing\\monthly\\201907.json": "a552b3c5f57e136bc47bf3e51144cd238477a2adc0f47534d799c988798e7b68",
+    "results\\preprocessing\\monthly\\201908.json": "a0963b6a17ddf6459d7dbe827299d54a2916d4ad3717e3aea09aa6f9dea610c5",
+    "results\\preprocessing\\monthly\\202008.json": "ddf162bae315d454117c576bb54def9455c7d16eb2eb6bd82b6ded365689bf9b",
+    "results\\preprocessing\\monthly\\202110.json": "4031cb59825c81763154acedbf2e208413e7d436a885d7ba7071e6cb02df1e73",
+    "results\\preprocessing\\monthly\\202207.json": "adc2b36577292af24ad71246754c3ba40205966a9f8ccf8138e956ff0b4e631a",
+    "results\\preprocessing\\monthly\\202306.json": "72113c367f51dce3778d5b5d000cb42643b0002b4447ff06e839943ddf3a5c1e",
+    "results\\preprocessing\\monthly\\202307.json": "c037e80ec06db7035056664bc35687dee099fa9953f5a10fd04f551297d772f2",
+    "results\\preprocessing\\monthly\\202308.json": "03d0632217c9724e51106c17a53642fd8a1d652d6e6552f3709906942b11693e",
+    "results\\preprocessing\\monthly\\202407.json": "9785a9477c0f7a4ff5599206882758d2ef18aba1f8d497efc49836a001422a37",
+    "results\\preprocessing\\monthly\\202408.json": "fa76c3c3a566800f57c2d0a16517084a6d26df2eb74572be9c4c1fb7b3093b37",
+    "results\\preprocessing\\monthly\\202507.json": "74d3f749b532c45e3b8699d1ba5cb1e3030af5b31b3d950558f0367f955db20b",
+    "results\\preprocessing\\monthly\\202508.json": "ed54ed5bab870eddbec77cf07e4e47fb2d38a9cc7932c261de75af6a360d0ebd",
+    "results\\preprocessing\\monthly\\202607.json": "96139eaaf1e60cd5ff85064f361b83dd21d18d496a90906544f00154224612f0",
+    "results\\preprocessing\\monthly\\202608.json": "00733a387a857fc6a04ed9ccb337f9c8602deaf241477e469ccba70e7d5c37e9"
+  },
+  "months": [
+    "201701",
+    "201708",
+    "201808",
+    "201907",
+    "201908",
+    "202008",
+    "202110",
+    "202207",
+    "202306",
+    "202307",
+    "202308",
+    "202407",
+    "202408",
+    "202507",
+    "202508",
+    "202607",
+    "202608"
+  ],
+  "clean_od_rows": 140789493,
+  "od_passengers": 1024769632,
+  "context_rows": 624,
+  "database_inventory": [
+    {
+      "kind": "status",
+      "record": {
+        "dates": 21,
+        "status": "held"
+      }
+    },
+    {
+      "kind": "status",
+      "record": {
+        "dates": 4,
+        "status": "cancelled"
+      }
+    },
+    {
+      "kind": "status",
+      "record": {
+        "dates": 1,
+        "status": "postponed"
+      }
+    },
+    {
+      "kind": "cloud",
+      "record": {
+        "rows": 90,
+        "method": "manual_instantaneous",
+        "observed_values": 90
+      }
+    },
+    {
+      "kind": "cloud",
+      "record": {
+        "rows": 103,
+        "method": "not_observed_at_this_hour",
+        "observed_values": 0
+      }
+    },
+    {
+      "kind": "cloud",
+      "record": {
+        "rows": 311,
+        "method": "satellite_retrieved",
+        "observed_values": 311
+      }
+    },
+    {
+      "kind": "cloud",
+      "record": {
+        "rows": 504,
+        "method": "station_does_not_observe_cloud",
+        "observed_values": 0
+      }
+    },
+    {
+      "kind": "coverage",
+      "record": {
+        "timing_dates": 26,
+        "calendar_days": 3652,
+        "actual_show_ends": 0,
+        "nominal_show_ends": 20,
+        "cloud_review_pending": 0,
+        "verified_weather_rows": 1008,
+        "all_station_event_hours": 74880,
+        "calendar_baseline_windows": 104
+      }
+    }
+  ],
+  "annual_finance": {
+    "years": 10,
+    "publicity_years": 5,
+    "missing_publicity_years": [
+      2017,
+      2018,
+      2019,
+      2020,
+      2021
+    ]
+  },
+  "limitations": [
+    "OD rows/passenger counts are not independent events; finance is one row per year.",
+    "Publicity is required campaign funding; denominator is original statutory event budget. Neither is final actual spending.",
+    "Missing publicity remains blank, not zero. Different campaign/event scopes can limit between-year comparison.",
+    "No financial hypothesis test, regression, return-on-investment or causal inference was run.",
+    "Nominal show end is not verified actual show end; source-bin destinations are not verified exit clock time."
+  ]
+}

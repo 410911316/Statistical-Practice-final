@@ -9,7 +9,7 @@ import duckdb
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"src"))
 from aggregate_flows import build_analysis
-from data_preprocessing import clean_month, HEADER
+from data_preprocessing import clean_month, validated_clean_cache, HEADER
 from export_mysql import sql_value
 
 
@@ -59,6 +59,14 @@ class CleaningTest(unittest.TestCase):
         (self.root/"out"/"202605.parquet").write_bytes(b"damaged")
         self.assertNotIn("cached",self.clean(rows))
         self.assertEqual(self.clean([["2026-05-01","00","A","B","4"]])["passengers"],4)
+
+    def test_archived_source_cache_requires_intact_manifest_and_parquet(self):
+        self.clean([["2026-05-01","00","A","B","4"]])
+        p=self.root/"out"/"202605.parquet"
+        self.assertEqual(validated_clean_cache(p,self.root/"qa")["passengers"],4)
+        p.write_bytes(b"damaged")
+        with self.assertRaisesRegex(ValueError,"validation failed"):
+            validated_clean_cache(p,self.root/"qa")
 
     def test_cross_midnight_baseline_no_future_or_event_leakage(self):
         rows=[]

@@ -23,6 +23,18 @@ def digest(path):
     return h.hexdigest()
 
 
+def validated_clean_cache(path: Path, report_dir: Path):
+    """Reuse a cleaned month only when its original validation manifest still matches."""
+    report_path = report_dir / f"{path.stem}.json"
+    prior = json.loads(report_path.read_text(encoding="utf-8"))
+    if (prior.get("pipeline_version") != VERSION
+            or prior.get("source_file") != f"{path.stem}.csv"
+            or prior.get("output_sha256") != digest(path)
+            or prior.get("invalid_rows") != 0 or prior.get("conflicting_keys") != 0):
+        raise ValueError(f"Clean cache validation failed: {path.name}; restore its source CSV")
+    return {**prior, "cached": True}
+
+
 def clean_month(con, path: Path, output_dir: Path, report_dir: Path, force=False):
     month = path.stem
     if not re.fullmatch(r"20\d{4}", month):

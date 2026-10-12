@@ -1,0 +1,156 @@
+{
+  "reviewer": "review_basic_statistics",
+  "status": "accepted after R1/R2 revisions; exploratory inference only",
+  "issues": {
+    "R1_network_completeness": "closed",
+    "R2_partial_baseline_guard": "closed"
+  },
+  "partial_baseline_guard": {
+    "six_hours": "accepted",
+    "five_hours": "rejected",
+    "compare_local_calls_guard": true,
+    "error_message": "Partial baseline candidate: event_date=2017-08-26, station=北門, candidate_date=2017-08-19, complete_origin_hours=5; expected 0 or 6. Stop: unequal-hour baselines require per-hour reconstruction."
+  },
+  "snapshot_sha256": "02a659a46830b0de890a1d917866174e01f6fff0739ce8385cbbd5890da84c15",
+  "primary": {
+    "n": 13,
+    "mean_log1p_difference": 1.2891620386205476,
+    "sd_log1p_difference": 0.3820536180501942,
+    "t": 12.16619765662682,
+    "F": 148.01636542011195,
+    "df_num": 1,
+    "df_denom": 12,
+    "p": 4.1481626788742867e-08,
+    "geometric_ratio_plus_one": 3.6297436959968263,
+    "geometric_ratio_plus_one_ci95": [
+      2.881437633400793,
+      4.572383988432527
+    ],
+    "mean_log1p_difference_ci95": [
+      1.0582893478639952,
+      1.5200347293771
+    ],
+    "paired_standardized_mean": 3.3742961137229104
+  },
+  "annual_equal_weight": {
+    "n": 9,
+    "mean_log1p_difference": 1.3455731900829848,
+    "sd_log1p_difference": 0.32723022115980915,
+    "t": 12.336023109178369,
+    "F": 152.17746615018274,
+    "df_num": 1,
+    "df_denom": 8,
+    "p": 1.7365143377958351e-06,
+    "geometric_ratio_plus_one": 3.8403871816942368,
+    "geometric_ratio_plus_one_ci95": [
+      2.986319747785991,
+      4.938712177842229
+    ],
+    "mean_log1p_difference_ci95": [
+      1.094041775696887,
+      1.5971046044690826
+    ],
+    "paired_standardized_mean": 4.112007703059456
+  },
+  "station_descriptive": [
+    {
+      "station": "北門",
+      "eligible_events": 13,
+      "mean_origin_eligible": 16905.23076923077,
+      "mean_baseline_eligible": 4514.455128205128,
+      "mean_excess_eligible": 12390.775641025642,
+      "geometric_ratio_plus_one": 3.6297436959968263
+    },
+    {
+      "station": "大橋頭站",
+      "eligible_events": 13,
+      "mean_origin_eligible": 8427.076923076924,
+      "mean_baseline_eligible": 3608.846153846154,
+      "mean_excess_eligible": 4818.2307692307695,
+      "geometric_ratio_plus_one": 2.275876687361516
+    },
+    {
+      "station": "雙連",
+      "eligible_events": 13,
+      "mean_origin_eligible": 9781.0,
+      "mean_baseline_eligible": 6544.416666666667,
+      "mean_excess_eligible": 3236.5833333333335,
+      "geometric_ratio_plus_one": 1.505121015268646
+    },
+    {
+      "station": "民權西路",
+      "eligible_events": 13,
+      "mean_origin_eligible": 7259.076923076923,
+      "mean_baseline_eligible": 6472.294871794871,
+      "mean_excess_eligible": 786.7820512820513,
+      "geometric_ratio_plus_one": 1.1456635947725724
+    }
+  ],
+  "eligible_dates": [
+    "2017-08-26",
+    "2018-08-18",
+    "2020-08-29",
+    "2021-10-16",
+    "2022-07-30",
+    "2023-08-20",
+    "2024-07-17",
+    "2024-07-31",
+    "2024-08-10",
+    "2025-08-30",
+    "2026-07-25",
+    "2026-08-05",
+    "2026-08-15"
+  ],
+  "hourly_window_checks": 104,
+  "hourly_profile_peaks": {
+    "北門": {
+      "hour": 21,
+      "median": 8910.0
+    },
+    "大橋頭站": {
+      "hour": 21,
+      "median": 3271.0
+    },
+    "雙連": {
+      "hour": 21,
+      "median": 2380.0
+    },
+    "民權西路": {
+      "hour": 18,
+      "median": 1676.0
+    }
+  },
+  "baseline_candidate_checks": 416,
+  "baseline_candidate_reasons": {
+    "usable": 180,
+    "month_not_downloaded": 132,
+    "event_date_excluded": 104
+  },
+  "shared_baseline_dates_within_primary": {
+    "2024-07-10": [
+      "2024-07-17",
+      "2024-07-31"
+    ],
+    "2024-07-03": [
+      "2024-07-17",
+      "2024-07-31"
+    ],
+    "2026-07-18": [
+      "2026-07-25",
+      "2026-08-15"
+    ]
+  },
+  "network_dates_reconciled": 26,
+  "network_available_origin_and_destination_sum": 17189198,
+  "network_completeness": {
+    "dates_with_incomplete_rows": 19,
+    "station_hour_rows": 18720,
+    "origin_incomplete_station_hours": 342,
+    "destination_incomplete_station_hours": 1596,
+    "caveat": "SUM ignores NULL. Reconciled available totals do not demonstrate full network completeness."
+  },
+  "manifest_hashes_match": true,
+  "sql_hash_unchanged": true,
+  "reproduced_output_hashes_match": true,
+  "review_script_sha256": "b948467086b36c44fd26f6293764e21f1d8cb88b091f25c6a5f60e5c9c712772"
+}

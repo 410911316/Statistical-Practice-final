@@ -29,6 +29,8 @@ __pycache__/
 /data/original_data/threads/
 /results/threads/
 /data/original_data/ptt/
+/data/original_data/calendar/
+/data/original_data/weather_verification/
 /results/ptt/
 /data/interim/*
 !/data/interim/.gitkeep

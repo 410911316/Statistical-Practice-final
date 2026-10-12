@@ -1,6 +1,30 @@
 # 大稻埕煙火人流分析與捷運班次模擬
 
-## 最新進度：第八版展演結束訊號（2026-10-11）
+## 最新進度：MAE／MSE 融合比較（2026-10-12）
+
+**目前 MAE 學權重較好，換成 MSE 沒有改善北門尖峰；XGBoost 單獨仍較準。** 固定第八版 Ridge、GAM、XGBoost 的時間留出預測，只改融合權重的目標。兩種融合都限制權重非負且加總為 1，使用相同過去 OOF，基模型調參維持 MAE。
+
+主分析「煙火＋天氣」，北門 2024–2026 年九場、54 列；下列單位均為人次／小時，越小越好：
+
+| 方法 | MAE | RMSE | 實際尖峰時刻的平均正向低估 |
+|---|---:|---:|---:|
+| XGBoost | **642.59** | **982.09** | **889.81** |
+| Ridge＋GAM＋XGBoost 等權 | 875.62 | 1363.62 | 1926.54 |
+| 三模型 MAE 學權重 | **787.27** | **1168.11** | **1338.54** |
+| 三模型 MSE 學權重 | 842.53 | 1261.08 | 1484.04 |
+
+- MSE 比 MAE 融合的北門 MAE 高 **7.0%**、RMSE 高 **8.0%**；四組輸入的九場合併結果都同方向。每場先算誤差，再將活動等權平均；RMSE 是「平均活動 MSE 的平方根」。
+- 原因可從權重看：MSE 更重視過去 OOF 的大誤差，三個年度都提高 GAM、降低 XGBoost 權重；過去 OOF 的 RMSE 確實降低，但沒有轉化為整體外層改善。**2025 年北門是例外，MSE 的 RMSE 1178.56 優於 MAE 的 1241.72**，並非每年都較差。
+- MSE 與 RMSE 在相同樣本／加權下有相同最適權重，因此用 MSE 求解、用人次單位的 RMSE 報告。尖峰低估以「實際尖峰同小時」計算，高估記 0；[完整報告](result/analysis_v9/report.md) 同時列尖峰絕對誤差。
+- 這是已反覆檢視九場的探索性比較，暫保留 MAE 融合作對照，XGBoost 作主要候選；尚未自動更換上線模型，也未完成排隊／調度驗證。D−1 歷史 OD 發布時間與日曆版本的既有限制仍保留。
+
+![MAE 與 MSE 融合比較](result/analysis_v9/figures/loss_comparison.png)
+
+結果與圖：[第九版報告](result/analysis_v9/report.md)／[年度權重](result/analysis_v9/figures/fusion_weights.png)／[北門九場曲線](result/analysis_v9/figures/beimen_profiles.png)。公式、檢核及重現：[process 第 20 節](process.md#20-第九版固定基模型比較-mae-與-mse-融合)。
+
+文獻：[Breiman（1996）平方損失 stacking](https://statistics.berkeley.edu/sites/default/files/tech-reports/367.pdf)、[Ersoy 等的時間序列 L1／L2 stacking](https://doi.org/10.1007/978-3-031-35763-3_7)、[Gneiting（2011）預測目標與損失函數](https://arxiv.org/abs/0912.0902)。文獻支持方法；哪個較準由本案時間留出結果評估。
+
+## 第八版紀錄：展演結束訊號（2026-10-11）
 
 已加入 **「事前預定展演結束後 0–60／60–120 分鐘 × 車站」**，重跑四組輸入與全部十一種方法。18/21 場有合格時間來源，其餘三場保留未知；不用實際散場時間或事後尖峰反推輸入。方法與重現見 [process 第 19 節](process.md#19-第八版事前展演結束訊號與-canva-簡報稿)，完整結果在 [result/analysis_v8](result/analysis_v8/report.md)。
 
@@ -20,6 +44,8 @@
 ![加入展演結束訊號前後的北門預測](result/analysis_v8/figures/end_signal_comparison.png)
 
 **簡報用：[16 頁 Canva prompt](docs/canva_project_prompt.txt)**。包含資料總覽、模型直覺、調參與融合、實測結果；方法頁左下角放文獻，沿用附件米白／深灰／淡綠設計。這是可貼上的提示詞，尚未生成 Canva 簡報。排隊與列車調度仍標為後續工作。
+
+**方法導向版：[24 頁 Canva prompt](docs/canva_methods_prompt.txt)**。原始資料分析 5 頁；線性模型、GAM、XGBoost 各自一頁，說明選擇直覺、做法與可解釋性；另含融合、排隊理論、離散事件模擬與調度設計。附現成圖片路徑及上傳位置，方法頁左下角保留文獻。
 
 ## 第七版紀錄：GAM 修復（2026-10-11）
 

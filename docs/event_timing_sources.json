@@ -1,0 +1,32 @@
+{
+  "reviewed_on": "2026-10-07",
+  "time_zone": "Asia/Taipei",
+  "meaning": "公告節目時段；沒有現場實際結束或散場時間的證據。不可把交通管制截止時間當作活動結束。",
+  "entries": [
+    {
+      "dates": ["2022-07-30"],
+      "scheduled_show_end_time": "20:18:00",
+      "source_url": "https://www.travel.taipei/zh-tw/news/details/37338",
+      "locator": "交通局公告首段，煙火時段為20:10至20:18",
+      "scheduled_stage_start_time": null,
+      "scheduled_stage_end_time": null,
+      "stage_scope": null
+    },
+    {
+      "dates": ["2025-08-30"],
+      "source_url": "https://www.travel.taipei/zh-tw/news/details/65797",
+      "locator": "交通局2025-08-26公告首段，兩場地舞台活動14時至21時30分",
+      "scheduled_stage_start_time": "14:00:00",
+      "scheduled_stage_end_time": "21:30:00",
+      "stage_scope": "永樂廣場與延平河濱公園合併公告的活動範圍，非單一舞台的實際起訖"
+    },
+    {
+      "dates": ["2026-07-25", "2026-08-05", "2026-08-15"],
+      "source_url": "https://taipeisummer.travel.taipei/assets/json/idols.json",
+      "locator": "活動官網音樂節目資料，各日期的tab-time欄位為19:00~21:00",
+      "scheduled_stage_start_time": "19:00:00",
+      "scheduled_stage_end_time": "21:00:00",
+      "stage_scope": "大稻埕碼頭音樂舞台公告時段；煙火後仍有演唱節目"
+    }
+  ]
+}

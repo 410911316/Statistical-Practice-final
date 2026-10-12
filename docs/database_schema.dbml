@@ -4,7 +4,7 @@
 
 Project taipei_metro_analysis {
   database_type: 'MySQL'
-  Note: '大稻埕活動、北捷原始 OD、分析表、Google Trends 與氣象資料。11 張實體資料表及 2 張檢視表。'
+  Note: '大稻埕活動、年度預算與宣導、北捷 OD、Google Trends 與氣象。18 張實體資料表及 6 張檢視表。'
 }
 
 Enum dadaocheng_fireworks_events_event_status_enum {
@@ -89,9 +89,7 @@ Table analysis_event_station_window {
     (event_date, station, window_start_hour, window_end_hour_exclusive) [pk]
   }
 
-  checks {
-    `((window_start_hour < window_end_hour_exclusive) and (window_end_hour_exclusive <= 48))` [name: 'chk_analysis_window']
-  }
+  // SQL CHECK chk_analysis_window: window_start_hour < window_end_hour_exclusive <= 48
 
   Note: '活動站點固定視窗總量；24以上表示隔日，結束時刻不含'
 }
@@ -108,6 +106,7 @@ Table analysis_station_label {
 
 Table dadaocheng_fireworks_events {
   event_date date [pk, not null, note: '原訂或實際煙火日期；取消、延期仍保留原日期']
+  event_year "smallint unsigned" [note: 'MySQL STORED 生成欄位 YEAR(event_date)；外鍵至年度活動']
   event_name varchar(120) [not null, note: '市府活動名稱；collation=utf8mb4_0900_ai_ci']
   event_status dadaocheng_fireworks_events_event_status_enum [not null, note: 'collation=utf8mb4_0900_ai_ci']
   announced_show_start_time time [note: '官方公布的展演開始時間；不保證是煙火第一發時刻']
@@ -125,16 +124,88 @@ Table dadaocheng_fireworks_events {
 
   indexes {
     (event_status, event_date) [name: 'ix_fireworks_status_date']
+    event_year [name: 'ix_dadaocheng_event_year']
     transferred_to_date [name: 'ix_transferred_to_date']
   }
 
-  checks {
-    `((has_drone_show in (0,1)) or (has_drone_show is null))` [name: 'chk_dadaocheng_drone']
-    `(((event_status = _utf8mb4'held') and (not_held_reason is null) and (fireworks_duration_seconds is not null)) or ((event_status in (_utf8mb4'cancelled',_utf8mb4'postponed')) and (not_held_reason is not null) and (fireworks_duration_seconds is null)))` [name: 'chk_dadaocheng_status_reason']
-    `(((transferred_to_date is null) and (transfer_type is null)) or ((transferred_to_date is not null) and (transfer_type is not null) and (transferred_to_date <> event_date)))` [name: 'chk_dadaocheng_transfer']
-  }
+  // SQL CHECK: chk_dadaocheng_drone, chk_dadaocheng_status_reason, chk_dadaocheng_transfer
 
   Note: '2017–2026 大稻埕官方煙火原訂及實際場次，不含純音樂會'
+}
+
+Table dadaocheng_event_years {
+  event_year "smallint unsigned" [pk, not null]
+  event_label varchar(120) [not null]
+
+  Note: '每年一屆活動；同年多個煙火日期共用一筆'
+}
+
+Table dadaocheng_planned_event_budgets {
+  event_year "smallint unsigned" [pk, not null]
+  planned_budget_ntd "bigint unsigned" [not null, note: '原列法定活動預算；非實支']
+  budget_basis varchar(80) [not null]
+  budget_scope_note varchar(500) [not null]
+  source_url varchar(1000) [not null]
+  source_pdf_page "smallint unsigned" [not null]
+
+  Note: '年度活動預定預算；企劃執行等整體費用，不當成純廣告費'
+}
+
+Table dadaocheng_annual_publicity {
+  event_year "smallint unsigned" [pk, not null]
+  required_publicity_cost_ntd "bigint unsigned" [not null, note: 'CSV「相關宣導案所需經費合計(元)」；每年只存一筆，非實付']
+  has_print_media tinyint(1)
+  has_television_media tinyint(1)
+  has_online_media tinyint(1)
+  has_radio_media tinyint(1)
+  has_other_media tinyint(1)
+  source_file_sha256 char(64) [not null]
+  source_label varchar(255) [not null]
+
+  Note: '2017–2021 來源 CSV 沒有金額；缺年度列而非填 0'
+}
+
+Table v_dadaocheng_annual_finance {
+  event_year "smallint unsigned" [not null]
+  event_label varchar(120) [not null]
+  planned_budget_ntd "bigint unsigned"
+  budget_basis varchar(80)
+  budget_scope_note varchar(500)
+  required_publicity_cost_ntd "bigint unsigned"
+  publicity_to_planned_budget_ratio decimal(18,6) [note: '宣導案所需經費 / 原列法定活動預算；缺值為 NULL；非宣導實支比率']
+  has_print_media tinyint(1)
+  has_television_media tinyint(1)
+  has_online_media tinyint(1)
+  has_radio_media tinyint(1)
+  has_other_media tinyint(1)
+  budget_source_url varchar(1000)
+  publicity_source_label varchar(255)
+
+  Note: 'VIEW，一年一列；占比查詢時計算，不複製到煙火日期'
+}
+
+Table v_dadaocheng_event_quantitative {
+  event_date date [not null]
+  event_year "smallint unsigned" [not null]
+  event_name varchar(120) [not null]
+  event_status dadaocheng_fireworks_events_event_status_enum [not null]
+  was_held tinyint(1) [not null]
+  was_cancelled tinyint(1) [not null]
+  was_postponed tinyint(1) [not null]
+  fireworks_duration_seconds "smallint unsigned"
+  fireworks_duration_minutes decimal(10,4)
+  has_drone_show tinyint(1)
+  drone_status_known tinyint(1) [not null]
+  transferred_to_date date
+  transfer_type dadaocheng_fireworks_events_transfer_type_enum
+  original_date_not_held tinyint(1) [not null]
+  receives_merged_show tinyint(1) [not null]
+  receives_rescheduled_show tinyint(1) [not null]
+  event_month int [not null]
+  iso_weekday int [not null]
+  is_weekend tinyint(1) [not null]
+
+  Note: 'VIEW，CSV 日期層級衍生欄位；沒有年度金額'
 }
 
 Table event_trends_features {
@@ -152,9 +223,7 @@ Table event_trends_features {
     (event_date, query_text, geo_code) [pk]
   }
 
-  checks {
-    `((interest_1d between 0 and 100) and (interest_3d_avg between 0 and 100) and (interest_7d_avg between 0 and 100))` [name: 'chk_event_trends_values']
-  }
+  // SQL CHECK chk_event_trends_values: three interest scores are between 0 and 100
 
   Note: '原訂及實際煙火日前1、3、7日指標；活動狀態由事件表取得'
 }
@@ -173,9 +242,7 @@ Table event_weather_station {
     primary_event_date [name: 'uq_weather_primary_event', unique]
   }
 
-  checks {
-    `(distance_to_dadaocheng_km >= 0)` [name: 'chk_weather_distance']
-  }
+  // SQL CHECK chk_weather_distance: distance_to_dadaocheng_km >= 0
 
   Note: '活動採用測站；每活動最多一個primary，觀測表可獨立存一般日；primary_event_date 是 STORED 生成欄位，UNIQUE 限制每個活動最多一個主要站。'
 }
@@ -190,10 +257,7 @@ Table google_trends_daily {
     (import_id, search_date) [pk]
   }
 
-  checks {
-    `(samples_in_day in (1,24))` [name: 'chk_trends_samples']
-    `(interest_score between 0 and 100)` [name: 'chk_trends_score']
-  }
+  // SQL CHECK: chk_trends_samples allows 1 or 24; chk_trends_score allows 0 to 100
 
   Note: 'Google Trends 每日指標；原始小時資料保存在來源JSON快取'
 }
@@ -216,9 +280,7 @@ Table google_trends_imports {
     (query_year, query_text, geo_code, period_start, period_end, source_sha256) [name: 'uq_trends_import', unique]
   }
 
-  checks {
-    `(period_start <= period_end)` [name: 'chk_trends_period']
-  }
+  // SQL CHECK chk_trends_period: period_start <= period_end
 
   Note: 'Google Trends 每份來源快照一列；每次查詢各自正規化'
 }
@@ -269,13 +331,8 @@ Table weather_observation {
     (station_id, observed_at) [pk]
   }
 
-  checks {
-    `(total_cloud_amount_tenths between 0 and 10)` [name: 'chk_weather_cloud']
-    `(cloud_method_review_required in (0,1))` [name: 'chk_weather_cloud_review']
-    `(hourly_precipitation_mm >= 0)` [name: 'chk_weather_rain']
-    `(source_row_number > 0)` [name: 'chk_weather_source_row']
-    `(mean_wind_speed_m_s >= 0)` [name: 'chk_weather_wind']
-  }
+  // SQL CHECK: chk_weather_cloud (0–10), chk_weather_cloud_review (0/1),
+  // chk_weather_rain (>=0), chk_weather_source_row (>0), chk_weather_wind (>=0)
 
   Note: '每測站每時間一筆；缺值保留NULL，不推定為0'
 }
@@ -345,6 +402,9 @@ Table v_regression_station_hourly {
 }
 
 Ref fk_analysis_hour_event: analysis_event_station_hourly.event_date > dadaocheng_fireworks_events.event_date [delete: no action, update: no action]
+Ref fk_dadaocheng_event_year: dadaocheng_fireworks_events.event_year > dadaocheng_event_years.event_year [delete: no action, update: no action]
+Ref fk_dadaocheng_budget_year: dadaocheng_planned_event_budgets.event_year > dadaocheng_event_years.event_year [delete: no action, update: no action]
+Ref fk_dadaocheng_publicity_year: dadaocheng_annual_publicity.event_year > dadaocheng_event_years.event_year [delete: no action, update: no action]
 Ref fk_analysis_hour_station: analysis_event_station_hourly.station > analysis_station_label.station [delete: no action, update: no action]
 Ref fk_analysis_window_event: analysis_event_station_window.event_date > dadaocheng_fireworks_events.event_date [delete: no action, update: no action]
 Ref fk_analysis_window_station: analysis_event_station_window.station > analysis_station_label.station [delete: no action, update: no action]
@@ -355,12 +415,141 @@ Ref fk_weather_event_station: event_weather_station.station_id > weather_station
 Ref fk_trends_daily_import: google_trends_daily.import_id > google_trends_imports.import_id [delete: restrict, update: no action]
 Ref fk_weather_observation_station: weather_observation.station_id > weather_station.station_id [delete: no action, update: no action]
 
+Table calendar_day {
+  calendar_date date [pk, not null]
+  iso_weekday "tinyint unsigned" [not null]
+  is_weekend tinyint(1) [not null]
+  official_holiday_code "tinyint unsigned" [not null, note: '官方原碼：0上班、2放假']
+  is_holiday tinyint(1) [not null, note: '政府行政機關放假日，包含例行週末']
+  is_makeup_workday tinyint(1) [not null, note: '由週六/日且官方原碼0推導']
+  day_note varchar(255)
+  source_url varchar(1000) [not null]
+  source_file_sha256 char(64) [not null]
+  source_version varchar(80) [not null]
+
+  Note: '2026-10-07 補充資料；重建由對應 src Python 匯入程式執行'
+}
+
+Table analysis_calendar_baseline {
+  event_date date [not null]
+  station varchar(64) [not null]
+  policy_name varchar(64) [not null]
+  window_start_hour "smallint unsigned" [not null]
+  window_end_hour_exclusive "smallint unsigned" [not null]
+  baseline_n_days "tinyint unsigned" [not null]
+  baseline_dates json [not null]
+  baseline_origin_mean double
+  event_origin_total "bigint unsigned"
+  eligible tinyint(1) [not null]
+  source_run_sha256 char(64) [not null]
+
+  indexes {
+    (event_date, station, policy_name, window_start_hour, window_end_hour_exclusive) [pk]
+  }
+
+  Note: '2026-10-07 補充資料；重建由對應 src Python 匯入程式執行'
+}
+
+Table weather_source_verification {
+  station_id varchar(10) [not null]
+  observed_at datetime [not null]
+  source_file_sha256 char(64) [not null]
+  official_report_hour_end datetime [not null, note: '23:59 interpreted as report hour 24; not all variables are hourly means']
+  values_match tinyint(1) [not null]
+  cloud_method_verified tinyint(1) [not null]
+  response_sha256 char(64) [not null]
+  request_parameters json [not null]
+  verified_at_utc datetime [not null]
+
+  indexes {
+    (station_id, observed_at) [pk]
+  }
+
+  Note: '2026-10-07 補充資料；重建由對應 src Python 匯入程式執行'
+}
+
+Table event_timing_context {
+  event_date date [pk, not null]
+  nominal_show_end datetime [note: 'Announced start plus documented duration; not actual end']
+  nominal_end_basis varchar(64) [not null]
+  announced_show_window_start time
+  announced_show_window_end time
+  scheduled_stage_start time
+  scheduled_stage_end time
+  stage_scope varchar(255)
+  actual_show_end datetime
+  actual_stage_end datetime
+  actual_time_source_url text
+  show_source_url text [not null]
+  additional_source_url text
+  evidence_note text [not null]
+  source_sha256 char(64) [not null]
+
+  Note: '2026-10-07 補充資料；重建由對應 src Python 匯入程式執行'
+}
+
+Table v_dadaocheng_event_calendar {
+  event_date date [not null, note: '原訂或實際煙火日期；取消、延期仍保留原日期']
+  event_year "smallint unsigned"
+  event_status dadaocheng_fireworks_events_event_status_enum [not null]
+  iso_weekday "tinyint unsigned" [not null]
+  is_weekend tinyint(1) [not null]
+  is_holiday tinyint(1) [not null, note: '政府行政機關放假日，包含例行週末']
+  is_makeup_workday tinyint(1) [not null, note: '由週六/日且官方原碼0推導']
+  day_note varchar(255)
+  source_version varchar(80) [not null]
+
+  Note: 'VIEW，活動以 event_date 連接 calendar_date，非實體 FK'
+}
+
+Table v_weather_verified {
+  station_id varchar(10) [not null]
+  observed_at datetime [not null, note: 'Asia/Taipei 原檔時間標籤；未確認各要素的代表區間']
+  datetime_tst_raw varchar(32) [not null]
+  time_alignment_status weather_observation_time_alignment_status_enum [not null]
+  air_temperature_c decimal(7,3)
+  temperature_quality_flag varchar(64)
+  hourly_precipitation_mm decimal(9,3)
+  precipitation_raw_value varchar(64)
+  precipitation_status varchar(64) [not null]
+  precipitation_quality_flag varchar(64)
+  mean_wind_speed_m_s decimal(7,3)
+  wind_speed_quality_flag varchar(64)
+  total_cloud_amount_tenths decimal(5,3)
+  cloud_measurement_type varchar(64) [not null]
+  cloud_status varchar(64) [not null]
+  cloud_method_review_required tinyint(1) [not null, note: '2026年前衛星標記待查來源；不表示數值錯誤']
+  source varchar(255) [not null]
+  source_file_sha256 char(64) [not null]
+  source_row_number "int unsigned" [not null, note: 'CSV資料列序號；不含表頭，從1開始']
+  imported_at timestamp [not null]
+  official_report_hour_end datetime [note: '23:59 interpreted as report hour 24; not all variables are hourly means']
+  values_match tinyint(1)
+  cloud_method_verified tinyint(1)
+  effective_cloud_review_required int [not null]
+  response_sha256 char(64)
+  verified_at_utc datetime
+
+  Note: 'VIEW，無實體 PK/FK；氣象驗證依來源檔 SHA-256 比對'
+}
+
+Ref: analysis_calendar_baseline.event_date > dadaocheng_fireworks_events.event_date
+Ref: analysis_calendar_baseline.station > analysis_station_label.station
+Ref: event_timing_context.event_date > dadaocheng_fireworks_events.event_date
+Ref: weather_source_verification.(station_id, observed_at) > weather_observation.(station_id, observed_at)
+
 TableGroup Raw_OD {
   original_data
 }
 
 TableGroup Events_and_Metro_Analysis {
+  calendar_day
+  analysis_calendar_baseline
+  event_timing_context
   dadaocheng_fireworks_events
+  dadaocheng_event_years
+  dadaocheng_planned_event_budgets
+  dadaocheng_annual_publicity
   analysis_station_label
   analysis_event_station_hourly
   analysis_event_station_window
@@ -373,12 +562,17 @@ TableGroup Google_Trends {
 }
 
 TableGroup Weather {
+  weather_source_verification
   weather_station
   weather_observation
   event_weather_station
 }
 
 TableGroup Views_not_physical_tables {
+  v_dadaocheng_event_calendar
+  v_weather_verified
+  v_dadaocheng_annual_finance
+  v_dadaocheng_event_quantitative
   v_regression_event_station
   v_regression_station_hourly
 }

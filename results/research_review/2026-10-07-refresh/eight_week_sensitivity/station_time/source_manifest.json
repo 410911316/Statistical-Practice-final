@@ -1,0 +1,43 @@
+{
+  "generated_at_utc": "2026-10-07T12:26:28.871459+00:00",
+  "read_only_input": true,
+  "snapshot_path": "C:\\Users\\User.DESKTOP-4RV84M1\\Desktop\\統計\\碩二上\\統計實務\\.local\\research_review\\2026-10-07-refresh\\eight_week_snapshot.json",
+  "snapshot_sha256": "3c45a0ca040ae3c33037f2a5e0202bbd68af07f9945ba3e163344e25835239be",
+  "snapshot_extracted_at_utc": "2026-10-07T11:02:46.746536+00:00",
+  "prior_primary_csv": "results\\research_review\\2026-10-07-refresh\\eight_week_sensitivity\\statistics\\primary_beimen_events.csv",
+  "prior_primary_csv_sha256": "236a7bb07af311d61470e142d391a2d72ee82d65c002e2331603a3f48adcb111",
+  "script_sha256": "d3b9bfee0b6572624d07167bdb41d13258d008b067d535340e8cd39d4256b608",
+  "python": "3.10.11",
+  "packages": {
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "scipy": "1.15.3",
+    "matplotlib": "3.10.9"
+  },
+  "method_sources": {
+    "Friedman": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.friedmanchisquare.html",
+    "paired_permutation": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.permutation_test.html",
+    "exact_binomial": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binomtest.html",
+    "Holm": "https://www.statsmodels.org/stable/generated/statsmodels.stats.multitest.multipletests.html"
+  },
+  "sources_checked_on": "2026-10-05",
+  "outputs": {
+    "01_paired_station_contrasts.png": "af628af1bb75bacf7582b85fbbcc6dba14a4e405a2eb7adf4e4767befc09fcce",
+    "02_hourly_share_profiles.png": "f3a95ea616e3100b75dbb69cc02da58c78bebbb12fe16c1a2ea773430b05a5ad",
+    "03_beimen_late_share_pairs.png": "cc77d766ea4c36e69eb0b42a8382fdcbe45791e436c9b49d02de106baf8f5029",
+    "beimen_leave_year_out_late_share.csv": "405f8755a7d2ede3be01027f58ee4960e5989b9f5f7250725ed7c6ec6e775052",
+    "beimen_year_late_share_difference.csv": "026fac5aebb6e43a0dc455899b57f34cc8509825a425a2ff9ca91b3e1ac55e71",
+    "event_station_contrasts.csv": "657e39c95344fc362f501f52578d7b5d4c7fe6b7224754006dc82afdd9b49d93",
+    "event_station_time_features.csv": "9ce3d656bf96076140c9024b2e84bc637b223ebaa9c2a3de0ba643c64c8c4a8c",
+    "hourly_shares.csv": "f9dc0c6ce81370827f4cfd5f0082ac7b85a0283899307a92c476584e9132ca7c",
+    "input_reconciliation.csv": "c7b08b114135d25eef1be87a8437895c727d21029b90526a7ada1c7fff6ae303",
+    "late_share_comparisons.csv": "9ce3d656bf96076140c9024b2e84bc637b223ebaa9c2a3de0ba643c64c8c4a8c",
+    "leave_year_out_station.csv": "810be3eb573fba3c8d000f14075d541440e3a013a5fdf649fe56f5a18efa090e",
+    "pairwise_contrast_differences.csv": "79759ee55fae4449d5031b4b22418d3b4a6bc94c74c0c39c65ad5951908c0e93",
+    "station_descriptive.csv": "d3824f23c60fcbb78137b354097d435cd2986262213ad125780ab805d8c91d19",
+    "station_pairwise_sign.csv": "3573f91e5171409fcf9ae1845e4716ee97c7a89bee79dbe550857cb83f4f0867",
+    "station_peak_descriptive.csv": "0b8bde6a45d3f7c6ba11d4a73e26e0ca5715e408ac16276174eb3b6614763d07",
+    "summary.json": "c1cae8c5363cef7f3cef71d446ac474417efc370299dab9db78f048a21629111",
+    "year_station_contrasts.csv": "4ef35644536880ee1a92411876534b441d7279c97127694f98175dfb42f14542"
+  }
+}

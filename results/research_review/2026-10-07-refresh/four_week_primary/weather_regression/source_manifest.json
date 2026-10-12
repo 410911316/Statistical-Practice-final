@@ -1,0 +1,41 @@
+{
+  "generated_at_utc": "2026-10-07T12:26:26.403148+00:00",
+  "weather_extracted_at_utc": "2026-10-07T11:02:46.964358+00:00",
+  "weather_query_sha256": "b4cfc199aa3c5429d8d9ff9fb74022a5cdefb13d6da59d8f453756b1d9202139",
+  "snapshot_path": ".local\\research_review\\2026-10-07-refresh\\weather_snapshot.json",
+  "snapshot_sha256": "af914b99f8c9ebc8a3d036e4021e469a2bf5b95c48809f87efaca2a435893d7e",
+  "weather_source_file_sha256": [
+    "05f1b30afd987ffd70fdae507a3aafebdf3e1a7b648fe0ae7ab2a2ac109135a1"
+  ],
+  "primary_input_path": "results\\research_review\\2026-10-07-refresh\\four_week_primary\\statistics\\primary_beimen_events.csv",
+  "primary_input_sha256": "e968db67aebe47e6debbd6b589c3dbd299835c7b8ee1f61ddbe0823b3f7cd602",
+  "previous_manifest_sha256": "d3102142aed60b5103ed6be394f81f88981211754fa42a88abd78b04c3f6322f",
+  "script_sha256": "6a9a67e82e2d60e4ad9428ef8fbd61f1b102631ff343e492b4a15a6e9c165b59",
+  "python": "3.10.11",
+  "packages": {
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "scipy": "1.15.3",
+    "matplotlib": "3.10.9"
+  },
+  "method_sources": {
+    "CODiS": "https://codis.cwa.gov.tw/pdf_data/Readme.pdf",
+    "spearmanr": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.spearmanr.html",
+    "permutation_test": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.permutation_test.html",
+    "linregress": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.linregress.html"
+  },
+  "outputs": {
+    "01_weather_associations.png": "108424e70c4a79bebd7ac9c716cee1191177acbe94dfb8d96327a4301a673bf3",
+    "02_baseline_regression.png": "09132181abb2a5d2129be0e6577ef9bdd9a2bc8ee5fcefff0222e10a728e790c",
+    "03_regression_diagnostics.png": "75365db3ae04069a4b882e5ad076c1fbdb2273b7977a62a5acc63f653c9bced5",
+    "primary_weather_merged.csv": "d59e698bf2b44da62d7c522f2065c526b6603bd4222b3534909b8dca3d351d18",
+    "rain_group_counts.csv": "7da4d0ada70234acaa4c2c16878579151e8dff7bf54725aa360a6fd4a2444955",
+    "regression_event_diagnostics.csv": "ff2ac3c3fd7cd6f3d7feb2c39882868be1915873846e2399dfe8edf285c713ec",
+    "regression_loyo.csv": "1a22e73d2874184fe0d08a2615db9a3a605e7ce798b90508e34afa68ea6098d8",
+    "summary.json": "e50431c3da70e56bb7b77ce6c50f3bf4bb901430f7740904e3bd98f0bdf56e89",
+    "weather_correlations.csv": "1862b9bfbd72417324a3e89ed4568b89ee0ea49c71bd40b072e581589852589a",
+    "weather_event_summary.csv": "23a13da3fde98f02a6dd6da103214d28fd78cfd6e2d33c373edd9966173f8774",
+    "weather_leave_one_year.csv": "f87d5d33ee48d3d6eff88680763c758c39663699f2e1f8cf70c4be48cd085bc7",
+    "weather_yearly_means.csv": "3116b428bb4abfaff17887ad0a22d35d6094fb4ed0ecb4a6706c5201e8ca2435"
+  }
+}

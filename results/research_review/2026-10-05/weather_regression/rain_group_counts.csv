@@ -1,0 +1,10 @@
+﻿scope,rain_label_class,events
+all_26_dates,wet_evidence,7
+all_26_dates,all_six_labels_numeric_zero,14
+all_26_dates,unknown,5
+held_21_dates,wet_evidence,7
+held_21_dates,all_six_labels_numeric_zero,14
+held_21_dates,unknown,0
+primary_13_dates,wet_evidence,5
+primary_13_dates,all_six_labels_numeric_zero,8
+primary_13_dates,unknown,0

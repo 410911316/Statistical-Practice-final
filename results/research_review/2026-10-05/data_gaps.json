@@ -1,0 +1,1001 @@
+{
+  "as_of": "2026-10-05",
+  "scope": "data inventory and recommendations; no database writes; no new large dataset downloads; no social scraping; no model estimates",
+  "started_at_utc": "2026-10-05T07:12:19.352885+00:00",
+  "finished_at_utc": "2026-10-05T07:12:20.891973+00:00",
+  "database_read_method": "app.backend.database._read_json; separate READ ONLY transactions with fixed SELECT; encrypted login path; not one atomic multi-query snapshot",
+  "mysql_evidence": {
+    "events": {
+      "sql": "SELECT JSON_OBJECT('n',COUNT(*),'held',SUM(event_status='held'),'cancelled',SUM(event_status='cancelled'),'postponed',SUM(event_status='postponed'),'missing_start',SUM(announced_show_start_time IS NULL),'missing_drone',SUM(has_drone_show IS NULL),'missing_related',SUM(related_activities IS NULL)) FROM taipei_metro_analysis.dadaocheng_fireworks_events;",
+      "rows": [
+        {
+          "n": 26,
+          "held": 21,
+          "cancelled": 4,
+          "postponed": 1,
+          "missing_drone": 18,
+          "missing_start": 1,
+          "missing_related": 9
+        }
+      ]
+    },
+    "weather_by_station": {
+      "sql": "SELECT JSON_OBJECT('station',s.station_id,'name',s.station_name,'rows',COUNT(*),'min',CAST(MIN(w.observed_at) AS CHAR),'max',CAST(MAX(w.observed_at) AS CHAR),'dates',COUNT(DISTINCT DATE(w.observed_at)),'temp',SUM(air_temperature_c IS NOT NULL),'rain',SUM(hourly_precipitation_mm IS NOT NULL),'wind',SUM(mean_wind_speed_m_s IS NOT NULL),'cloud',SUM(total_cloud_amount_tenths IS NOT NULL),'cloud_method_review',SUM(cloud_method_review_required),'end_unverified',SUM(time_alignment_status='end_of_day_unverified')) FROM taipei_metro_analysis.weather_observation w JOIN taipei_metro_analysis.weather_station s USING(station_id) GROUP BY s.station_id,s.station_name;",
+      "rows": [
+        {
+          "max": "2026-08-15 23:59:00",
+          "min": "2017-08-26 01:00:00",
+          "name": "臺北",
+          "rain": 485,
+          "rows": 504,
+          "temp": 504,
+          "wind": 504,
+          "cloud": 401,
+          "dates": 21,
+          "station": "466920",
+          "end_unverified": 21,
+          "cloud_method_review": 239
+        },
+        {
+          "max": "2018-08-18 23:59:00",
+          "min": "2018-08-18 01:00:00",
+          "name": "士林",
+          "rain": 24,
+          "rows": 24,
+          "temp": 24,
+          "wind": 24,
+          "cloud": 0,
+          "dates": 1,
+          "station": "C0A9E0",
+          "end_unverified": 1,
+          "cloud_method_review": 0
+        },
+        {
+          "max": "2017-08-26 23:59:00",
+          "min": "2017-08-26 01:00:00",
+          "name": "三重",
+          "rain": 24,
+          "rows": 24,
+          "temp": 24,
+          "wind": 24,
+          "cloud": 0,
+          "dates": 1,
+          "station": "C0A9I1",
+          "end_unverified": 1,
+          "cloud_method_review": 0
+        },
+        {
+          "max": "2026-08-15 23:59:00",
+          "min": "2019-08-03 01:00:00",
+          "name": "三重",
+          "rain": 452,
+          "rows": 456,
+          "temp": 450,
+          "wind": 450,
+          "cloud": 0,
+          "dates": 19,
+          "station": "C0AI30",
+          "end_unverified": 19,
+          "cloud_method_review": 0
+        }
+      ]
+    },
+    "weather_missing_events": {
+      "sql": "SELECT JSON_OBJECT('date',CAST(e.event_date AS CHAR),'status',e.event_status) FROM taipei_metro_analysis.dadaocheng_fireworks_events e LEFT JOIN taipei_metro_analysis.event_weather_station m ON e.event_date=m.event_date AND m.station_role='primary' WHERE m.station_id IS NULL;",
+      "rows": [
+        {
+          "date": "2023-07-26",
+          "status": "cancelled"
+        },
+        {
+          "date": "2023-08-02",
+          "status": "cancelled"
+        },
+        {
+          "date": "2024-07-24",
+          "status": "cancelled"
+        },
+        {
+          "date": "2025-08-13",
+          "status": "cancelled"
+        },
+        {
+          "date": "2020-08-22",
+          "status": "postponed"
+        }
+      ]
+    },
+    "primary_weather": {
+      "sql": "SELECT JSON_OBJECT('events',COUNT(DISTINCT m.event_date),'rows',COUNT(*),'temp',SUM(w.air_temperature_c IS NOT NULL),'rain',SUM(w.hourly_precipitation_mm IS NOT NULL),'wind',SUM(w.mean_wind_speed_m_s IS NOT NULL),'cloud',SUM(w.total_cloud_amount_tenths IS NOT NULL)) FROM taipei_metro_analysis.event_weather_station m JOIN taipei_metro_analysis.weather_observation w ON m.station_id=w.station_id AND DATE(w.observed_at)=m.event_date WHERE m.station_role='primary';",
+      "rows": [
+        {
+          "rain": 485,
+          "rows": 504,
+          "temp": 504,
+          "wind": 504,
+          "cloud": 401,
+          "events": 21
+        }
+      ]
+    },
+    "weather_mapping_count": {
+      "sql": "SELECT JSON_OBJECT('mappings',COUNT(*),'primary',SUM(station_role='primary')) FROM taipei_metro_analysis.event_weather_station;",
+      "rows": [
+        {
+          "primary": 21,
+          "mappings": 42
+        }
+      ]
+    },
+    "baseline_by_station": {
+      "sql": "SELECT JSON_OBJECT('station',station,'events',COUNT(*),'complete',SUM(origin_window_complete),'baseline_missing',SUM(baseline_origin_window IS NULL),'min_days_0',SUM(baseline_min_days=0),'min_days_1',SUM(baseline_min_days=1),'min_days_2',SUM(baseline_min_days=2),'min_days_3',SUM(baseline_min_days=3),'min_days_4',SUM(baseline_min_days=4)) FROM taipei_metro_analysis.analysis_event_station_window WHERE station IN ('北門','大橋頭站','雙連','民權西路') AND window_start_hour=18 AND window_end_hour_exclusive=24 GROUP BY station;",
+      "rows": [
+        {
+          "events": 26,
+          "station": "北門",
+          "complete": 26,
+          "min_days_0": 11,
+          "min_days_1": 0,
+          "min_days_2": 5,
+          "min_days_3": 5,
+          "min_days_4": 5,
+          "baseline_missing": 11
+        },
+        {
+          "events": 26,
+          "station": "大橋頭站",
+          "complete": 26,
+          "min_days_0": 11,
+          "min_days_1": 0,
+          "min_days_2": 5,
+          "min_days_3": 5,
+          "min_days_4": 5,
+          "baseline_missing": 11
+        },
+        {
+          "events": 26,
+          "station": "民權西路",
+          "complete": 26,
+          "min_days_0": 11,
+          "min_days_1": 0,
+          "min_days_2": 5,
+          "min_days_3": 5,
+          "min_days_4": 5,
+          "baseline_missing": 11
+        },
+        {
+          "events": 26,
+          "station": "雙連",
+          "complete": 26,
+          "min_days_0": 11,
+          "min_days_1": 0,
+          "min_days_2": 5,
+          "min_days_3": 5,
+          "min_days_4": 5,
+          "baseline_missing": 11
+        }
+      ]
+    },
+    "baseline_events": {
+      "sql": "SELECT JSON_OBJECT('date',CAST(w.event_date AS CHAR),'status',e.event_status,'baseline_min_days',w.baseline_min_days,'baseline_missing',w.baseline_origin_window IS NULL) FROM taipei_metro_analysis.analysis_event_station_window w JOIN taipei_metro_analysis.dadaocheng_fireworks_events e ON e.event_date=w.event_date WHERE w.station='北門' AND w.window_start_hour=18 AND w.window_end_hour_exclusive=24 ORDER BY w.event_date;",
+      "rows": [
+        {
+          "date": "2017-08-26",
+          "status": "held",
+          "baseline_missing": false,
+          "baseline_min_days": 3
+        },
+        {
+          "date": "2018-08-18",
+          "status": "held",
+          "baseline_missing": false,
+          "baseline_min_days": 2
+        },
+        {
+          "date": "2019-08-03",
+          "status": "held",
+          "baseline_missing": true,
+          "baseline_min_days": 0
+        },
+        {
+          "date": "2020-08-22",
+          "status": "postponed",
+          "baseline_missing": false,
+          "baseline_min_days": 3
+        },
+        {
+          "date": "2020-08-29",
+          "status": "held",
+          "baseline_missing": false,
+          "baseline_min_days": 3
+        },
+        {
+          "date": "2021-10-16",
+          "status": "held",
+          "baseline_missing": false,
+          "baseline_min_days": 2
+        },
+        {
+          "date": "2022-07-30",
+          "status": "held",
+          "baseline_missing": false,
+          "baseline_min_days": 4
+        },
+        {
+          "date": "2023-07-05",
+          "status": "held",
+          "baseline_missing": true,
+          "baseline_min_days": 0
+        },
+        {
+          "date": "2023-07-12",
+          "status": "held",
+          "baseline_missing": true,
+          "baseline_min_days": 0
+        },
+        {
+          "date": "2023-07-19",
+          "status": "held",
+          "baseline_missing": true,
+          "baseline_min_days": 0
+        },
+        {
+          "date": "2023-07-26",
+          "status": "cancelled",
+          "baseline_missing": true,
+          "baseline_min_days": 0
+        },
+        {
+          "date": "2023-08-02",
+          "status": "cancelled",
+          "baseline_missing": true,
+          "baseline_min_days": 0
+        },
+        {
+          "date": "2023-08-09",
+          "status": "held",
+          "baseline_missing": true,
+          "baseline_min_days": 0
+        },
+        {
+          "date": "2023-08-16",
+          "status": "held",
+          "baseline_missing": true,
+          "baseline_min_days": 0
+        },
+        {
+          "date": "2023-08-20",
+          "status": "held",
+          "baseline_missing": false,
+          "baseline_min_days": 4
+        },
+        {
+          "date": "2024-07-17",
+          "status": "held",
+          "baseline_missing": false,
+          "baseline_min_days": 2
+        },
+        {
+          "date": "2024-07-24",
+          "status": "cancelled",
+          "baseline_missing": false,
+          "baseline_min_days": 2
+        },
+        {
+          "date": "2024-07-31",
+          "status": "held",
+          "baseline_missing": false,
+          "baseline_min_days": 2
+        },
+        {
+          "date": "2024-08-10",
+          "status": "held",
+          "baseline_missing": false,
+          "baseline_min_days": 4
+        },
+        {
+          "date": "2025-08-06",
+          "status": "held",
+          "baseline_missing": true,
+          "baseline_min_days": 0
+        },
+        {
+          "date": "2025-08-13",
+          "status": "cancelled",
+          "baseline_missing": true,
+          "baseline_min_days": 0
+        },
+        {
+          "date": "2025-08-20",
+          "status": "held",
+          "baseline_missing": true,
+          "baseline_min_days": 0
+        },
+        {
+          "date": "2025-08-30",
+          "status": "held",
+          "baseline_missing": false,
+          "baseline_min_days": 4
+        },
+        {
+          "date": "2026-07-25",
+          "status": "held",
+          "baseline_missing": false,
+          "baseline_min_days": 3
+        },
+        {
+          "date": "2026-08-05",
+          "status": "held",
+          "baseline_missing": false,
+          "baseline_min_days": 4
+        },
+        {
+          "date": "2026-08-15",
+          "status": "held",
+          "baseline_missing": false,
+          "baseline_min_days": 3
+        }
+      ]
+    },
+    "weather_precipitation_flags": {
+      "sql": "SELECT JSON_OBJECT('status',precipitation_status,'n',COUNT(*)) FROM taipei_metro_analysis.weather_observation GROUP BY precipitation_status;",
+      "rows": [
+        {
+          "n": 985,
+          "status": "observed"
+        },
+        {
+          "n": 19,
+          "status": "trace_T"
+        },
+        {
+          "n": 4,
+          "status": "accumulated_later_ampersand"
+        }
+      ]
+    },
+    "event_trends_counts": {
+      "sql": "SELECT JSON_OBJECT('imports',(SELECT COUNT(*) FROM taipei_metro_analysis.google_trends_imports),'daily',(SELECT COUNT(*) FROM taipei_metro_analysis.google_trends_daily),'features',(SELECT COUNT(*) FROM taipei_metro_analysis.event_trends_features));",
+      "rows": [
+        {
+          "daily": 0,
+          "imports": 0,
+          "features": 0
+        }
+      ]
+    }
+  },
+  "local_input_files": {
+    "results/preprocessing/summary.json": {
+      "sha256": "28a36da2dddacc1a7ccad331411065c00fc983400584ba8eae442b0eb4f22140",
+      "bytes": 1252
+    },
+    "results/weather/import_summary.json": {
+      "sha256": "a8568a05b1d5e8e1fffe7481b5184f1649fddcfee069a6323037488d3862441d",
+      "bytes": 2111
+    },
+    "data/trends/web/last_run.json": {
+      "sha256": "5f5e253dd017c32807c6c2cae7d31987fbf1eb0ceac3c55f09acdc7f6cb11ac9",
+      "bytes": 329
+    },
+    "data/original_data/google_網路聲量.csv": {
+      "sha256": "aff07d62d8c96143d9bf9a1a199558416188137f8871e08e1700d77e3a6f6634",
+      "bytes": 1253
+    },
+    "app/frontend/src/data/geography.ts": {
+      "sha256": "b64e319951671d234972d60dcf1025945c1aa9458018b5656226f9ed87fa280c",
+      "bytes": 3947
+    },
+    "results/threads/web_sample_2026-07-15_2026-08-15/20260930T032540Z_14da527f/summary.json": {
+      "sha256": "cac5561c78217561adca8f90737a73f08c6ff96ddd6f38450601f6dc45fa235e",
+      "bytes": 1675
+    },
+    "results/threads/web_sample_2026-07-15_2026-08-15/20260930T032540Z_14da527f/words.csv": {
+      "sha256": "48b05330d1350765f036457595f88933822a3f9818606ef9aaa4af53faa9542e",
+      "bytes": 83923
+    },
+    "results/threads/web_sample_2026-07-15_2026-08-15/20260930T032540Z_14da527f/daily_observed_counts.csv": {
+      "sha256": "5e501e750ee131bcc9a58c884fc14a0f0416c97124ce9928f8db4b1dd55d472c",
+      "bytes": 5434
+    },
+    "results/threads/web_sample_2026-07-15_2026-08-15/20260930T032540Z_14da527f/wordcloud.png": {
+      "sha256": "dcc6da4453dd4dde4f3dc7aa2697f061667e4e600ec4e77a9f048b81ce9989d0",
+      "bytes": 360561
+    },
+    "results/ptt/web_sample_2026-07-15_2026-08-15/20260930T034906Z_68ee14a6/summary.json": {
+      "sha256": "adc4a7dd2f8d356d74ee326802a8aacc3b2007663f4b82fa67c27f5ba5626cf9",
+      "bytes": 1903
+    },
+    "results/ptt/web_sample_2026-07-15_2026-08-15/20260930T034906Z_68ee14a6/words.csv": {
+      "sha256": "271a5192404e71cbcdb0a7aa45741836158852c7899bdc1d0a21b132212bb528",
+      "bytes": 44224
+    },
+    "results/ptt/web_sample_2026-07-15_2026-08-15/20260930T034906Z_68ee14a6/daily_observed_counts.csv": {
+      "sha256": "f7198e74a088feefcafc468df1f66bf54ccb2c7fa46902eda02fbe00aa26bb64",
+      "bytes": 5428
+    },
+    "results/ptt/web_sample_2026-07-15_2026-08-15/20260930T034906Z_68ee14a6/wordcloud.png": {
+      "sha256": "8937d3b5ad07c338d47eda56262d5abf29f540e1e6f5b68eab40b501738e2036",
+      "bytes": 429988
+    }
+  },
+  "preprocessing_snapshot": {
+    "events": 26,
+    "window_start_hour": 18,
+    "window_end_hour_exclusive": 24,
+    "od_passengers": 839324028,
+    "origin_passengers": 839324028,
+    "destination_passengers": 839324028,
+    "incomplete_od_bins": 0,
+    "event_graph_passengers": 50026195,
+    "row_counts": {
+      "station_labels": 123,
+      "station_hourly": 1070136,
+      "regression_station_hourly": 74880,
+      "regression_event_station": 3120,
+      "flow_edges_hourly": 4221255,
+      "flow_nodes_hourly": 74880
+    },
+    "events_without_od": [],
+    "complete_event_station_windows": 3063,
+    "missing_trends_events": 26,
+    "generated_at_utc": "2026-09-29T06:23:49.257189+00:00",
+    "source_rows": 116732817,
+    "clean_rows": 116732817,
+    "exact_duplicate_rows_removed": 0,
+    "months": [
+      "201701",
+      "201708",
+      "201808",
+      "201908",
+      "202008",
+      "202110",
+      "202207",
+      "202307",
+      "202308",
+      "202407",
+      "202408",
+      "202508",
+      "202607",
+      "202608"
+    ],
+    "mysql": {
+      "source_run_sha256": "878459052d4b9da5272eda750bfe012871ee8c3dae708d8f1c690d3e9e2ab1ef",
+      "published_rows": {
+        "analysis_station_label": 123,
+        "analysis_event_station_hourly": 74880,
+        "analysis_event_station_window": 3120
+      }
+    }
+  },
+  "social_samples": {
+    "threads": {
+      "run": "20260930T032540Z_14da527f",
+      "folder": "results/threads/web_sample_2026-07-15_2026-08-15/20260930T032540Z_14da527f",
+      "summary": {
+        "source_type": "threads_visible_web",
+        "sample_label": "Threads 公開搜尋樣本，非全量",
+        "analysis_purpose": "活動期間回顧性探索，不構成因果證據",
+        "start_date": "2026-07-15",
+        "end_date": "2026-08-15",
+        "timezone": "Asia/Taipei",
+        "window_day_count": 32,
+        "sample_post_count": 74,
+        "input_observation_count": 100,
+        "retained_unique_post_count": 100,
+        "omission_counts": {
+          "excluded_or_review_post": 26
+        },
+        "unique_displayed_word_count": 632,
+        "wordcloud_created": true,
+        "platform_total": false,
+        "causal_evidence": false,
+        "pre_event_prediction_variable": false,
+        "raw_retention_days": 90,
+        "frequency_definition": "含該詞的不同貼文篇數；同篇同詞只計一次。",
+        "daily_count_definition": "可用公開搜尋樣本的不同貼文篇數，不代表全站或完整搜尋結果。",
+        "missing_value_definition": "CSV 空白表示當日未觀測到可用樣本，不能當成零聲量。",
+        "retention_note": "本報告忽略取得超過 90 天的觀測；原始檔清除由擷取程式負責。",
+        "display_exclusions": [
+          "夏日節",
+          "大稻埕",
+          "大稻埕夏日節",
+          "烟火",
+          "煙火",
+          "煙火秀",
+          "花火"
+        ],
+        "extra_stopwords": [],
+        "limitations": [
+          "搜尋排序、登入狀態及可見範圍會影響樣本。",
+          "日期不確定、文字未展開或待人工判定的貼文不納入。",
+          "活動後回顧詞彙不可當成活動前已知變數。",
+          "本輸出不使用擷取當下的按讚、回覆或分享數作為歷史回歸變數。"
+        ],
+        "generated_at_utc": "2026-09-30T05:09:55.812073+00:00"
+      },
+      "observed_days": 15,
+      "unknown_days": 17,
+      "observed_posts_sum": 74,
+      "earliest_observed_date": "2026-07-18",
+      "latest_observed_date": "2026-08-15",
+      "hypothesis_terms": [
+        {
+          "word": "位置",
+          "document_frequency": "6",
+          "document_share": "0.08108108",
+          "source_type": "threads_visible_web",
+          "sample_label": "Threads 公開搜尋樣本，非全量",
+          "analysis_purpose": "活動期間回顧性探索，不構成因果證據"
+        },
+        {
+          "word": "人擠",
+          "document_frequency": "5",
+          "document_share": "0.06756757",
+          "source_type": "threads_visible_web",
+          "sample_label": "Threads 公開搜尋樣本，非全量",
+          "analysis_purpose": "活動期間回顧性探索，不構成因果證據"
+        },
+        {
+          "word": "散場",
+          "document_frequency": "5",
+          "document_share": "0.06756757",
+          "source_type": "threads_visible_web",
+          "sample_label": "Threads 公開搜尋樣本，非全量",
+          "analysis_purpose": "活動期間回顧性探索，不構成因果證據"
+        },
+        {
+          "word": "碼頭",
+          "document_frequency": "5",
+          "document_share": "0.06756757",
+          "source_type": "threads_visible_web",
+          "sample_label": "Threads 公開搜尋樣本，非全量",
+          "analysis_purpose": "活動期間回顧性探索，不構成因果證據"
+        },
+        {
+          "word": "人潮",
+          "document_frequency": "4",
+          "document_share": "0.05405405",
+          "source_type": "threads_visible_web",
+          "sample_label": "Threads 公開搜尋樣本，非全量",
+          "analysis_purpose": "活動期間回顧性探索，不構成因果證據"
+        },
+        {
+          "word": "停車場",
+          "document_frequency": "3",
+          "document_share": "0.04054054",
+          "source_type": "threads_visible_web",
+          "sample_label": "Threads 公開搜尋樣本，非全量",
+          "analysis_purpose": "活動期間回顧性探索，不構成因果證據"
+        }
+      ],
+      "image_visually_inspected": true
+    },
+    "ptt": {
+      "run": "20260930T034906Z_68ee14a6",
+      "folder": "results/ptt/web_sample_2026-07-15_2026-08-15/20260930T034906Z_68ee14a6",
+      "summary": {
+        "source_type": "ptt_public_web",
+        "sample_label": "PTT 指定看板標題搜尋樣本，非全量",
+        "analysis_purpose": "活動期間回顧性探索，不構成因果證據",
+        "start_date": "2026-07-15",
+        "end_date": "2026-08-15",
+        "timezone": "Asia/Taipei",
+        "window_day_count": 32,
+        "sample_post_count": 8,
+        "input_observation_count": 9,
+        "retained_unique_post_count": 9,
+        "omission_counts": {
+          "excluded_or_review_post": 1
+        },
+        "unique_displayed_word_count": 338,
+        "wordcloud_created": true,
+        "platform_total": false,
+        "causal_evidence": false,
+        "pre_event_prediction_variable": false,
+        "raw_retention_days": 90,
+        "frequency_definition": "含該詞的不同貼文篇數；同篇同詞只計一次。",
+        "daily_count_definition": "可用公開搜尋樣本的不同貼文篇數，不代表全站或完整搜尋結果。",
+        "missing_value_definition": "CSV 空白表示當日未觀測到可用樣本，不能當成零聲量。",
+        "retention_note": "本報告忽略取得超過 90 天的觀測；原始檔清除由擷取程式負責。",
+        "display_exclusions": [
+          "夏日節",
+          "大稻埕",
+          "大稻埕夏日節",
+          "烟火",
+          "煙火",
+          "煙火秀",
+          "花火"
+        ],
+        "extra_stopwords": [],
+        "limitations": [
+          "僅涵蓋指定看板的標題搜尋；只在正文提及關鍵字的文章可能漏掉。",
+          "不含推噓文、作者欄位與簽名；日期不明或待核對文章不納入。",
+          "不同文章可能轉貼同一新聞，不能解讀為不同人的獨立意見。",
+          "文章刪除、存取限制與搜尋索引會影響涵蓋；不是全站聲量。",
+          "活動期間的回顧文字不可當成活動事前已知特徵或因果證據。"
+        ],
+        "generated_at_utc": "2026-09-30T05:09:57.621153+00:00",
+        "search_scope": "selected_board_title_search",
+        "comments_included": false
+      },
+      "observed_days": 4,
+      "unknown_days": 28,
+      "observed_posts_sum": 8,
+      "earliest_observed_date": "2026-07-24",
+      "latest_observed_date": "2026-08-15",
+      "hypothesis_terms": [
+        {
+          "word": "問卦",
+          "document_frequency": "6",
+          "document_share": "0.75",
+          "source_type": "ptt_public_web",
+          "sample_label": "PTT 指定看板標題搜尋樣本，非全量",
+          "analysis_purpose": "活動期間回顧性探索，不構成因果證據"
+        },
+        {
+          "word": "施放",
+          "document_frequency": "4",
+          "document_share": "0.5",
+          "source_type": "ptt_public_web",
+          "sample_label": "PTT 指定看板標題搜尋樣本，非全量",
+          "analysis_purpose": "活動期間回顧性探索，不構成因果證據"
+        },
+        {
+          "word": "人潮",
+          "document_frequency": "3",
+          "document_share": "0.375",
+          "source_type": "ptt_public_web",
+          "sample_label": "PTT 指定看板標題搜尋樣本，非全量",
+          "analysis_purpose": "活動期間回顧性探索，不構成因果證據"
+        },
+        {
+          "word": "交通",
+          "document_frequency": "2",
+          "document_share": "0.25",
+          "source_type": "ptt_public_web",
+          "sample_label": "PTT 指定看板標題搜尋樣本，非全量",
+          "analysis_purpose": "活動期間回顧性探索，不構成因果證據"
+        },
+        {
+          "word": "散場",
+          "document_frequency": "2",
+          "document_share": "0.25",
+          "source_type": "ptt_public_web",
+          "sample_label": "PTT 指定看板標題搜尋樣本，非全量",
+          "analysis_purpose": "活動期間回顧性探索，不構成因果證據"
+        },
+        {
+          "word": "人擠",
+          "document_frequency": "1",
+          "document_share": "0.125",
+          "source_type": "ptt_public_web",
+          "sample_label": "PTT 指定看板標題搜尋樣本，非全量",
+          "analysis_purpose": "活動期間回顧性探索，不構成因果證據"
+        },
+        {
+          "word": "位置",
+          "document_frequency": "1",
+          "document_share": "0.125",
+          "source_type": "ptt_public_web",
+          "sample_label": "PTT 指定看板標題搜尋樣本，非全量",
+          "analysis_purpose": "活動期間回顧性探索，不構成因果證據"
+        }
+      ],
+      "image_visually_inspected": true
+    }
+  },
+  "monthly_search_index": {
+    "path": "data/original_data/google_網路聲量.csv",
+    "encoding": "cp950",
+    "data_rows": 117,
+    "headers": [
+      [
+        "月份-年度",
+        "相對網路流量"
+      ],
+      [
+        "",
+        "0-100"
+      ]
+    ],
+    "first": [
+      "Jan-17",
+      "0"
+    ],
+    "last": [
+      "Sep-26",
+      "1"
+    ],
+    "less_than_one_cells": 35,
+    "query_geo_and_collection_metadata_verified": false,
+    "usable_as_event_7day_index": false
+  },
+  "held_baseline_summary": {
+    "events": 21,
+    "missing": 8,
+    "days_histogram": {
+      "0": 8,
+      "1": 0,
+      "2": 4,
+      "3": 4,
+      "4": 5
+    }
+  },
+  "baseline_download_plan": [
+    {
+      "event_date": "2019-08-03",
+      "missing_download_dates": [
+        "2019-07-27",
+        "2019-07-20",
+        "2019-07-13",
+        "2019-07-06"
+      ],
+      "required_months": [
+        "201907"
+      ],
+      "excluded_event_dates": [],
+      "potential_comparison_days_after_download": 4,
+      "new_month_content_validated": false
+    },
+    {
+      "event_date": "2023-07-05",
+      "missing_download_dates": [
+        "2023-06-28",
+        "2023-06-21",
+        "2023-06-14",
+        "2023-06-07"
+      ],
+      "required_months": [
+        "202306"
+      ],
+      "excluded_event_dates": [],
+      "potential_comparison_days_after_download": 4,
+      "new_month_content_validated": false
+    },
+    {
+      "event_date": "2023-07-12",
+      "missing_download_dates": [
+        "2023-06-28",
+        "2023-06-21",
+        "2023-06-14"
+      ],
+      "required_months": [
+        "202306"
+      ],
+      "excluded_event_dates": [
+        "2023-07-05"
+      ],
+      "potential_comparison_days_after_download": 3,
+      "new_month_content_validated": false
+    },
+    {
+      "event_date": "2023-07-19",
+      "missing_download_dates": [
+        "2023-06-28",
+        "2023-06-21"
+      ],
+      "required_months": [
+        "202306"
+      ],
+      "excluded_event_dates": [
+        "2023-07-12",
+        "2023-07-05"
+      ],
+      "potential_comparison_days_after_download": 2,
+      "new_month_content_validated": false
+    },
+    {
+      "event_date": "2023-08-09",
+      "missing_download_dates": [],
+      "required_months": [],
+      "excluded_event_dates": [
+        "2023-08-02",
+        "2023-07-26",
+        "2023-07-19",
+        "2023-07-12"
+      ],
+      "potential_comparison_days_after_download": 0,
+      "new_month_content_validated": false
+    },
+    {
+      "event_date": "2023-08-16",
+      "missing_download_dates": [],
+      "required_months": [],
+      "excluded_event_dates": [
+        "2023-08-09",
+        "2023-08-02",
+        "2023-07-26",
+        "2023-07-19"
+      ],
+      "potential_comparison_days_after_download": 0,
+      "new_month_content_validated": false
+    },
+    {
+      "event_date": "2025-08-06",
+      "missing_download_dates": [
+        "2025-07-30",
+        "2025-07-23",
+        "2025-07-16",
+        "2025-07-09"
+      ],
+      "required_months": [
+        "202507"
+      ],
+      "excluded_event_dates": [],
+      "potential_comparison_days_after_download": 4,
+      "new_month_content_validated": false
+    },
+    {
+      "event_date": "2025-08-20",
+      "missing_download_dates": [
+        "2025-07-30",
+        "2025-07-23"
+      ],
+      "required_months": [
+        "202507"
+      ],
+      "excluded_event_dates": [
+        "2025-08-13",
+        "2025-08-06"
+      ],
+      "potential_comparison_days_after_download": 2,
+      "new_month_content_validated": false
+    }
+  ],
+  "recommendations": [
+    {
+      "priority_status": "P0／部分",
+      "data_and_purpose": "一般日 OD：描述、預測",
+      "proposed_fields_granularity_join": "同站同來源時段起站人次；`service_date + source_hour + station`，比較日再映射 `event_date`",
+      "source_history_availability": "[北捷官方月索引](https://data.taipei/api/frontstage/tpeod/dataset/resource.download?rid=eb481f58-1238-4cff-8caa-fa7bb20cb4f4)列有 201907、202306、202507；免費。尚未下載驗證內容",
+      "cautions": "不含活動日／異常日，補下載不是新增獨立活動"
+    },
+    {
+      "priority_status": "P0／部分",
+      "data_and_purpose": "氣溫、雨量、風、雲：描述；預測需當時預報",
+      "proposed_fields_granularity_join": "`station_id + observed_at`；先經 `event_weather_station(event_date, station_id)` 限 primary，再按確認的時間區間對齊",
+      "source_history_availability": "[CODiS](https://codis.cwa.gov.tw/StationData)可查歷史站資料；本專案已有 2017–2026 部分日期",
+      "cautions": "雨量 T 是微量、& 是累積至後續，不當零；同時 join 2 站會放大人流列，雲量跨年測法須分開"
+    },
+    {
+      "priority_status": "P0／缺少",
+      "data_and_purpose": "國定假日、補班、連假：描述、預測",
+      "proposed_fields_granularity_join": "`calendar_date, is_holiday, is_makeup_workday, holiday_name`；按實際曆日 join",
+      "source_history_availability": "[人事行政總處年曆](https://data.gov.tw/dataset/14718)列有民國 106～115 年 CSV，免費可追溯",
+      "cautions": "政府辦公日曆不等同所有民眾工作日；保留修訂版本，週末不等同假日"
+    },
+    {
+      "priority_status": "P1／部分",
+      "data_and_purpose": "展演結束、舞台節目、交通／水門管制：描述、預測、步行模擬",
+      "proposed_fields_granularity_join": "`event_date, planned/actual_end_at, restriction_id, mode, location, start_at, end_at, published_at`；時間區間重疊 join",
+      "source_history_availability": "[2026 官網](https://taipeisummer.travel.taipei/)、[2026 停車管制](https://pma.gov.taipei/News_Content.aspx?n=E43F2E5AE1223B3D&s=99037D911BF170D4)、[2023 公車改道附件](https://www.travel.taipei/file/34594/)；歷年公告可逐場人工追溯，非完整統一表",
+      "cautions": "車輛禁行不等於行人水門關閉；活動結束不必等於煙火秒數加開始時間；實際臨時管制未必留存"
+    },
+    {
+      "priority_status": "P1／部分",
+      "data_and_purpose": "同日其他大型活動、疫情／停運干擾：描述、預測",
+      "proposed_fields_granularity_join": "`other_event_id, venue, start/end_at, published_at, affected_station`；日期＋空間／受影響車站",
+      "source_history_availability": "[臺北旅遊活動與消息 API](https://www.travel.taipei/open-api)及歷年官方公告免費；API 歷史完整性未確認，需逐場交叉查證",
+      "cautions": "現有 `related_activities` 部分 NULL；只保留有來源的干擾，不能用全年粗旗標取代實際影響，也不要過度塞入參數"
+    },
+    {
+      "priority_status": "P1／缺少",
+      "data_and_purpose": "活動前天氣預報與警報版本：真正事前預測",
+      "proposed_fields_granularity_join": "`issued_at, valid_from/to, forecast_area, rain_probability, temperature, warning_type`；`issued_at <= cutoff` 且有效時間覆蓋活動",
+      "source_history_availability": "[CWA 短期過去資料 API](https://opendata.cwa.gov.tw/dist/opendata-history-swagger.html)、[歷史颱風資料庫](https://rdc28.cwa.gov.tw/TDB/public/typhoon_list/)；免費開放產品可先查，**未確認有完整 2017–2026 預報版本**",
+      "cautions": "觀測天氣不等於前一天可知；短期 API 不承諾多年歷史，查無歷史可先做回顧模型而非假稱真預測"
+    },
+    {
+      "priority_status": "P2／部分",
+      "data_and_purpose": "Google／社群／公告聲量：預測增補",
+      "proposed_fields_granularity_join": "`query, geo, published_at, collected_at, available_at, cutoff, source_id`；事件前固定窗後以 `event_date + query + geo` join",
+      "source_history_availability": "[Google FAQ](https://support.google.com/trends/answer/4365533?hl=zh-Hant)；[API Alpha](https://developers.google.com/search/apis/trends)仍需申請、近 5 年，不能涵蓋所有 2017 年資料；歷史社群完整性無保證",
+      "cautions": "現有月指數先查來源與共同尺度；同月多場不能複製月值假裝事件差異；當月包含事後訊息。先驗證相較 OD＋日曆的增益"
+    },
+    {
+      "priority_status": "P2／部分",
+      "data_and_purpose": "步行路網、各出口／水門開放、觀賞區：流向模擬",
+      "proposed_fields_granularity_join": "`node/edge_id, length_m, access_mode, entrance_id, valid_from/to`；空間 join 後建立 `event_date + route_id + station_id`",
+      "source_history_availability": "[官方出口座標](https://data.taipei/dataset/detail?id=cfa4778c-62c1-497b-b704-756231de348b)免費；[OSM 歷史查詢](https://wiki.openstreetmap.org/wiki/Overpass_API/Overpass_QL#Date)支援當時資料庫版本",
+      "cautions": "地圖版本不保證當日可步行；目前手繪線、官方推薦步行時間皆非實際軌跡，需現場／管制核對"
+    },
+    {
+      "priority_status": "P2／缺少",
+      "data_and_purpose": "班距、列車餘裕容量、方向與月台到達：候車模擬",
+      "proposed_fields_granularity_join": "`station_id + direction + train_id/arrival_at`；列車到離時刻、載客／下車／上車量、1–5 分鐘月台到達、進站管制",
+      "source_history_availability": "[北捷班距](https://www.metro.taipei/cp.aspx?n=EAD981369A065968&s=0F3F913C344BA050)免費但屬現行概略；[TDX 歷史申請流程](https://tdx.transportdata.tw/about/service)需確認產品、日期、權限及費用；歷史實際餘裕容量未找到免費現成來源",
+      "cautions": "平均班距不是活動加班車紀錄；列車總容量不是北門可上車容量；全站人次不是分方向月台到達量"
+    },
+    {
+      "priority_status": "P2／缺少",
+      "data_and_purpose": "實測候車／排隊標籤：模擬驗證",
+      "proposed_fields_granularity_join": "每方向每 1–5 分鐘 `queue_length, arrival_count, boarded_count, denied_boarding, wait_sample`；與班次時刻連接",
+      "source_history_availability": "未找到可免費回溯的 2017–2026 北門逐分鐘資料；可能需向營運單位申請或未來經同意現地人工計數",
+      "cautions": "沒標籤只能做明示假設的情境敏感度；不得把逐時 OD 均分後當成實測分鐘序列"
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://codis.cwa.gov.tw/StationData",
+      "accessed_on": "2026-10-05",
+      "verification": "official documentation or official download index read; no promise of all historical file contents"
+    },
+    {
+      "url": "https://codis.cwa.gov.tw/pdf_data/Readme.pdf",
+      "accessed_on": "2026-10-05",
+      "verification": "official documentation or official download index read; no promise of all historical file contents"
+    },
+    {
+      "url": "https://data.gov.tw/dataset/14718",
+      "accessed_on": "2026-10-05",
+      "verification": "official documentation or official download index read; no promise of all historical file contents"
+    },
+    {
+      "url": "https://data.taipei/api/frontstage/tpeod/dataset/resource.download?rid=eb481f58-1238-4cff-8caa-fa7bb20cb4f4",
+      "accessed_on": "2026-10-05",
+      "verification": "official documentation or official download index read; no promise of all historical file contents"
+    },
+    {
+      "url": "https://data.taipei/dataset/detail?id=cfa4778c-62c1-497b-b704-756231de348b",
+      "accessed_on": "2026-10-05",
+      "verification": "official documentation or official download index read; no promise of all historical file contents"
+    },
+    {
+      "url": "https://developers.google.com/search/apis/trends",
+      "accessed_on": "2026-10-05",
+      "verification": "official documentation or official download index read; no promise of all historical file contents"
+    },
+    {
+      "url": "https://opendata.cwa.gov.tw/dist/opendata-history-swagger.html",
+      "accessed_on": "2026-10-05",
+      "verification": "official documentation or official download index read; no promise of all historical file contents"
+    },
+    {
+      "url": "https://pma.gov.taipei/News_Content.aspx?n=E43F2E5AE1223B3D&s=99037D911BF170D4",
+      "accessed_on": "2026-10-05",
+      "verification": "official documentation or official download index read; no promise of all historical file contents"
+    },
+    {
+      "url": "https://rdc28.cwa.gov.tw/TDB/public/typhoon_list/",
+      "accessed_on": "2026-10-05",
+      "verification": "official documentation or official download index read; no promise of all historical file contents"
+    },
+    {
+      "url": "https://support.google.com/trends/answer/4365533?hl=zh-Hant",
+      "accessed_on": "2026-10-05",
+      "verification": "official documentation or official download index read; no promise of all historical file contents"
+    },
+    {
+      "url": "https://taipeisummer.travel.taipei/",
+      "accessed_on": "2026-10-05",
+      "verification": "official documentation or official download index read; no promise of all historical file contents"
+    },
+    {
+      "url": "https://tdx.transportdata.tw/about/service",
+      "accessed_on": "2026-10-05",
+      "verification": "official documentation or official download index read; no promise of all historical file contents"
+    },
+    {
+      "url": "https://wiki.openstreetmap.org/wiki/Overpass_API/Overpass_QL#Date",
+      "accessed_on": "2026-10-05",
+      "verification": "official documentation or official download index read; no promise of all historical file contents"
+    },
+    {
+      "url": "https://www.metro.taipei/cp.aspx?n=EAD981369A065968&s=0F3F913C344BA050",
+      "accessed_on": "2026-10-05",
+      "verification": "official documentation or official download index read; no promise of all historical file contents"
+    },
+    {
+      "url": "https://www.travel.taipei/file/34594/",
+      "accessed_on": "2026-10-05",
+      "verification": "official documentation or official download index read; no promise of all historical file contents"
+    },
+    {
+      "url": "https://www.travel.taipei/open-api",
+      "accessed_on": "2026-10-05",
+      "verification": "official documentation or official download index read; no promise of all historical file contents"
+    }
+  ],
+  "review_status": "awaiting_independent_review"
+}

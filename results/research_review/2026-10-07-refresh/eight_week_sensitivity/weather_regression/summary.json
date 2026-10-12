@@ -1,0 +1,232 @@
+{
+  "design": {
+    "primary_events": "21 Beimen dates from the matching primary CSV",
+    "weather_labels": "legacy_18_23",
+    "wind_semantics": "mean of six preceding-10-minute averages, not continuous six-hour mean",
+    "correlation_response": "log1p(Y)-log1p(B)",
+    "fixed_weather_family": [
+      "temperature_six_label_mean_c",
+      "wind_six_label_mean_m_s"
+    ],
+    "pairwise_min_n": 10,
+    "minimum_distinct_per_variable": 5,
+    "resampling_count": 99999,
+    "seed": 20261005,
+    "multiplicity": "Holm within these two weather tests; not global study-wide correction",
+    "inference": "exploratory: source timing, exchangeability, same-year dependence and baseline uncertainty remain"
+  },
+  "weather_coverage": {
+    "events_in_catalog": 26,
+    "primary_weather_station_ids": [
+      "466920"
+    ],
+    "primary_daily_weather_rows": 504,
+    "primary_end_of_day_rows_excluded": 21,
+    "selected_exact_labels": 126,
+    "events_with_six_labels": 21,
+    "dates_without_primary_station": [
+      "2020-08-22",
+      "2023-07-26",
+      "2023-08-02",
+      "2024-07-24",
+      "2025-08-13"
+    ],
+    "temperature_complete_event_means": 21,
+    "wind_complete_event_means": 21,
+    "cloud_numeric_selected_labels": 90,
+    "cloud_method_review_selected_labels": 72,
+    "cloud_method_review_after_verification_selected_labels": 0,
+    "cloud_method_counts": {
+      "satellite_retrieved": 90,
+      "not_observed_at_this_hour": 36
+    },
+    "selected_precipitation_status_counts": {
+      "observed": 119,
+      "trace_T": 7
+    },
+    "source_time_intervals_verified": false,
+    "weather_report_hour_end_verified": true,
+    "od_to_weather_exact_exposure_verified": false
+  },
+  "rain_groups": [
+    {
+      "scope": "all_26_dates",
+      "rain_label_class": "wet_evidence",
+      "events": 7
+    },
+    {
+      "scope": "all_26_dates",
+      "rain_label_class": "all_six_labels_numeric_zero",
+      "events": 14
+    },
+    {
+      "scope": "all_26_dates",
+      "rain_label_class": "unknown",
+      "events": 5
+    },
+    {
+      "scope": "held_21_dates",
+      "rain_label_class": "wet_evidence",
+      "events": 7
+    },
+    {
+      "scope": "held_21_dates",
+      "rain_label_class": "all_six_labels_numeric_zero",
+      "events": 14
+    },
+    {
+      "scope": "held_21_dates",
+      "rain_label_class": "unknown",
+      "events": 0
+    },
+    {
+      "scope": "primary_21_dates",
+      "rain_label_class": "wet_evidence",
+      "events": 7
+    },
+    {
+      "scope": "primary_21_dates",
+      "rain_label_class": "all_six_labels_numeric_zero",
+      "events": 14
+    },
+    {
+      "scope": "primary_21_dates",
+      "rain_label_class": "unknown",
+      "events": 0
+    }
+  ],
+  "weather_correlations": [
+    {
+      "variable": "temperature_six_label_mean_c",
+      "n": 21,
+      "distinct_x": 21,
+      "distinct_y": 21,
+      "seed": 20261005,
+      "n_resamples": 99999,
+      "dates": [
+        "2017-08-26",
+        "2018-08-18",
+        "2019-08-03",
+        "2020-08-29",
+        "2021-10-16",
+        "2022-07-30",
+        "2023-07-05",
+        "2023-07-12",
+        "2023-07-19",
+        "2023-08-09",
+        "2023-08-16",
+        "2023-08-20",
+        "2024-07-17",
+        "2024-07-31",
+        "2024-08-10",
+        "2025-08-06",
+        "2025-08-20",
+        "2025-08-30",
+        "2026-07-25",
+        "2026-08-05",
+        "2026-08-15"
+      ],
+      "status": "exploratory_tested",
+      "rho": -0.015584415584415586,
+      "permutation_p": 0.94827,
+      "extreme_count": 94826,
+      "p_convention": "(count(abs(rho_permuted)>=abs(rho_observed))+1)/(99999+1), floating tolerance as SciPy",
+      "annual_equal_weight_n": 10,
+      "annual_mean_rho_descriptive": 0.7818181818181817,
+      "leave_one_year_rho_range": [
+        -0.13684210526315788,
+        0.23928571428571427
+      ],
+      "holm_two_tests_p": 0.94827
+    },
+    {
+      "variable": "wind_six_label_mean_m_s",
+      "n": 21,
+      "distinct_x": 21,
+      "distinct_y": 21,
+      "seed": 20261006,
+      "n_resamples": 99999,
+      "dates": [
+        "2017-08-26",
+        "2018-08-18",
+        "2019-08-03",
+        "2020-08-29",
+        "2021-10-16",
+        "2022-07-30",
+        "2023-07-05",
+        "2023-07-12",
+        "2023-07-19",
+        "2023-08-09",
+        "2023-08-16",
+        "2023-08-20",
+        "2024-07-17",
+        "2024-07-31",
+        "2024-08-10",
+        "2025-08-06",
+        "2025-08-20",
+        "2025-08-30",
+        "2026-07-25",
+        "2026-08-05",
+        "2026-08-15"
+      ],
+      "status": "exploratory_tested",
+      "rho": 0.1948051948051948,
+      "permutation_p": 0.39361,
+      "extreme_count": 39360,
+      "p_convention": "(count(abs(rho_permuted)>=abs(rho_observed))+1)/(99999+1), floating tolerance as SciPy",
+      "annual_equal_weight_n": 10,
+      "annual_mean_rho_descriptive": 0.5151515151515151,
+      "leave_one_year_rho_range": [
+        0.08421052631578946,
+        0.30075187969924805
+      ],
+      "holm_two_tests_p": 0.78722
+    }
+  ],
+  "baseline_regression": {
+    "formula": "log1p(origin_count_window) ~ intercept + log1p(baseline_origin_window)",
+    "n": 21,
+    "residual_df": 19,
+    "intercept": 7.629553170465018,
+    "slope": 0.23030941422356482,
+    "intercept_ci95": [
+      1.001922386834453,
+      14.257183954095582
+    ],
+    "slope_ci95": [
+      -0.555730248625574,
+      1.0163490770727035
+    ],
+    "slope_standard_error": 0.3755521400691053,
+    "slope_p_conditional": 0.5469792455540887,
+    "r_squared_in_sample": 0.019409615340178425,
+    "residual_sd_log1p": 0.3702796926609375,
+    "shapiro_residual_W": 0.9510643209860229,
+    "shapiro_residual_p_diagnostic": 0.3567371310071191,
+    "max_cooks_distance": 1.7303763205790945,
+    "max_cooks_event": "2021-10-16",
+    "loyo_n": 21,
+    "loyo_mae_log1p": 0.3575314056698079,
+    "loyo_rmse_log1p": 0.43577454420202255,
+    "loyo_intercept_only_mae_log1p": 0.3126042814325484,
+    "loyo_intercept_only_rmse_log1p": 0.39151558300761624,
+    "loyo_slope_range": [
+      -0.41611386326060634,
+      0.3874724941972779
+    ],
+    "warning": "Conditional OLS CI assumes independent normal homoskedastic errors and treats estimated baselines as fixed. LOYO includes future years and is not forecasting validation. No weather variable was added."
+  },
+  "self_test": {
+    "five_exact_plus_2359": "mean unavailable",
+    "ampersand": "unknown, not zero",
+    "trace_T": "wet evidence, unknown amount",
+    "verified_19_to_24": "six labels accepted; missing 24 not imputed; unverified rows rejected"
+  },
+  "refresh_context": {
+    "analysis_date": "2026-10-07",
+    "baseline_policy": "same_weekday_calendar_56d_nearest4_v1",
+    "role": "previously_approved_baseline_sensitivity",
+    "weather_timing_sensitivity": false,
+    "multiplicity_scope": "Seven-question Holm applies to each legacy-label scenario separately; aligned weather has only two-test Holm. Neither covers all sensitivities or all historical research."
+  }
+}

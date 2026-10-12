@@ -107,6 +107,8 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("month", help="YYYYMM, e.g. 202607")
     parser.add_argument("--login-path", default="codex-local")
+    parser.add_argument("--download-only", action="store_true",
+                        help="Download and validate CSV for the Parquet pipeline, without loading raw MySQL rows")
     args = parser.parse_args()
     if not re.fullmatch(r"20\d{4}", args.month):
         parser.error("month must be YYYYMM")
@@ -117,6 +119,8 @@ def main() -> None:
     sha256 = download(url, local)
     expected_rows = inspect_csv(local, args.month)
     print(f"Source: {local} | bytes={local.stat().st_size} | rows={expected_rows} | sha256={sha256}", flush=True)
+    if args.download_only:
+        return
 
     secure_dir = mysql("SHOW VARIABLES LIKE 'secure_file_priv';", args.login_path).split("\t", 1)[1]
     staged = pathlib.Path(secure_dir) / f"metro_od_{args.month}.csv"

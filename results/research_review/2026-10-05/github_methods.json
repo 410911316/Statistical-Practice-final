@@ -1,0 +1,384 @@
+{
+  "title": "GitHub 方法參考",
+  "queried_at": "2026-10-05",
+  "status": "revised_awaiting_independent_acceptance",
+  "actual_external_code_execution": false,
+  "environment_modified": false,
+  "project_python": "3.10.11",
+  "top_three_workflows": [
+    "statsmodels 小型回歸與檢定診斷",
+    "以 scikit-learn 設計原則做整場、按時間回測",
+    "保留 jieba＋word_cloud，增加人工核對主題及篇數表"
+  ],
+  "local_evidence": [
+    "docs/data_preprocessing.md",
+    "docs/research_plan.md",
+    "README.md",
+    "src/aggregate_flows.py",
+    "src/threads_web_report.py",
+    "pyproject.toml"
+  ],
+  "hard_boundaries": [
+    "同場多小時／多車站不是獨立活動樣本",
+    "OD 不是步行軌跡",
+    "同來源分箱 destination 不等於該小時出閘",
+    "小時資料不能還原實測分鐘到達與服務率",
+    "社群搜尋樣本不代表平台全量",
+    "事後 excess 不能作同目標的預測輸入"
+  ],
+  "repositories": [
+    {
+      "id": "statsmodels",
+      "repository": "https://github.com/statsmodels/statsmodels",
+      "canonical_repository": "https://github.com/statsmodels/statsmodels",
+      "priority": "now",
+      "purpose": "每場活動的小型回歸、巢狀 OLS 檢定、Poisson／負二項比較",
+      "inputs": [
+        "event_date",
+        "station",
+        "origin_count_window",
+        "origin_window_complete",
+        "baseline_origin_window",
+        "事前可用的少量活動／日曆特徵"
+      ],
+      "borrow": [
+        "GLM notebook",
+        "NegativeBinomial discrete model",
+        "compare_f_test"
+      ],
+      "limitations": [
+        "小時／車站列不等於獨立活動樣本",
+        "精確小樣本 F 需同批資料、同目標、巢狀線性均值模型、滿秩設計及正的剩餘自由度；給定解釋變數後誤差須均值零、常態、獨立且同方差",
+        "GLM NegativeBinomial family alpha 不自動視為已估計",
+        "負值 excess 不可當 Poisson／NB 目標",
+        "每場一列仍可能有同年共同因素或重疊背景日造成相依；需核對基準重疊，作按年留出／不重疊基準的敏感度比較，不能據此宣稱精確 F 假設已成立"
+      ],
+      "license": "BSD-3-Clause",
+      "license_url": "https://github.com/statsmodels/statsmodels/blob/main/LICENSE.txt",
+      "version": "0.15.0",
+      "released": "2026-08-27",
+      "release_basis": "GitHub release",
+      "pushed_at": "2026-10-04T17:10:06Z",
+      "requires_python": ">=3.10",
+      "pypi_name": "statsmodels",
+      "sources": [
+        "https://www.statsmodels.org/stable/examples/notebooks/generated/glm.html",
+        "https://www.statsmodels.org/stable/generated/statsmodels.discrete.discrete_model.NegativeBinomial.html",
+        "https://www.statsmodels.org/stable/generated/statsmodels.genmod.families.family.NegativeBinomial.html",
+        "https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.RegressionResults.compare_f_test.html",
+        "https://itl.nist.gov/div898/software/dataplot/refman1/auxillar/line_fit.htm"
+      ],
+      "queried_at": "2026-10-05",
+      "archived": false,
+      "github_metadata_url": "https://api.github.com/repos/statsmodels/statsmodels",
+      "pypi_metadata_url": "https://pypi.org/pypi/statsmodels/0.15.0/json"
+    },
+    {
+      "id": "scikit-learn",
+      "repository": "https://github.com/scikit-learn/scikit-learn",
+      "canonical_repository": "https://github.com/scikit-learn/scikit-learn",
+      "priority": "now_method_reference",
+      "purpose": "按事件與時間驗證、防預處理洩漏；文本主題探索",
+      "inputs": [
+        "event_date groups",
+        "時間順序",
+        "X/y",
+        "已斷詞貼文矩陣"
+      ],
+      "borrow": [
+        "GroupKFold",
+        "TimeSeriesSplit 設計原則",
+        "Pipeline",
+        "NMF／LDA example"
+      ],
+      "limitations": [
+        "GroupKFold 不保證過去訓練、未來測試",
+        "不規則活動需自訂整場時間 folds，勿逐列套 TimeSeriesSplit",
+        "最新版本不支援主專案 Python 3.10",
+        "NMF 僅探索、須人工核對"
+      ],
+      "license": "BSD-3-Clause",
+      "license_url": "https://github.com/scikit-learn/scikit-learn/blob/main/COPYING",
+      "version": "1.9.1",
+      "released": "2026-09-11",
+      "release_basis": "GitHub release; PyPI uploaded 2026-09-10",
+      "pushed_at": "2026-10-03T14:29:24Z",
+      "requires_python": ">=3.11",
+      "pypi_name": "scikit-learn",
+      "sources": [
+        "https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GroupKFold.html",
+        "https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.TimeSeriesSplit.html",
+        "https://scikit-learn.org/stable/common_pitfalls.html",
+        "https://scikit-learn.org/stable/auto_examples/applications/plot_topics_extraction_with_nmf_lda.html"
+      ],
+      "queried_at": "2026-10-05",
+      "archived": false,
+      "github_metadata_url": "https://api.github.com/repos/scikit-learn/scikit-learn",
+      "pypi_metadata_url": "https://pypi.org/pypi/scikit-learn/1.9.1/json"
+    },
+    {
+      "id": "statsforecast",
+      "repository": "https://github.com/Nixtla/statsforecast",
+      "canonical_repository": "https://github.com/Nixtla/statsforecast",
+      "priority": "after_background_coverage",
+      "purpose": "一般日背景流量與時間序列基準",
+      "inputs": [
+        "unique_id=station+source_hour",
+        "ds=service_date",
+        "y=origin_count",
+        "連續可比較日期"
+      ],
+      "borrow": [
+        "SeasonalNaive",
+        "cross_validation"
+      ],
+      "limitations": [
+        "不把不規則活動清單當連續時序",
+        "不把缺的 02–04 時補零",
+        "先比較現有前四週同星期同時段均值"
+      ],
+      "license": "Apache-2.0",
+      "license_url": "https://github.com/Nixtla/statsforecast/blob/main/LICENSE",
+      "version": "2.1.1",
+      "released": "2026-07-16",
+      "release_basis": "GitHub release",
+      "pushed_at": "2026-10-01T23:27:16Z",
+      "requires_python": ">=3.10",
+      "pypi_name": "statsforecast",
+      "sources": [
+        "https://nixtlaverse.nixtla.io/statsforecast/src/core/models.html#seasonalnaive",
+        "https://nixtlaverse.nixtla.io/statsforecast/docs/tutorials/crossvalidation.html"
+      ],
+      "queried_at": "2026-10-05",
+      "archived": false,
+      "github_metadata_url": "https://api.github.com/repos/Nixtla/statsforecast",
+      "pypi_metadata_url": "https://pypi.org/pypi/statsforecast/2.1.1/json"
+    },
+    {
+      "id": "simpy",
+      "repository": "https://github.com/simpx/simpy",
+      "repository_status": "old_fork_not_official_current_upstream",
+      "canonical_repository": "https://gitlab.com/team-simpy/simpy",
+      "priority": "conditional_scenario_only",
+      "purpose": "閘門資源、分方向候車及列車批次載運情境",
+      "inputs": [
+        "到達假設／服務時間",
+        "方向比例",
+        "班距",
+        "剩餘載客容量",
+        "隨機種子"
+      ],
+      "borrow": [
+        "Bank Renege",
+        "Resource",
+        "Monitoring"
+      ],
+      "limitations": [
+        "每小時 OD 不能校準分鐘到達或個體服務率",
+        "列車數不是 M/M/c 服務台數",
+        "情境等待值不宣稱真實觀測",
+        "GitHub fork 2021 年後未見推送，實作應跟官方上游"
+      ],
+      "license": "MIT",
+      "license_url": "https://simpy.readthedocs.io/en/stable/",
+      "version": "4.1.2",
+      "released": "2026-05-24",
+      "release_basis": "PyPI",
+      "pushed_at": "2021-02-03T18:01:30Z",
+      "pushed_at_scope": "GitHub fork only; canonical upstream date not verified",
+      "requires_python": ">=3.8",
+      "pypi_name": "simpy",
+      "sources": [
+        "https://simpy.readthedocs.io/en/stable/",
+        "https://simpy.readthedocs.io/en/stable/examples/bank_renege.html",
+        "https://simpy.readthedocs.io/en/stable/api_reference/simpy.resources.html",
+        "https://simpy.readthedocs.io/en/stable/topical_guides/monitoring.html"
+      ],
+      "queried_at": "2026-10-05",
+      "archived": false,
+      "github_metadata_url": "https://api.github.com/repos/simpx/simpy",
+      "pypi_metadata_url": "https://pypi.org/pypi/simpy/4.1.2/json"
+    },
+    {
+      "id": "osmnx",
+      "repository": "https://github.com/gboeing/osmnx",
+      "canonical_repository": "https://github.com/gboeing/osmnx",
+      "priority": "map_geometry_optional",
+      "purpose": "活動出口到各站入口的步行候選路線 GeoJSON",
+      "inputs": [
+        "活動區出口座標",
+        "車站入口座標",
+        "OSM walk network",
+        "臨時管制人工核對"
+      ],
+      "borrow": [
+        "graph_from_point network_type=walk",
+        "routing.shortest_path",
+        "routing.k_shortest_paths"
+      ],
+      "limitations": [
+        "候選路線不是觀測軌跡",
+        "道路車速不能當步速",
+        "當前路網不等於歷史路網",
+        "最新版本不支援主專案 Python 3.10"
+      ],
+      "license": "MIT; OSM data separately ODbL attribution",
+      "license_url": "https://github.com/gboeing/osmnx/blob/main/LICENSE.txt",
+      "version": "2.1.1",
+      "released": "2026-07-21",
+      "release_basis": "Changelog; GitHub releases/latest unavailable",
+      "pushed_at": "2026-07-31T17:24:41Z",
+      "requires_python": ">=3.11",
+      "pypi_name": "osmnx",
+      "sources": [
+        "https://osmnx.readthedocs.io/en/stable/user-reference.html#osmnx.graph.graph_from_point",
+        "https://github.com/gboeing/osmnx-examples/blob/main/notebooks/02-routing-speed-time.ipynb",
+        "https://github.com/gboeing/osmnx/blob/main/osmnx/routing.py",
+        "https://github.com/gboeing/osmnx/blob/main/CHANGELOG.md",
+        "https://www.openstreetmap.org/copyright"
+      ],
+      "queried_at": "2026-10-05",
+      "archived": false,
+      "github_metadata_url": "https://api.github.com/repos/gboeing/osmnx",
+      "pypi_metadata_url": "https://pypi.org/pypi/osmnx/2.1.1/json"
+    },
+    {
+      "id": "aequilibrae",
+      "repository": "https://github.com/AequilibraE/aequilibrae",
+      "canonical_repository": "https://github.com/AequilibraE/aequilibrae",
+      "priority": "defer_until_network_supply_data",
+      "purpose": "OD 需求分配到可行軌道區間",
+      "inputs": [
+        "正式站碼映射",
+        "線路／轉乘網路",
+        "OD 矩陣",
+        "班距",
+        "旅行及轉乘時間"
+      ],
+      "borrow": [
+        "Public transport assignment with Optimal Strategies",
+        "Traffic Assignment without model"
+      ],
+      "limitations": [
+        "靜態／頻率分配不代替逐班候車",
+        "道路 BPR 不直接套成月台擁擠公式",
+        "最新版本不支援主專案 Python 3.10",
+        "目前 flow_edges_hourly.parquet 成品不存在；程式保有建表輸出邏輯，可重建後才作路徑分配輸入"
+      ],
+      "license": "MIT with added citation clause; GitHub SPDX NOASSERTION",
+      "license_url": "https://github.com/AequilibraE/aequilibrae/blob/develop/LICENSE.TXT",
+      "version": "1.7.0",
+      "released": "2026-08-03",
+      "release_basis": "GitHub release",
+      "pushed_at": "2026-10-02T04:57:48Z",
+      "requires_python": ">=3.11",
+      "pypi_name": "aequilibrae",
+      "sources": [
+        "https://www.aequilibrae.com/latest/python/_auto_examples/public_transport/plot_public_transit_assignment.html",
+        "https://www.aequilibrae.com/latest/python/_auto_examples/traffic_assignment/plot_assignment_without_model.html"
+      ],
+      "queried_at": "2026-10-05",
+      "archived": false,
+      "github_metadata_url": "https://api.github.com/repos/AequilibraE/aequilibrae",
+      "pypi_metadata_url": "https://pypi.org/pypi/aequilibrae/1.7.0/json",
+      "local_input_availability": {
+        "checked_at": "2026-10-05",
+        "path": "data/processed/flow_edges_hourly.parquet",
+        "exists": false,
+        "rebuildable": true,
+        "rebuild_source": "src/aggregate_flows.py",
+        "next_step": "需要時由既有彙整流程重建，或對既有乾淨 OD 作等價唯讀查詢；本輪未重建"
+      }
+    },
+    {
+      "id": "jieba",
+      "repository": "https://github.com/fxsjy/jieba",
+      "canonical_repository": "https://github.com/fxsjy/jieba",
+      "priority": "retain_existing",
+      "purpose": "中文自訂詞典、候選關鍵詞和人工主題表",
+      "inputs": [
+        "去重可用貼文",
+        "詞典",
+        "停用詞",
+        "人工主題定義"
+      ],
+      "borrow": [
+        "load_userdict/add_word",
+        "TF-IDF",
+        "TextRank"
+      ],
+      "limitations": [
+        "關鍵詞不是已驗證主題分類",
+        "公開搜尋樣本不代表平台全部討論",
+        "未來測試貼文不可參與預測字典選擇",
+        "發布舊，不能稱近期活躍維護",
+        "本專案 Windows 沿用獨立 Tokenizer，不照抄中文文字雲範例的 jieba.enable_parallel(4)"
+      ],
+      "license": "MIT",
+      "license_url": "https://github.com/fxsjy/jieba/blob/master/LICENSE",
+      "version": "0.42.1",
+      "released": "2020-01-20",
+      "release_basis": "GitHub release",
+      "pushed_at": "2024-08-21T09:23:45Z",
+      "requires_python": null,
+      "pypi_name": "jieba",
+      "sources": [
+        "https://github.com/fxsjy/jieba/blob/master/README.md",
+        "https://github.com/fxsjy/jieba/blob/master/test/extract_tags.py",
+        "https://github.com/fxsjy/jieba/blob/master/jieba/analyse/textrank.py"
+      ],
+      "existing_project_file": "src/threads_web_report.py",
+      "queried_at": "2026-10-05",
+      "archived": false,
+      "github_metadata_url": "https://api.github.com/repos/fxsjy/jieba",
+      "pypi_metadata_url": "https://pypi.org/pypi/jieba/0.42.1/json"
+    },
+    {
+      "id": "word_cloud",
+      "repository": "https://github.com/amueller/word_cloud",
+      "canonical_repository": "https://github.com/amueller/word_cloud",
+      "priority": "retain_existing",
+      "purpose": "每篇一次的詞頻字典可視化並搭配篇數／占比表",
+      "inputs": [
+        "document_frequency dictionary",
+        "mask",
+        "中文 font_path",
+        "random_state"
+      ],
+      "borrow": [
+        "generate_from_frequencies",
+        "wordcloud_cn.py"
+      ],
+      "limitations": [
+        "停用詞先於頻率字典上游處理",
+        "字形面積不是精準數量量尺",
+        "不從高頻詞推因果或真實人數",
+        "公開 API 文件版號偏舊，核對 current source",
+        "官方 wordcloud_cn.py 的 jieba.enable_parallel(4) 不支援 Windows；只借用字型、斷詞、遮罩概念，沿用本專案獨立 Tokenizer，不原樣執行範例"
+      ],
+      "license": "MIT; bundled DroidSansMono font separately Apache",
+      "license_url": "https://github.com/amueller/word_cloud",
+      "version": "1.9.6",
+      "released": "2026-01-22",
+      "release_basis": "GitHub release",
+      "pushed_at": "2026-01-22T01:57:37Z",
+      "requires_python": ">=3.9",
+      "pypi_name": "wordcloud",
+      "sources": [
+        "https://github.com/amueller/word_cloud/blob/main/examples/wordcloud_cn.py",
+        "https://amueller.github.io/word_cloud/generated/wordcloud.WordCloud.html",
+        "https://github.com/amueller/word_cloud/blob/main/wordcloud/wordcloud.py"
+      ],
+      "existing_project_file": "src/threads_web_report.py",
+      "queried_at": "2026-10-05",
+      "archived": false,
+      "github_metadata_url": "https://api.github.com/repos/amueller/word_cloud",
+      "pypi_metadata_url": "https://pypi.org/pypi/wordcloud/1.9.6/json"
+    }
+  ],
+  "author_review_responses": {
+    "GH-01": "已補 Windows enable_parallel 限制及借用範圍",
+    "GH-02": "已實查成品缺檔並註明可重建流程",
+    "GH-03": "已明列精確 F 條件及同年／共用基準相依的敏感度建議"
+  }
+}

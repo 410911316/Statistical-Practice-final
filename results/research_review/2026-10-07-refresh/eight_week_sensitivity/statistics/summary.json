@@ -1,0 +1,170 @@
+{
+  "design": {
+    "baseline_policy": "same_weekday_calendar_56d_nearest4_v1",
+    "analysis_role": "sensitivity only; eight-week calendar rule changes baseline and eligibility",
+    "hours": [
+      18,
+      24
+    ],
+    "seed": 20261005,
+    "fixed_test": "two-sided event paired log1p contrast; F=t^2",
+    "inference_status": "exploratory; event independence and common distribution not assured"
+  },
+  "coverage": {
+    "events": 26,
+    "status_counts": {
+      "held": 21,
+      "cancelled": 4,
+      "postponed": 1
+    },
+    "beimen_primary_n": 21,
+    "beimen_primary_dates": [
+      "2017-08-26",
+      "2018-08-18",
+      "2019-08-03",
+      "2020-08-29",
+      "2021-10-16",
+      "2022-07-30",
+      "2023-07-05",
+      "2023-07-12",
+      "2023-07-19",
+      "2023-08-09",
+      "2023-08-16",
+      "2023-08-20",
+      "2024-07-17",
+      "2024-07-31",
+      "2024-08-10",
+      "2025-08-06",
+      "2025-08-20",
+      "2025-08-30",
+      "2026-07-25",
+      "2026-08-05",
+      "2026-08-15"
+    ],
+    "beimen_primary_years": [
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "eligible_min_baseline_days_counts": {
+      "4": 12,
+      "2": 5,
+      "3": 4
+    }
+  },
+  "primary_F_test": {
+    "n": 21,
+    "mean_log1p_difference": 1.1418856992517157,
+    "sd_log1p_difference": 0.3988069730748248,
+    "t": 13.121078629753006,
+    "F": 172.16270440816103,
+    "df_num": 1,
+    "df_denom": 20,
+    "p": 2.7618876185177122e-11,
+    "mean_log1p_difference_ci95": [
+      0.9603509415684972,
+      1.3234204569349342
+    ],
+    "geometric_ratio_plus_one": 3.132670072626523,
+    "geometric_ratio_plus_one_ci95": [
+      2.6126131871270033,
+      3.7562475119868592
+    ],
+    "paired_standardized_mean": 2.863254096205267,
+    "positive": 21,
+    "zero": 0,
+    "sign_test_two_sided_p": 9.5367431640625e-07
+  },
+  "year_equal_weight_sensitivity": {
+    "n": 10,
+    "mean_log1p_difference": 1.2611115996075795,
+    "sd_log1p_difference": 0.33987104954340874,
+    "t": 11.733817998843433,
+    "F": 137.68248482998212,
+    "df_num": 1,
+    "df_denom": 9,
+    "p": 9.318977774684385e-07,
+    "mean_log1p_difference_ci95": [
+      1.0179824971711966,
+      1.5042407020439623
+    ],
+    "geometric_ratio_plus_one": 3.529342523414603,
+    "geometric_ratio_plus_one_ci95": [
+      2.767605475781385,
+      4.500734933712237
+    ],
+    "paired_standardized_mean": 3.7105590526224232,
+    "positive": 10,
+    "zero": 0,
+    "sign_test_two_sided_p": 0.001953125
+  },
+  "year_bootstrap": {
+    "unit": "year mean, each year equally weighted",
+    "replications": 20000,
+    "mean_log1p_difference_percentile_ci95": [
+      1.0601089987671788,
+      1.4602421286414007
+    ],
+    "geometric_ratio_plus_one_ci95": [
+      2.886685617294131,
+      4.307002250707111
+    ],
+    "warning": "Few years; exploratory"
+  },
+  "diagnostics": {
+    "shapiro_W": 0.8175061609097967,
+    "shapiro_p": 0.001230362383702346,
+    "leave_one_year_geometric_ratio_range": [
+      3.0288191268281066,
+      3.4676046172180857
+    ]
+  },
+  "station_descriptive": [
+    {
+      "station": "北門",
+      "eligible_events": 21,
+      "mean_origin_eligible": 15221.809523809523,
+      "mean_baseline_eligible": 4677.7817460317465,
+      "mean_excess_eligible": 10544.027777777777,
+      "geometric_ratio_plus_one": 3.132670072626523
+    },
+    {
+      "station": "大橋頭站",
+      "eligible_events": 21,
+      "mean_origin_eligible": 7611.333333333333,
+      "mean_baseline_eligible": 3741.7182539682535,
+      "mean_excess_eligible": 3869.6150793650795,
+      "geometric_ratio_plus_one": 1.969317676380474
+    },
+    {
+      "station": "民權西路",
+      "eligible_events": 21,
+      "mean_origin_eligible": 8219.761904761905,
+      "mean_baseline_eligible": 7559.019841269841,
+      "mean_excess_eligible": 660.7420634920634,
+      "geometric_ratio_plus_one": 1.114608934600398
+    },
+    {
+      "station": "雙連",
+      "eligible_events": 21,
+      "mean_origin_eligible": 9972.047619047618,
+      "mean_baseline_eligible": 7155.634920634921,
+      "mean_excess_eligible": 2816.4126984126983,
+      "geometric_ratio_plus_one": 1.4119029767645666
+    }
+  ],
+  "refresh_context": {
+    "analysis_date": "2026-10-07",
+    "baseline_policy": "same_weekday_calendar_56d_nearest4_v1",
+    "role": "previously_approved_baseline_sensitivity",
+    "weather_timing_sensitivity": false,
+    "multiplicity_scope": "Seven-question Holm applies to each legacy-label scenario separately; aligned weather has only two-test Holm. Neither covers all sensitivities or all historical research."
+  }
+}

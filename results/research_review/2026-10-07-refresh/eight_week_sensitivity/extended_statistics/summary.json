@@ -1,0 +1,331 @@
+{
+  "family": "seven fixed questions in this follow-up extension only",
+  "interpretation": "exploratory; Holm does not repair event dependence, exchangeability, confounding or prior outcome-informed topic selection",
+  "not_tested_policy": "raw and adjusted p remain null; 1 is used internally only to preserve the planned family size",
+  "holm_source": "https://stat.ethz.ch/R-manual/R-devel/library/stats/html/p.adjust.html",
+  "tests": [
+    {
+      "id": "station_omnibus",
+      "question": "四站增幅的整體比較",
+      "n": 21,
+      "raw_p": 5e-06,
+      "method": "Friedman statistic, within-event Monte Carlo permutation",
+      "status": "exploratory_tested",
+      "holm_seven_p": 1.5000000000000002e-05,
+      "internal_adjustment_slot": 5e-06
+    },
+    {
+      "id": "beimen_vs_大橋頭站",
+      "question": "北門增幅與大橋頭站比較",
+      "n": 21,
+      "raw_p": 9.5367431640625e-07,
+      "method": "two-sided paired sign test",
+      "status": "exploratory_tested",
+      "holm_seven_p": 6.67572021484375e-06,
+      "internal_adjustment_slot": 9.5367431640625e-07
+    },
+    {
+      "id": "beimen_vs_雙連",
+      "question": "北門增幅與雙連比較",
+      "n": 21,
+      "raw_p": 9.5367431640625e-07,
+      "method": "two-sided paired sign test",
+      "status": "exploratory_tested",
+      "holm_seven_p": 6.67572021484375e-06,
+      "internal_adjustment_slot": 9.5367431640625e-07
+    },
+    {
+      "id": "beimen_vs_民權西路",
+      "question": "北門增幅與民權西路比較",
+      "n": 21,
+      "raw_p": 9.5367431640625e-07,
+      "method": "two-sided paired sign test",
+      "status": "exploratory_tested",
+      "holm_seven_p": 6.67572021484375e-06,
+      "internal_adjustment_slot": 9.5367431640625e-07
+    },
+    {
+      "id": "beimen_late_share",
+      "question": "北門晚間後段占比與基準比較",
+      "n": 21,
+      "raw_p": 9.5367431640625e-07,
+      "method": "two-sided paired sign test",
+      "status": "exploratory_tested",
+      "holm_seven_p": 6.67572021484375e-06,
+      "internal_adjustment_slot": 9.5367431640625e-07
+    },
+    {
+      "id": "temperature_six_label_mean_c",
+      "question": "氣溫與北門相對增幅",
+      "n": 21,
+      "raw_p": 0.94827,
+      "method": "Spearman, absolute-rho Monte Carlo permutation",
+      "status": "exploratory_tested",
+      "holm_seven_p": 0.94827,
+      "internal_adjustment_slot": 0.94827
+    },
+    {
+      "id": "wind_six_label_mean_m_s",
+      "question": "風速與北門相對增幅",
+      "n": 21,
+      "raw_p": 0.39361,
+      "method": "Spearman, absolute-rho Monte Carlo permutation",
+      "status": "exploratory_tested",
+      "holm_seven_p": 0.78722,
+      "internal_adjustment_slot": 0.39361
+    }
+  ],
+  "findings": {
+    "paired_events": 21,
+    "held_events": 21,
+    "friedman_Q": 63.0,
+    "kendall_W": 1.0,
+    "station_descriptive": [
+      {
+        "station": "北門",
+        "n": 21,
+        "mean_log1p_contrast": 1.1418856992517157,
+        "geometric_ratio_plus_one": 3.132670072626523,
+        "mean_rank": 4.0,
+        "observed_late_share_mean": 0.5921221495346811,
+        "baseline_late_share_mean": 0.28348850904532663,
+        "late_share_difference_mean": 0.3086336404893545,
+        "late_share_difference_median": 0.32383209840719773
+      },
+      {
+        "station": "大橋頭站",
+        "n": 21,
+        "mean_log1p_contrast": 0.6776871255871277,
+        "geometric_ratio_plus_one": 1.969317676380474,
+        "mean_rank": 3.0,
+        "observed_late_share_mean": 0.5266814207951062,
+        "baseline_late_share_mean": 0.313085744601795,
+        "late_share_difference_mean": 0.2135956761933111,
+        "late_share_difference_median": 0.19439550343463918
+      },
+      {
+        "station": "雙連",
+        "n": 21,
+        "mean_log1p_contrast": 0.3449384233706386,
+        "geometric_ratio_plus_one": 1.4119029767645666,
+        "mean_rank": 2.0,
+        "observed_late_share_mean": 0.4868526225753953,
+        "baseline_late_share_mean": 0.3490255420319492,
+        "late_share_difference_mean": 0.13782708054344614,
+        "late_share_difference_median": 0.12450978194737206
+      },
+      {
+        "station": "民權西路",
+        "n": 21,
+        "mean_log1p_contrast": 0.10850361209138304,
+        "geometric_ratio_plus_one": 1.114608934600398,
+        "mean_rank": 1.0,
+        "observed_late_share_mean": 0.32018897152074827,
+        "baseline_late_share_mean": 0.3052582557290156,
+        "late_share_difference_mean": 0.014930715791732729,
+        "late_share_difference_median": 0.011007598568028631
+      }
+    ],
+    "peak_descriptive": [
+      {
+        "station": "北門",
+        "events": 21,
+        "events_with_tied_peak": 0,
+        "peak_share_median": 0.4201264050259244,
+        "peak_share_q25": 0.3305326117915124,
+        "peak_share_q75": 0.47877307274701414,
+        "late_share_median": 0.606062899746433,
+        "peak_includes_18_events": 0,
+        "peak_includes_19_events": 0,
+        "peak_includes_20_events": 3,
+        "peak_includes_21_events": 18,
+        "peak_includes_22_events": 0,
+        "peak_includes_23_events": 0
+      },
+      {
+        "station": "大橋頭站",
+        "events": 21,
+        "events_with_tied_peak": 0,
+        "peak_share_median": 0.28242537812876456,
+        "peak_share_q25": 0.27117669605212724,
+        "peak_share_q75": 0.38537662550094054,
+        "late_share_median": 0.465714789353076,
+        "peak_includes_18_events": 6,
+        "peak_includes_19_events": 0,
+        "peak_includes_20_events": 0,
+        "peak_includes_21_events": 15,
+        "peak_includes_22_events": 0,
+        "peak_includes_23_events": 0
+      },
+      {
+        "station": "雙連",
+        "events": 21,
+        "events_with_tied_peak": 0,
+        "peak_share_median": 0.279125764030376,
+        "peak_share_q25": 0.266740556017364,
+        "peak_share_q75": 0.28949286681245445,
+        "late_share_median": 0.4246839511463467,
+        "peak_includes_18_events": 11,
+        "peak_includes_19_events": 0,
+        "peak_includes_20_events": 0,
+        "peak_includes_21_events": 8,
+        "peak_includes_22_events": 2,
+        "peak_includes_23_events": 0
+      },
+      {
+        "station": "民權西路",
+        "events": 21,
+        "events_with_tied_peak": 0,
+        "peak_share_median": 0.2726164350158498,
+        "peak_share_q25": 0.25115491222667075,
+        "peak_share_q75": 0.37359874279727606,
+        "late_share_median": 0.3387747937510971,
+        "peak_includes_18_events": 21,
+        "peak_includes_19_events": 0,
+        "peak_includes_20_events": 0,
+        "peak_includes_21_events": 0,
+        "peak_includes_22_events": 0,
+        "peak_includes_23_events": 0
+      }
+    ],
+    "weather": [
+      {
+        "variable": "temperature_six_label_mean_c",
+        "n": 21,
+        "distinct_x": 21,
+        "distinct_y": 21,
+        "seed": 20261005,
+        "n_resamples": 99999,
+        "dates": [
+          "2017-08-26",
+          "2018-08-18",
+          "2019-08-03",
+          "2020-08-29",
+          "2021-10-16",
+          "2022-07-30",
+          "2023-07-05",
+          "2023-07-12",
+          "2023-07-19",
+          "2023-08-09",
+          "2023-08-16",
+          "2023-08-20",
+          "2024-07-17",
+          "2024-07-31",
+          "2024-08-10",
+          "2025-08-06",
+          "2025-08-20",
+          "2025-08-30",
+          "2026-07-25",
+          "2026-08-05",
+          "2026-08-15"
+        ],
+        "status": "exploratory_tested",
+        "rho": -0.015584415584415586,
+        "permutation_p": 0.94827,
+        "extreme_count": 94826,
+        "p_convention": "(count(abs(rho_permuted)>=abs(rho_observed))+1)/(99999+1), floating tolerance as SciPy",
+        "annual_equal_weight_n": 10,
+        "annual_mean_rho_descriptive": 0.7818181818181817,
+        "leave_one_year_rho_range": [
+          -0.13684210526315788,
+          0.23928571428571427
+        ],
+        "holm_two_tests_p": 0.94827
+      },
+      {
+        "variable": "wind_six_label_mean_m_s",
+        "n": 21,
+        "distinct_x": 21,
+        "distinct_y": 21,
+        "seed": 20261006,
+        "n_resamples": 99999,
+        "dates": [
+          "2017-08-26",
+          "2018-08-18",
+          "2019-08-03",
+          "2020-08-29",
+          "2021-10-16",
+          "2022-07-30",
+          "2023-07-05",
+          "2023-07-12",
+          "2023-07-19",
+          "2023-08-09",
+          "2023-08-16",
+          "2023-08-20",
+          "2024-07-17",
+          "2024-07-31",
+          "2024-08-10",
+          "2025-08-06",
+          "2025-08-20",
+          "2025-08-30",
+          "2026-07-25",
+          "2026-08-05",
+          "2026-08-15"
+        ],
+        "status": "exploratory_tested",
+        "rho": 0.1948051948051948,
+        "permutation_p": 0.39361,
+        "extreme_count": 39360,
+        "p_convention": "(count(abs(rho_permuted)>=abs(rho_observed))+1)/(99999+1), floating tolerance as SciPy",
+        "annual_equal_weight_n": 10,
+        "annual_mean_rho_descriptive": 0.5151515151515151,
+        "leave_one_year_rho_range": [
+          0.08421052631578946,
+          0.30075187969924805
+        ],
+        "holm_two_tests_p": 0.78722
+      }
+    ],
+    "regression": {
+      "formula": "log1p(origin_count_window) ~ intercept + log1p(baseline_origin_window)",
+      "n": 21,
+      "residual_df": 19,
+      "intercept": 7.629553170465018,
+      "slope": 0.23030941422356482,
+      "intercept_ci95": [
+        1.001922386834453,
+        14.257183954095582
+      ],
+      "slope_ci95": [
+        -0.555730248625574,
+        1.0163490770727035
+      ],
+      "slope_standard_error": 0.3755521400691053,
+      "slope_p_conditional": 0.5469792455540887,
+      "r_squared_in_sample": 0.019409615340178425,
+      "residual_sd_log1p": 0.3702796926609375,
+      "shapiro_residual_W": 0.9510643209860229,
+      "shapiro_residual_p_diagnostic": 0.3567371310071191,
+      "max_cooks_distance": 1.7303763205790945,
+      "max_cooks_event": "2021-10-16",
+      "loyo_n": 21,
+      "loyo_mae_log1p": 0.3575314056698079,
+      "loyo_rmse_log1p": 0.43577454420202255,
+      "loyo_intercept_only_mae_log1p": 0.3126042814325484,
+      "loyo_intercept_only_rmse_log1p": 0.39151558300761624,
+      "loyo_slope_range": [
+        -0.41611386326060634,
+        0.3874724941972779
+      ],
+      "warning": "Conditional OLS CI assumes independent normal homoskedastic errors and treats estimated baselines as fixed. LOYO includes future years and is not forecasting validation. No weather variable was added."
+    }
+  },
+  "sources": [
+    {
+      "path": "results/research_review/2026-10-07-refresh/eight_week_sensitivity/station_time/summary.json",
+      "sha256": "c1cae8c5363cef7f3cef71d446ac474417efc370299dab9db78f048a21629111"
+    },
+    {
+      "path": "results/research_review/2026-10-07-refresh/eight_week_sensitivity/weather_regression/summary.json",
+      "sha256": "747f0b17a518692b4e0b45bac0c20ee3f6ed8e177fd2c7f1f0002678aca4f070"
+    }
+  ],
+  "script_sha256": "76c322c9e53330b3dfe4f6004dccaec949ad727c8135c94ae1047eb8ca1f4e1a",
+  "refresh_context": {
+    "analysis_date": "2026-10-07",
+    "baseline_policy": "same_weekday_calendar_56d_nearest4_v1",
+    "role": "previously_approved_baseline_sensitivity",
+    "weather_timing_sensitivity": false,
+    "multiplicity_scope": "Seven-question Holm applies to each legacy-label scenario separately; aligned weather has only two-test Holm. Neither covers all sensitivities or all historical research."
+  }
+}

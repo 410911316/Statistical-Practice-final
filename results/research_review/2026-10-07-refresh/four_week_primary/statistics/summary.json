@@ -1,0 +1,275 @@
+{
+  "design": {
+    "primary_station": "北門",
+    "stations": [
+      "北門",
+      "大橋頭站",
+      "雙連",
+      "民權西路"
+    ],
+    "hours": [
+      18,
+      24
+    ],
+    "minimum_baseline_days_per_hour": 2,
+    "fixed_test": "two-sided event paired log1p contrast; F=t^2",
+    "independent_working_unit": "event_date",
+    "inference_status": "exploratory; event independence and common distribution not assured",
+    "seed": 20261005
+  },
+  "coverage": {
+    "events": 26,
+    "status_counts": {
+      "held": 21,
+      "cancelled": 4,
+      "postponed": 1
+    },
+    "selected_window_rows": 104,
+    "selected_hourly_rows": 624,
+    "complete_origin_window_rows": 104,
+    "beimen_primary_n": 19,
+    "beimen_primary_dates": [
+      "2017-08-26",
+      "2018-08-18",
+      "2019-08-03",
+      "2020-08-29",
+      "2021-10-16",
+      "2022-07-30",
+      "2023-07-05",
+      "2023-07-12",
+      "2023-07-19",
+      "2023-08-20",
+      "2024-07-17",
+      "2024-07-31",
+      "2024-08-10",
+      "2025-08-06",
+      "2025-08-20",
+      "2025-08-30",
+      "2026-07-25",
+      "2026-08-05",
+      "2026-08-15"
+    ],
+    "beimen_primary_years": [
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "eligible_min_baseline_days_counts": {
+      "4": 8,
+      "2": 6,
+      "3": 5
+    },
+    "hourly_missing_origin": 0,
+    "hourly_missing_baseline": 72
+  },
+  "primary_F_test": {
+    "n": 19,
+    "mean_log1p_difference": 1.1592161427761793,
+    "sd_log1p_difference": 0.39778017365166757,
+    "t": 12.702759852750143,
+    "F": 161.36010787664082,
+    "df_num": 1,
+    "df_denom": 18,
+    "p": 2.0080144391559568e-10,
+    "mean_log1p_difference_ci95": [
+      0.9674922361611678,
+      1.350940049391191
+    ],
+    "geometric_ratio_plus_one": 3.187433803616962,
+    "geometric_ratio_plus_one_ci95": [
+      2.631337405558012,
+      3.861053406142562
+    ],
+    "paired_standardized_mean": 2.914212973800183,
+    "positive": 19,
+    "zero": 0,
+    "sign_test_two_sided_p": 3.814697265625e-06
+  },
+  "year_equal_weight_sensitivity": {
+    "n": 10,
+    "mean_log1p_difference": 1.2545210068491846,
+    "sd_log1p_difference": 0.3369057561080473,
+    "t": 11.775232931606062,
+    "F": 138.6561105935799,
+    "df_num": 1,
+    "df_denom": 9,
+    "p": 9.044054067163741e-07,
+    "mean_log1p_difference_ci95": [
+      1.0135131475500696,
+      1.4955288661482995
+    ],
+    "geometric_ratio_plus_one": 3.506158546132326,
+    "geometric_ratio_plus_one_ci95": [
+      2.7552636797415295,
+      4.461695568741342
+    ],
+    "paired_standardized_mean": 3.7236556042896862,
+    "positive": 10,
+    "zero": 0,
+    "sign_test_two_sided_p": 0.001953125
+  },
+  "year_bootstrap": {
+    "unit": "year mean, each year equally weighted",
+    "replications": 20000,
+    "mean_log1p_difference_percentile_ci95": [
+      1.0557585482736584,
+      1.4540071592387531
+    ],
+    "geometric_ratio_plus_one_ci95": [
+      2.8741545121660534,
+      4.280231766755791
+    ],
+    "warning": "few years; exploratory, not a guarantee of valid coverage"
+  },
+  "diagnostics": {
+    "shapiro_W": 0.8396931705277658,
+    "shapiro_p": 0.004580469383375146,
+    "shapiro_interpretation": "non-rejection is not proof of normality; QQ and design also matter",
+    "leave_one_year_geometric_ratio_range": [
+      3.0855260870994066,
+      3.4091464783930423
+    ]
+  },
+  "station_descriptive": [
+    {
+      "station": "北門",
+      "held_complete_events": 21,
+      "eligible_events": 19,
+      "median_origin_all_held": 13992.0,
+      "mean_origin_all_held": 15221.809523809523,
+      "median_origin_eligible": 14044.0,
+      "mean_origin_eligible": 15649.473684210527,
+      "mean_baseline_eligible": 4732.934210526316,
+      "mean_excess_eligible": 10916.539473684208,
+      "median_peak_hour_count": 5597.0,
+      "geometric_ratio_plus_one": 3.187433803616962
+    },
+    {
+      "station": "大橋頭站",
+      "held_complete_events": 21,
+      "eligible_events": 19,
+      "median_origin_all_held": 7393.0,
+      "mean_origin_all_held": 7611.333333333333,
+      "median_origin_eligible": 7471.0,
+      "mean_origin_eligible": 7839.315789473684,
+      "mean_baseline_eligible": 3766.9561403508765,
+      "mean_excess_eligible": 4072.3596491228077,
+      "median_peak_hour_count": 2682.0,
+      "geometric_ratio_plus_one": 2.016432305927237
+    },
+    {
+      "station": "雙連",
+      "held_complete_events": 21,
+      "eligible_events": 19,
+      "median_origin_all_held": 10091.0,
+      "mean_origin_all_held": 9972.047619047618,
+      "median_origin_eligible": 10091.0,
+      "mean_origin_eligible": 9956.263157894737,
+      "mean_baseline_eligible": 7120.969298245614,
+      "mean_excess_eligible": 2835.2938596491226,
+      "median_peak_hour_count": 2835.0,
+      "geometric_ratio_plus_one": 1.4140963101468425
+    },
+    {
+      "station": "民權西路",
+      "held_complete_events": 21,
+      "eligible_events": 19,
+      "median_origin_all_held": 7162.0,
+      "mean_origin_all_held": 8219.761904761905,
+      "median_origin_eligible": 7001.0,
+      "mean_origin_eligible": 8039.526315789473,
+      "mean_baseline_eligible": 7420.684210526318,
+      "mean_excess_eligible": 618.8421052631579,
+      "median_peak_hour_count": 1752.0,
+      "geometric_ratio_plus_one": 1.1079013748886277
+    }
+  ],
+  "freshness": {
+    "files": [
+      {
+        "path": ".local\\research_review\\2026-10-07-refresh\\source_data\\data\\processed\\regression_event_station.parquet",
+        "bytes": 42414,
+        "modified_at_utc": "2026-10-07T03:48:06.512630+00:00",
+        "sha256": "075dea9a8c41be1afe3b86f8a4565315b8254f594e36ae88abd733e9c6ca5a3a"
+      },
+      {
+        "path": ".local\\research_review\\2026-10-07-refresh\\source_data\\data\\processed\\station_hourly.parquet",
+        "bytes": 6340054,
+        "modified_at_utc": "2026-10-07T03:48:06.382534+00:00",
+        "sha256": "2bc4c399d8a7ab8ae9672c5c7e31b5a459281acda9f05be6345258f2c3bdb85f"
+      },
+      {
+        "path": ".local\\research_review\\2026-10-07-refresh\\source_data\\results\\preprocessing\\summary.json",
+        "bytes": 1300,
+        "modified_at_utc": "2026-10-07T03:48:09.979649+00:00",
+        "sha256": "14cbd01965891bb340e5102bafafeeb08539c0d7d4a7877eadaeca7bdf8b46a6"
+      }
+    ],
+    "selected_rows_compared": 104,
+    "snapshot_value_differences": {
+      "origin_count_window": 0,
+      "baseline_origin_window": 0,
+      "baseline_min_days": 0,
+      "observed_event_status": 0,
+      "trends_missing": 0
+    },
+    "preprocessing_generated_at_utc": "2026-10-07T03:48:06.720148+00:00",
+    "preprocessing_all_month_totals": {
+      "od_passengers": 1024769632,
+      "origin_passengers": 1024769632,
+      "destination_passengers": 1024769632,
+      "source_rows": 140789493,
+      "clean_rows": 140789493
+    },
+    "prior_all_month_reconciliation_not_recomputed": true
+  },
+  "reconciliation": {
+    "selected_hourly_window_matches": 104,
+    "network_event_windows": 26,
+    "network_available_origin_sum": 17189198,
+    "network_available_destination_sum": 17189198,
+    "network_db_equals_processed": true,
+    "network_station_hour_rows": 18720,
+    "network_origin_incomplete_rows": 342,
+    "network_destination_incomplete_rows": 1596,
+    "network_origin_null_rows": 342,
+    "network_destination_null_rows": 1596,
+    "network_dates_with_incomplete_label_hours": [
+      "2023-07-05",
+      "2023-07-12",
+      "2023-07-19",
+      "2023-07-26",
+      "2023-08-02",
+      "2023-08-09",
+      "2023-08-16",
+      "2023-08-20",
+      "2024-07-17",
+      "2024-07-24",
+      "2024-07-31",
+      "2024-08-10",
+      "2025-08-06",
+      "2025-08-13",
+      "2025-08-20",
+      "2025-08-30",
+      "2026-07-25",
+      "2026-08-05",
+      "2026-08-15"
+    ],
+    "network_all_label_hours_complete": false,
+    "meaning": "SUM ignores NULL; matching available-row sums do not establish whole-network coverage. Incomplete label-hours may reflect historical labels absent in a source period, not proven reporting omissions. Four selected stations are complete."
+  },
+  "refresh_context": {
+    "analysis_date": "2026-10-07",
+    "baseline_policy": "original_previous_7_14_21_28_days",
+    "role": "primary_same_rules_as_2026_10_05",
+    "weather_timing_sensitivity": false,
+    "multiplicity_scope": "Seven-question Holm applies to each legacy-label scenario separately; aligned weather has only two-test Holm. Neither covers all sensitivities or all historical research."
+  }
+}

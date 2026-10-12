@@ -1,0 +1,585 @@
+// 中文展示版：複製整份內容，貼到 https://dbdiagram.io 的左側 DBML 編輯區。
+// 18 張實體資料表、6 張檢視表、17 條實際外鍵關聯；保留所有欄位與索引。
+// 中文名稱用於畫圖；正式 MySQL 英文名稱保留在各表與欄位註解中。
+// PK＝主鍵；Ref 指向端為被參照的鍵；檢視表另行分組，不虛構外鍵。
+// 這是展示用途的中文對照，不是對現有 MySQL 執行改名的遷移腳本。
+
+// 整份貼到 https://dbdiagram.io 的 DBML 編輯區。
+// 檢視表 以 Table 方框顯示並另行分組，沒有虛構 PK/FK；關係線只代表實際 FK。
+// MySQL 生成欄位、ON UPDATE 與字元排序規則以註記呈現；實際重建仍以 SQL 為準。
+
+Project "大稻埕活動與捷運人流資料庫" {
+  database_type: 'MySQL'
+  Note: '大稻埕活動、年度預算與宣導、北捷 OD、Google Trends 與氣象。18 張實體資料表及 6 張檢視表。'
+}
+
+Enum "活動狀態選項" {
+  "held" [note: '已舉辦；保留資料庫原始代碼']
+  "cancelled" [note: '取消；保留資料庫原始代碼']
+  "postponed" [note: '延期；保留資料庫原始代碼']
+}
+
+Enum "場次移轉選項" {
+  "rescheduled" [note: '整場改期；保留資料庫原始代碼']
+  "merged" [note: '內容併入其他場次；保留資料庫原始代碼']
+}
+
+Enum "測站用途選項" {
+  "primary" [note: '主要測站；保留資料庫原始代碼']
+  "robustness" [note: '穩健性比較測站；保留資料庫原始代碼']
+}
+
+Enum "搜尋趨勢時間基準選項" {
+  "UTC" [note: '世界協調時間；保留資料庫原始代碼']
+  "Asia/Taipei" [note: '臺灣時間；保留資料庫原始代碼']
+}
+
+Enum "搜尋趨勢來源格式選項" {
+  "explore_csv" [note: '搜尋趨勢匯出CSV；保留資料庫原始代碼']
+  "explore_web_json" [note: '搜尋趨勢網頁JSON；保留資料庫原始代碼']
+}
+
+Enum "搜尋趨勢時間粒度選項" {
+  "DAY" [note: '每日；保留資料庫原始代碼']
+  "HOUR" [note: '每小時；保留資料庫原始代碼']
+}
+
+Enum "原始時間對齊狀態選項" {
+  "source_label" [note: '原始來源時間標籤；保留資料庫原始代碼']
+  "end_of_day_unverified" [note: '匯入時日末標籤待核對；現況請看已核對氣象檢視表；保留資料庫原始代碼']
+}
+
+Table "活動日車站逐時人流" {
+  "活動日期" date [not null, note: '原欄位：event_date']
+  "來源時段起點" datetime [not null, note: '原欄位：hour_start；Asia/Taipei，原資料時段；非經確認的出站刷卡時間']
+  "捷運站名" varchar(64) [not null, note: '原欄位：station；collation=utf8mb4_bin']
+  "起站人次" "bigint unsigned" [note: '原欄位：origin_count']
+  "同來源時段迄站人次" "bigint unsigned" [note: '原欄位：destination_count_same_source_bin']
+  "起站資料完整" tinyint(1) [not null, note: '原欄位：origin_complete']
+  "迄站資料完整" tinyint(1) [not null, note: '原欄位：destination_complete']
+  "外流連接站數_不含本站" "smallint unsigned" [note: '原欄位：out_degree_excluding_self']
+  "內流連接站數_不含本站" "smallint unsigned" [note: '原欄位：in_degree_excluding_self']
+  "四週基準每小時平均起站人次" double [note: '原欄位：baseline_origin_mean_28d']
+  "可用比較日數" "tinyint unsigned" [not null, note: '原欄位：baseline_n_days']
+  "七日前同時段起站人次" "bigint unsigned" [note: '原欄位：origin_lag_7d']
+  "來源執行雜湊" char(64) [not null, note: '原欄位：source_run_sha256；collation=ascii_general_ci']
+  "更新時間" timestamp [not null, default: `CURRENT_TIMESTAMP`, note: '原欄位：updated_at；MySQL ON UPDATE CURRENT_TIMESTAMP']
+
+  indexes {
+    ("捷運站名", "來源時段起點") [name: 'ix_analysis_station_time']
+    ("活動日期", "來源時段起點", "捷運站名") [pk]
+  }
+
+  Note: '原表名：analysis_event_station_hourly；活動站點逐時長表；NULL 表示來源無該站時段或 OD 不完整'
+}
+
+Table "活動日車站時段彙總" {
+  "活動日期" date [not null, note: '原欄位：event_date']
+  "捷運站名" varchar(64) [not null, note: '原欄位：station；collation=utf8mb4_bin']
+  "分析時窗開始小時" "smallint unsigned" [not null, note: '原欄位：window_start_hour']
+  "分析時窗結束小時_不含" "smallint unsigned" [not null, note: '原欄位：window_end_hour_exclusive']
+  "預期小時數" "smallint unsigned" [not null, note: '原欄位：expected_hours']
+  "起站有效小時數" "smallint unsigned" [not null, note: '原欄位：observed_origin_hours']
+  "迄站有效小時數" "smallint unsigned" [not null, note: '原欄位：observed_destination_hours']
+  "時窗起站總人次" "bigint unsigned" [note: '原欄位：origin_count_window']
+  "時窗迄站總人次" "bigint unsigned" [note: '原欄位：destination_count_window']
+  "起站尖峰每小時人次" "bigint unsigned" [note: '原欄位：peak_origin_hour_count']
+  "四週基準時窗起站人次" double [note: '原欄位：baseline_origin_window']
+  "各小時最少比較日數" "tinyint unsigned" [not null, note: '原欄位：baseline_min_days']
+  "時窗起站資料完整" tinyint(1) [not null, note: '原欄位：origin_window_complete']
+  "來源執行雜湊" char(64) [not null, note: '原欄位：source_run_sha256；collation=ascii_general_ci']
+  "更新時間" timestamp [not null, default: `CURRENT_TIMESTAMP`, note: '原欄位：updated_at；MySQL ON UPDATE CURRENT_TIMESTAMP']
+
+  indexes {
+    "捷運站名" [name: 'fk_analysis_window_station']
+    ("活動日期", "捷運站名", "分析時窗開始小時", "分析時窗結束小時_不含") [pk]
+  }
+
+  // SQL CHECK chk_analysis_window: window_start_hour < window_end_hour_exclusive <= 48
+
+  Note: '原表名：analysis_event_station_window；活動站點固定視窗總量；24以上表示隔日，結束時刻不含'
+}
+
+Table "捷運站名對照" {
+  "捷運站名" varchar(64) [pk, not null, note: '原欄位：station；collation=utf8mb4_bin']
+  "首次出現日期" date [not null, note: '原欄位：first_seen_date']
+  "最後出現日期" date [not null, note: '原欄位：last_seen_date']
+  "曾列為起站" tinyint(1) [not null, note: '原欄位：seen_as_origin']
+  "曾列為迄站" tinyint(1) [not null, note: '原欄位：seen_as_destination']
+
+  Note: '原表名：analysis_station_label；原檔站名標籤；尚未合併為實體車站'
+}
+
+Table "煙火活動場次" {
+  "活動日期" date [pk, not null, note: '原欄位：event_date；原訂或實際煙火日期；取消、延期仍保留原日期']
+  "活動年度" "smallint unsigned" [note: '原欄位：event_year；MySQL STORED 生成欄位 YEAR(event_date)；外鍵至年度活動']
+  "活動名稱" varchar(120) [not null, note: '原欄位：event_name；市府活動名稱；collation=utf8mb4_0900_ai_ci']
+  "活動狀態" "活動狀態選項" [not null, note: '原欄位：event_status；collation=utf8mb4_0900_ai_ci']
+  "公告展演開始時間" time [note: '原欄位：announced_show_start_time；官方公布的展演開始時間；不保證是煙火第一發時刻']
+  "煙火施放秒數" "smallint unsigned" [note: '原欄位：fireworks_duration_seconds；實際施放的煙火秒數；未施放則 NULL']
+  "綜合展演總秒數" "smallint unsigned" [note: '原欄位：combined_show_duration_seconds；煙火加無人機／水幕的總展演秒數；與煙火秒數分開']
+  "是否有無人機展演" tinyint(1) [note: '原欄位：has_drone_show；實際無人機演出：1 有、0 已確認無、NULL 未核實']
+  "同日其他活動" json [note: '原欄位：related_activities；同日已查證的其他活動；NULL 表示尚未核實']
+  "未舉辦原因" varchar(255) [note: '原欄位：not_held_reason；取消或延期原因；實際施放時為 NULL；collation=utf8mb4_0900_ai_ci']
+  "移轉至活動日期" date [note: '原欄位：transferred_to_date；延期至／取消內容併入的實際煙火日期']
+  "移轉類型" "場次移轉選項" [note: '原欄位：transfer_type；rescheduled=整場改期；merged=煙火內容併入其他場；collation=utf8mb4_0900_ai_ci']
+  "備註" varchar(500) [note: '原欄位：notes；人流分析應注意的差異或時間精度；collation=utf8mb4_0900_ai_ci']
+  "官方來源網址" varchar(1000) [not null, note: '原欄位：official_source_url；collation=utf8mb4_0900_ai_ci']
+  "次要來源網址" varchar(1000) [note: '原欄位：secondary_source_url；collation=utf8mb4_0900_ai_ci']
+  "查證日期" date [not null, note: '原欄位：verified_on']
+
+  indexes {
+    ("活動狀態", "活動日期") [name: 'ix_fireworks_status_date']
+    "活動年度" [name: 'ix_dadaocheng_event_year']
+    "移轉至活動日期" [name: 'ix_transferred_to_date']
+  }
+
+  // SQL CHECK: chk_dadaocheng_drone, chk_dadaocheng_status_reason, chk_dadaocheng_transfer
+
+  Note: '原表名：dadaocheng_fireworks_events；2017–2026 大稻埕官方煙火原訂及實際場次，不含純音樂會'
+}
+
+Table "年度活動" {
+  "活動年度" "smallint unsigned" [pk, not null, note: '原欄位：event_year']
+  "年度活動名稱" varchar(120) [not null, note: '原欄位：event_label']
+
+  Note: '原表名：dadaocheng_event_years；每年一屆活動；同年多個煙火日期共用一筆'
+}
+
+Table "年度活動預定預算" {
+  "活動年度" "smallint unsigned" [pk, not null, note: '原欄位：event_year']
+  "活動原列法定預算_元" "bigint unsigned" [not null, note: '原欄位：planned_budget_ntd；原列法定活動預算；非實支']
+  "預算認定依據" varchar(80) [not null, note: '原欄位：budget_basis']
+  "預算範圍說明" varchar(500) [not null, note: '原欄位：budget_scope_note']
+  "來源網址" varchar(1000) [not null, note: '原欄位：source_url']
+  "來源PDF頁碼" "smallint unsigned" [not null, note: '原欄位：source_pdf_page']
+
+  Note: '原表名：dadaocheng_planned_event_budgets；年度活動預定預算；企劃執行等整體費用，不當成純廣告費'
+}
+
+Table "年度宣導經費" {
+  "活動年度" "smallint unsigned" [pk, not null, note: '原欄位：event_year']
+  "年度宣導案所需經費_元" "bigint unsigned" [not null, note: '原欄位：required_publicity_cost_ntd；CSV「相關宣導案所需經費合計(元)」；每年只存一筆，非實付']
+  "是否使用平面媒體" tinyint(1) [note: '原欄位：has_print_media']
+  "是否使用電視媒體" tinyint(1) [note: '原欄位：has_television_media']
+  "是否使用網路媒體" tinyint(1) [note: '原欄位：has_online_media']
+  "是否使用廣播媒體" tinyint(1) [note: '原欄位：has_radio_media']
+  "是否使用其他媒體" tinyint(1) [note: '原欄位：has_other_media']
+  "來源檔案雜湊" char(64) [not null, note: '原欄位：source_file_sha256']
+  "來源說明" varchar(255) [not null, note: '原欄位：source_label']
+
+  Note: '原表名：dadaocheng_annual_publicity；2017–2021 來源 CSV 沒有金額；缺年度列而非填 0'
+}
+
+Table "檢視_年度預算與宣導占比" {
+  "活動年度" "smallint unsigned" [not null, note: '原欄位：event_year']
+  "年度活動名稱" varchar(120) [not null, note: '原欄位：event_label']
+  "活動原列法定預算_元" "bigint unsigned" [note: '原欄位：planned_budget_ntd']
+  "預算認定依據" varchar(80) [note: '原欄位：budget_basis']
+  "預算範圍說明" varchar(500) [note: '原欄位：budget_scope_note']
+  "年度宣導案所需經費_元" "bigint unsigned" [note: '原欄位：required_publicity_cost_ntd']
+  "宣導所需經費占活動預算比例" decimal(18,6) [note: '原欄位：publicity_to_planned_budget_ratio；宣導案所需經費 / 原列法定活動預算；缺值為 NULL；非宣導實支比率']
+  "是否使用平面媒體" tinyint(1) [note: '原欄位：has_print_media']
+  "是否使用電視媒體" tinyint(1) [note: '原欄位：has_television_media']
+  "是否使用網路媒體" tinyint(1) [note: '原欄位：has_online_media']
+  "是否使用廣播媒體" tinyint(1) [note: '原欄位：has_radio_media']
+  "是否使用其他媒體" tinyint(1) [note: '原欄位：has_other_media']
+  "預算來源網址" varchar(1000) [note: '原欄位：budget_source_url']
+  "宣導經費來源說明" varchar(255) [note: '原欄位：publicity_source_label']
+
+  Note: '原表名：v_dadaocheng_annual_finance；檢視表，一年一列；占比查詢時計算，不複製到煙火日期'
+}
+
+Table "檢視_活動量化指標" {
+  "活動日期" date [not null, note: '原欄位：event_date']
+  "活動年度" "smallint unsigned" [not null, note: '原欄位：event_year']
+  "活動名稱" varchar(120) [not null, note: '原欄位：event_name']
+  "活動狀態" "活動狀態選項" [not null, note: '原欄位：event_status']
+  "是否已舉辦" tinyint(1) [not null, note: '原欄位：was_held']
+  "是否取消" tinyint(1) [not null, note: '原欄位：was_cancelled']
+  "是否延期" tinyint(1) [not null, note: '原欄位：was_postponed']
+  "煙火施放秒數" "smallint unsigned" [note: '原欄位：fireworks_duration_seconds']
+  "煙火施放分鐘數" decimal(10,4) [note: '原欄位：fireworks_duration_minutes']
+  "是否有無人機展演" tinyint(1) [note: '原欄位：has_drone_show']
+  "無人機狀態是否已核實" tinyint(1) [not null, note: '原欄位：drone_status_known']
+  "移轉至活動日期" date [note: '原欄位：transferred_to_date']
+  "移轉類型" "場次移轉選項" [note: '原欄位：transfer_type']
+  "原訂日期是否未舉辦" tinyint(1) [not null, note: '原欄位：original_date_not_held']
+  "是否承接併入展演" tinyint(1) [not null, note: '原欄位：receives_merged_show']
+  "是否承接延期展演" tinyint(1) [not null, note: '原欄位：receives_rescheduled_show']
+  "活動月份" int [not null, note: '原欄位：event_month']
+  "星期序號_週一為一" int [not null, note: '原欄位：iso_weekday']
+  "是否週末" tinyint(1) [not null, note: '原欄位：is_weekend']
+
+  Note: '原表名：v_dadaocheng_event_quantitative；檢視表，CSV 日期層級衍生欄位；沒有年度金額'
+}
+
+Table "活動搜尋趨勢特徵" {
+  "活動日期" date [not null, note: '原欄位：event_date']
+  "搜尋關鍵字" varchar(120) [not null, note: '原欄位：query_text；collation=utf8mb4_0900_ai_ci']
+  "搜尋地區代碼" varchar(16) [not null, note: '原欄位：geo_code；collation=utf8mb4_0900_ai_ci']
+  "匯入批次編號" "bigint unsigned" [not null, note: '原欄位：import_id']
+  "活動前一日搜尋指標" decimal(7,4) [not null, note: '原欄位：interest_1d；D-1 的每日指標']
+  "活動前三日搜尋指標平均" decimal(7,4) [not null, note: '原欄位：interest_3d_avg；D-3 到 D-1 的算術平均']
+  "活動前七日搜尋指標平均" decimal(7,4) [not null, note: '原欄位：interest_7d_avg；D-7 到 D-1 的算術平均']
+  "計算時間" timestamp [not null, default: `CURRENT_TIMESTAMP`, note: '原欄位：computed_at；MySQL ON UPDATE CURRENT_TIMESTAMP']
+
+  indexes {
+    "匯入批次編號" [name: 'ix_event_trends_import']
+    ("活動日期", "搜尋關鍵字", "搜尋地區代碼") [pk]
+  }
+
+  // SQL CHECK chk_event_trends_values: 三種搜尋指標均介於0與100之間
+
+  Note: '原表名：event_trends_features；原訂及實際煙火日前1、3、7日指標；活動狀態由事件表取得'
+}
+
+Table "活動與氣象測站對照" {
+  "活動日期" date [not null, note: '原欄位：event_date']
+  "氣象測站代碼" varchar(10) [not null, note: '原欄位：station_id；collation=ascii_bin']
+  "測站用途" "測站用途選項" [not null, note: '原欄位：station_role；collation=utf8mb4_bin']
+  "測站用途原文" varchar(255) [not null, note: '原欄位：station_role_raw；collation=utf8mb4_bin']
+  "距離大稻埕公里數" decimal(8,3) [not null, note: '原欄位：distance_to_dadaocheng_km']
+  "主要測站活動日期_自動產生" date [note: '原欄位：primary_event_date；MySQL STORED 生成欄位，不用手動填：(case when (`station_role` = _utf8mb4\'primary\') then `event_date` else NULL end)']
+
+  indexes {
+    "氣象測站代碼" [name: 'fk_weather_event_station']
+    ("活動日期", "氣象測站代碼") [pk]
+    "主要測站活動日期_自動產生" [name: 'uq_weather_primary_event', unique]
+  }
+
+  // SQL CHECK chk_weather_distance: distance_to_dadaocheng_km >= 0
+
+  Note: '原表名：event_weather_station；活動採用測站；每活動最多一個primary，觀測表可獨立存一般日；primary_event_date 是 STORED 生成欄位，UNIQUE 限制每個活動最多一個主要站。'
+}
+
+Table "每日搜尋趨勢" {
+  "匯入批次編號" "bigint unsigned" [not null, note: '原欄位：import_id']
+  "搜尋指標日期" date [not null, note: '原欄位：search_date；日界線見 google_trends_imports.time_basis']
+  "相對搜尋指標" decimal(7,4) [not null, note: '原欄位：interest_score；來源日指標或24個小時指標平均；非搜尋次數']
+  "當日樣本數" "tinyint unsigned" [not null, default: 1, note: '原欄位：samples_in_day']
+
+  indexes {
+    ("匯入批次編號", "搜尋指標日期") [pk]
+  }
+
+  // SQL CHECK: chk_trends_samples 只允許1或24; chk_trends_score 只允許0至100
+
+  Note: '原表名：google_trends_daily；Google Trends 每日指標；原始小時資料保存在來源JSON快取'
+}
+
+Table "搜尋趨勢匯入批次" {
+  "匯入批次編號" "bigint unsigned" [pk, not null, increment, note: '原欄位：import_id']
+  "查詢年度" "smallint unsigned" [not null, note: '原欄位：query_year']
+  "搜尋關鍵字" varchar(120) [not null, note: '原欄位：query_text；collation=utf8mb4_0900_ai_ci']
+  "搜尋地區代碼" varchar(16) [not null, note: '原欄位：geo_code；collation=utf8mb4_0900_ai_ci']
+  "查詢期間起日" date [not null, note: '原欄位：period_start']
+  "查詢期間迄日" date [not null, note: '原欄位：period_end']
+  "來源內容雜湊" char(64) [not null, note: '原欄位：source_sha256；collation=ascii_bin']
+  "來源網址" varchar(1500) [not null, note: '原欄位：source_url；collation=utf8mb4_0900_ai_ci']
+  "時間基準" "搜尋趨勢時間基準選項" [not null, default: 'Asia/Taipei', note: '原欄位：time_basis；collation=utf8mb4_0900_ai_ci']
+  "匯入時間" timestamp [not null, default: `CURRENT_TIMESTAMP`, note: '原欄位：imported_at']
+  "來源格式" "搜尋趨勢來源格式選項" [not null, default: 'explore_csv', note: '原欄位：source_kind；collation=utf8mb4_0900_ai_ci']
+  "來源時間粒度" "搜尋趨勢時間粒度選項" [not null, default: 'DAY', note: '原欄位：source_resolution；collation=utf8mb4_0900_ai_ci']
+
+  indexes {
+    ("查詢年度", "搜尋關鍵字", "搜尋地區代碼", "查詢期間起日", "查詢期間迄日", "來源內容雜湊") [name: 'uq_trends_import', unique]
+  }
+
+  // SQL CHECK chk_trends_period: period_start <= period_end
+
+  Note: '原表名：google_trends_imports；Google Trends 每份來源快照一列；每次查詢各自正規化'
+}
+
+Table "捷運原始OD資料" {
+  "原始資料編號" "bigint unsigned" [pk, not null, increment, note: '原欄位：id']
+  "原始日期" char(10) [not null, note: '原欄位：date_raw；CSV 日期，尚未清理；collation=utf8mb4_0900_ai_ci']
+  "原始時段" char(2) [not null, note: '原欄位：hour_raw；CSV 時段，尚未清理；collation=utf8mb4_0900_ai_ci']
+  "原始進站站名" varchar(64) [not null, note: '原欄位：entry_station_raw；CSV 進站，尚未清理；collation=utf8mb4_0900_ai_ci']
+  "原始出站站名" varchar(64) [not null, note: '原欄位：exit_station_raw；CSV 出站，尚未清理；collation=utf8mb4_0900_ai_ci']
+  "原始人次" varchar(20) [not null, note: '原欄位：passenger_count_raw；CSV 人次，尚未清理；collation=utf8mb4_0900_ai_ci']
+  "來源年月" char(6) [not null, note: '原欄位：source_month；來源檔年月 YYYYMM；collation=utf8mb4_0900_ai_ci']
+  "來源資料列號" "bigint unsigned" [not null, note: '原欄位：source_row；來源 CSV 的資料列號，自 1 起算，不含標頭']
+  "匯入時間" timestamp [not null, default: `CURRENT_TIMESTAMP`, note: '原欄位：imported_at']
+
+  indexes {
+    ("原始日期", "原始時段", "原始進站站名") [name: 'ix_original_station_time']
+    ("來源年月", "來源資料列號") [name: 'uq_original_source', unique]
+  }
+
+  Note: '原表名：original_data；臺北捷運逐日分時站間 OD 原始資料；不可在此表直接清理或覆蓋；由 Python 清理、彙總後寫入 analysis_*，這是資料處理流程，沒有實際 FK。'
+}
+
+Table "氣象觀測" {
+  "氣象測站代碼" varchar(10) [not null, note: '原欄位：station_id；collation=ascii_bin']
+  "原始觀測時間標籤" datetime [not null, note: '原欄位：observed_at；臺灣時間原始標籤；報表小時終點及要素代表區間請搭配氣象核對結果']
+  "臺灣時間原文字串" varchar(32) [not null, note: '原欄位：datetime_tst_raw；collation=utf8mb4_bin']
+  "時間對齊狀態" "原始時間對齊狀態選項" [not null, note: '原欄位：time_alignment_status；collation=utf8mb4_bin']
+  "氣溫_攝氏度" decimal(7,3) [note: '原欄位：air_temperature_c']
+  "氣溫品質旗標" varchar(64) [note: '原欄位：temperature_quality_flag；collation=utf8mb4_bin']
+  "小時累積降水量_毫米" decimal(9,3) [note: '原欄位：hourly_precipitation_mm']
+  "降水原始值" varchar(64) [note: '原欄位：precipitation_raw_value；collation=utf8mb4_bin']
+  "降水資料狀態" varchar(64) [not null, note: '原欄位：precipitation_status；collation=utf8mb4_bin']
+  "降水品質旗標" varchar(64) [note: '原欄位：precipitation_quality_flag；collation=utf8mb4_bin']
+  "前十分鐘平均風速_公尺每秒" decimal(7,3) [note: '原欄位：mean_wind_speed_m_s']
+  "風速品質旗標" varchar(64) [note: '原欄位：wind_speed_quality_flag；collation=utf8mb4_bin']
+  "總雲量_十分量" decimal(5,3) [note: '原欄位：total_cloud_amount_tenths']
+  "雲量觀測方法" varchar(64) [not null, note: '原欄位：cloud_measurement_type；collation=utf8mb4_bin']
+  "雲量資料狀態" varchar(64) [not null, note: '原欄位：cloud_status；collation=utf8mb4_bin']
+  "匯入時雲量方法待核對" tinyint(1) [not null, note: '原欄位：cloud_method_review_required；保留匯入時待核對旗標；目前是否仍需核對請看「目前雲量方法是否待核對」']
+  "資料來源" varchar(255) [not null, note: '原欄位：source；collation=utf8mb4_bin']
+  "來源檔案雜湊" char(64) [not null, note: '原欄位：source_file_sha256；collation=ascii_bin']
+  "來源資料列序號" "int unsigned" [not null, note: '原欄位：source_row_number；CSV資料列序號；不含表頭，從1開始']
+  "匯入時間" timestamp [not null, default: `CURRENT_TIMESTAMP`, note: '原欄位：imported_at']
+
+  indexes {
+    "原始觀測時間標籤" [name: 'ix_weather_observed_at']
+    ("氣象測站代碼", "原始觀測時間標籤") [pk]
+  }
+
+  // SQL CHECK: chk_weather_cloud (0–10), chk_weather_cloud_review (0/1),
+  // chk_weather_rain (>=0), chk_weather_source_row (>0), chk_weather_wind (>=0)
+
+  Note: '原表名：weather_observation；每測站每時間一筆；缺值保留NULL，不推定為0'
+}
+
+Table "氣象測站" {
+  "氣象測站代碼" varchar(10) [pk, not null, note: '原欄位：station_id；collation=ascii_bin']
+  "氣象測站名稱" varchar(64) [not null, note: '原欄位：station_name；collation=utf8mb4_bin']
+  "所在縣市" varchar(64) [not null, note: '原欄位：county；collation=utf8mb4_bin']
+
+  Note: '原表名：weather_station；氣象測站；代碼不可連到捷運站名表'
+}
+
+Table "檢視_活動車站回歸資料" {
+  "活動日期" date [not null, note: '原欄位：event_date']
+  "捷運站名" varchar(64) [not null, note: '原欄位：station；collation=utf8mb4_bin']
+  "分析時窗開始小時" "smallint unsigned" [not null, note: '原欄位：window_start_hour']
+  "分析時窗結束小時_不含" "smallint unsigned" [not null, note: '原欄位：window_end_hour_exclusive']
+  "預期小時數" "smallint unsigned" [not null, note: '原欄位：expected_hours']
+  "起站有效小時數" "smallint unsigned" [not null, note: '原欄位：observed_origin_hours']
+  "迄站有效小時數" "smallint unsigned" [not null, note: '原欄位：observed_destination_hours']
+  "時窗起站總人次" "bigint unsigned" [note: '原欄位：origin_count_window']
+  "時窗迄站總人次" "bigint unsigned" [note: '原欄位：destination_count_window']
+  "起站尖峰每小時人次" "bigint unsigned" [note: '原欄位：peak_origin_hour_count']
+  "四週基準時窗起站人次" double [note: '原欄位：baseline_origin_window']
+  "各小時最少比較日數" "tinyint unsigned" [not null, note: '原欄位：baseline_min_days']
+  "時窗起站資料完整" tinyint(1) [not null, note: '原欄位：origin_window_complete']
+  "來源執行雜湊" char(64) [not null, note: '原欄位：source_run_sha256；collation=ascii_general_ci']
+  "更新時間" timestamp [not null, note: '原欄位：updated_at']
+  "活動名稱" varchar(120) [not null, note: '原欄位：event_name；市府活動名稱；collation=utf8mb4_0900_ai_ci']
+  "核實活動狀態" "活動狀態選項" [not null, note: '原欄位：observed_event_status；collation=utf8mb4_0900_ai_ci']
+  "核實無人機展演狀態" tinyint(1) [note: '原欄位：observed_has_drone_show；實際無人機演出：1 有、0 已確認無、NULL 未核實']
+  "活動前一日搜尋指標" decimal(7,4) [note: '原欄位：interest_1d；D-1 的每日指標']
+  "活動前三日搜尋指標平均" decimal(7,4) [note: '原欄位：interest_3d_avg；D-3 到 D-1 的算術平均']
+  "活動前七日搜尋指標平均" decimal(7,4) [note: '原欄位：interest_7d_avg；D-7 到 D-1 的算術平均']
+  "搜尋趨勢是否缺值" int [not null, note: '原欄位：trends_missing']
+  "搜尋趨勢是否跨活動校準" int [not null, note: '原欄位：trends_cross_event_calibrated']
+  "起站人次較基準增減" double [note: '原欄位：origin_excess_vs_baseline']
+
+  Note: '原表名：v_regression_event_station；檢視表 檢視表，不是實體資料表；依查詢即時計算，沒有實體 PK/FK。來源：analysis_event_station_window、dadaocheng_fireworks_events、event_trends_features'
+}
+
+Table "檢視_車站逐時回歸資料" {
+  "活動日期" date [not null, note: '原欄位：event_date']
+  "來源時段起點" datetime [not null, note: '原欄位：hour_start；Asia/Taipei，原資料時段；非經確認的出站刷卡時間']
+  "捷運站名" varchar(64) [not null, note: '原欄位：station；collation=utf8mb4_bin']
+  "起站人次" "bigint unsigned" [note: '原欄位：origin_count']
+  "同來源時段迄站人次" "bigint unsigned" [note: '原欄位：destination_count_same_source_bin']
+  "起站資料完整" tinyint(1) [not null, note: '原欄位：origin_complete']
+  "迄站資料完整" tinyint(1) [not null, note: '原欄位：destination_complete']
+  "外流連接站數_不含本站" "smallint unsigned" [note: '原欄位：out_degree_excluding_self']
+  "內流連接站數_不含本站" "smallint unsigned" [note: '原欄位：in_degree_excluding_self']
+  "四週基準每小時平均起站人次" double [note: '原欄位：baseline_origin_mean_28d']
+  "可用比較日數" "tinyint unsigned" [not null, note: '原欄位：baseline_n_days']
+  "七日前同時段起站人次" "bigint unsigned" [note: '原欄位：origin_lag_7d']
+  "來源執行雜湊" char(64) [not null, note: '原欄位：source_run_sha256；collation=ascii_general_ci']
+  "更新時間" timestamp [not null, note: '原欄位：updated_at']
+  "活動名稱" varchar(120) [not null, note: '原欄位：event_name；市府活動名稱；collation=utf8mb4_0900_ai_ci']
+  "核實活動狀態" "活動狀態選項" [not null, note: '原欄位：observed_event_status；collation=utf8mb4_0900_ai_ci']
+  "核實無人機展演狀態" tinyint(1) [note: '原欄位：observed_has_drone_show；實際無人機演出：1 有、0 已確認無、NULL 未核實']
+  "活動前一日搜尋指標" decimal(7,4) [note: '原欄位：interest_1d；D-1 的每日指標']
+  "活動前三日搜尋指標平均" decimal(7,4) [note: '原欄位：interest_3d_avg；D-3 到 D-1 的算術平均']
+  "活動前七日搜尋指標平均" decimal(7,4) [note: '原欄位：interest_7d_avg；D-7 到 D-1 的算術平均']
+  "搜尋趨勢是否缺值" int [not null, note: '原欄位：trends_missing']
+  "搜尋趨勢是否跨活動校準" int [not null, note: '原欄位：trends_cross_event_calibrated']
+
+  Note: '原表名：v_regression_station_hourly；檢視表 檢視表，不是實體資料表；依查詢即時計算，沒有實體 PK/FK。來源：analysis_event_station_hourly、dadaocheng_fireworks_events、event_trends_features'
+}
+
+Ref fk_analysis_hour_event: "活動日車站逐時人流"."活動日期" > "煙火活動場次"."活動日期" [delete: no action, update: no action]
+Ref fk_dadaocheng_event_year: "煙火活動場次"."活動年度" > "年度活動"."活動年度" [delete: no action, update: no action]
+Ref fk_dadaocheng_budget_year: "年度活動預定預算"."活動年度" > "年度活動"."活動年度" [delete: no action, update: no action]
+Ref fk_dadaocheng_publicity_year: "年度宣導經費"."活動年度" > "年度活動"."活動年度" [delete: no action, update: no action]
+Ref fk_analysis_hour_station: "活動日車站逐時人流"."捷運站名" > "捷運站名對照"."捷運站名" [delete: no action, update: no action]
+Ref fk_analysis_window_event: "活動日車站時段彙總"."活動日期" > "煙火活動場次"."活動日期" [delete: no action, update: no action]
+Ref fk_analysis_window_station: "活動日車站時段彙總"."捷運站名" > "捷運站名對照"."捷運站名" [delete: no action, update: no action]
+Ref fk_event_trends_event: "活動搜尋趨勢特徵"."活動日期" > "煙火活動場次"."活動日期" [delete: restrict, update: no action]
+Ref fk_event_trends_import: "活動搜尋趨勢特徵"."匯入批次編號" > "搜尋趨勢匯入批次"."匯入批次編號" [delete: restrict, update: no action]
+Ref fk_weather_event: "活動與氣象測站對照"."活動日期" > "煙火活動場次"."活動日期" [delete: no action, update: no action]
+Ref fk_weather_event_station: "活動與氣象測站對照"."氣象測站代碼" > "氣象測站"."氣象測站代碼" [delete: no action, update: no action]
+Ref fk_trends_daily_import: "每日搜尋趨勢"."匯入批次編號" > "搜尋趨勢匯入批次"."匯入批次編號" [delete: restrict, update: no action]
+Ref fk_weather_observation_station: "氣象觀測"."氣象測站代碼" > "氣象測站"."氣象測站代碼" [delete: no action, update: no action]
+
+Table "政府辦公日曆" {
+  "日曆日期" date [pk, not null, note: '原欄位：calendar_date']
+  "星期序號_週一為一" "tinyint unsigned" [not null, note: '原欄位：iso_weekday']
+  "是否週末" tinyint(1) [not null, note: '原欄位：is_weekend']
+  "官方放假代碼" "tinyint unsigned" [not null, note: '原欄位：official_holiday_code；官方原碼：0上班、2放假']
+  "是否政府機關放假日" tinyint(1) [not null, note: '原欄位：is_holiday；政府行政機關放假日，包含例行週末']
+  "是否週末補班日" tinyint(1) [not null, note: '原欄位：is_makeup_workday；由週六/日且官方原碼0推導']
+  "日曆備註" varchar(255) [note: '原欄位：day_note']
+  "來源網址" varchar(1000) [not null, note: '原欄位：source_url']
+  "來源檔案雜湊" char(64) [not null, note: '原欄位：source_file_sha256']
+  "來源版本" varchar(80) [not null, note: '原欄位：source_version']
+
+  Note: '原表名：calendar_day；2026-10-07 補充資料；重建由對應 src Python 匯入程式執行'
+}
+
+Table "八週日曆配對基準" {
+  "活動日期" date [not null, note: '原欄位：event_date']
+  "捷運站名" varchar(64) [not null, note: '原欄位：station']
+  "基準配對規則" varchar(64) [not null, note: '原欄位：policy_name']
+  "分析時窗開始小時" "smallint unsigned" [not null, note: '原欄位：window_start_hour']
+  "分析時窗結束小時_不含" "smallint unsigned" [not null, note: '原欄位：window_end_hour_exclusive']
+  "可用比較日數" "tinyint unsigned" [not null, note: '原欄位：baseline_n_days']
+  "選用比較日期" json [not null, note: '原欄位：baseline_dates']
+  "比較日時窗平均起站人次" double [note: '原欄位：baseline_origin_mean']
+  "活動日時窗起站總人次" "bigint unsigned" [note: '原欄位：event_origin_total']
+  "是否符合比較條件" tinyint(1) [not null, note: '原欄位：eligible']
+  "來源執行雜湊" char(64) [not null, note: '原欄位：source_run_sha256']
+
+  indexes {
+    ("活動日期", "捷運站名", "基準配對規則", "分析時窗開始小時", "分析時窗結束小時_不含") [pk]
+  }
+
+  Note: '原表名：analysis_calendar_baseline；2026-10-07 補充資料；重建由對應 src Python 匯入程式執行'
+}
+
+Table "氣象來源核對" {
+  "氣象測站代碼" varchar(10) [not null, note: '原欄位：station_id']
+  "原始觀測時間標籤" datetime [not null, note: '原欄位：observed_at']
+  "來源檔案雜湊" char(64) [not null, note: '原欄位：source_file_sha256']
+  "官方報表小時終點" datetime [not null, note: '原欄位：official_report_hour_end；23:59 對應官方報表第24小時；各要素不全是小時平均']
+  "數值是否一致" tinyint(1) [not null, note: '原欄位：values_match']
+  "雲量方法是否已核對" tinyint(1) [not null, note: '原欄位：cloud_method_verified']
+  "官方回應雜湊" char(64) [not null, note: '原欄位：response_sha256']
+  "查詢參數" json [not null, note: '原欄位：request_parameters']
+  "核對時間_UTC" datetime [not null, note: '原欄位：verified_at_utc']
+
+  indexes {
+    ("氣象測站代碼", "原始觀測時間標籤") [pk]
+  }
+
+  Note: '原表名：weather_source_verification；2026-10-07 補充資料；重建由對應 src Python 匯入程式執行'
+}
+
+Table "活動時間與證據" {
+  "活動日期" date [pk, not null, note: '原欄位：event_date']
+  "公告或推算展演結束時間" datetime [note: '原欄位：nominal_show_end；公告起點加已查證展演長度；不是實際結束時間']
+  "公告或推算結束依據" varchar(64) [not null, note: '原欄位：nominal_end_basis']
+  "公告展演時段開始" time [note: '原欄位：announced_show_window_start']
+  "公告展演時段結束" time [note: '原欄位：announced_show_window_end']
+  "公告舞台開始時間" time [note: '原欄位：scheduled_stage_start']
+  "公告舞台結束時間" time [note: '原欄位：scheduled_stage_end']
+  "舞台時間適用範圍" varchar(255) [note: '原欄位：stage_scope']
+  "實際展演結束時間" datetime [note: '原欄位：actual_show_end']
+  "實際舞台結束時間" datetime [note: '原欄位：actual_stage_end']
+  "實際時間證據網址" text [note: '原欄位：actual_time_source_url']
+  "展演時間來源網址" text [not null, note: '原欄位：show_source_url']
+  "補充證據網址" text [note: '原欄位：additional_source_url']
+  "時間證據說明" text [not null, note: '原欄位：evidence_note']
+  "來源內容雜湊" char(64) [not null, note: '原欄位：source_sha256']
+
+  Note: '原表名：event_timing_context；2026-10-07 補充資料；重建由對應 src Python 匯入程式執行'
+}
+
+Table "檢視_活動日曆" {
+  "活動日期" date [not null, note: '原欄位：event_date；原訂或實際煙火日期；取消、延期仍保留原日期']
+  "活動年度" "smallint unsigned" [note: '原欄位：event_year']
+  "活動狀態" "活動狀態選項" [not null, note: '原欄位：event_status']
+  "星期序號_週一為一" "tinyint unsigned" [not null, note: '原欄位：iso_weekday']
+  "是否週末" tinyint(1) [not null, note: '原欄位：is_weekend']
+  "是否政府機關放假日" tinyint(1) [not null, note: '原欄位：is_holiday；政府行政機關放假日，包含例行週末']
+  "是否週末補班日" tinyint(1) [not null, note: '原欄位：is_makeup_workday；由週六/日且官方原碼0推導']
+  "日曆備註" varchar(255) [note: '原欄位：day_note']
+  "來源版本" varchar(80) [not null, note: '原欄位：source_version']
+
+  Note: '原表名：v_dadaocheng_event_calendar；檢視表，活動以 event_date 連接 calendar_date，非實體 FK'
+}
+
+Table "檢視_已核對氣象" {
+  "氣象測站代碼" varchar(10) [not null, note: '原欄位：station_id']
+  "原始觀測時間標籤" datetime [not null, note: '原欄位：observed_at；臺灣時間原始標籤；報表小時終點及要素代表區間請搭配氣象核對結果']
+  "臺灣時間原文字串" varchar(32) [not null, note: '原欄位：datetime_tst_raw']
+  "時間對齊狀態" "原始時間對齊狀態選項" [not null, note: '原欄位：time_alignment_status']
+  "氣溫_攝氏度" decimal(7,3) [note: '原欄位：air_temperature_c']
+  "氣溫品質旗標" varchar(64) [note: '原欄位：temperature_quality_flag']
+  "小時累積降水量_毫米" decimal(9,3) [note: '原欄位：hourly_precipitation_mm']
+  "降水原始值" varchar(64) [note: '原欄位：precipitation_raw_value']
+  "降水資料狀態" varchar(64) [not null, note: '原欄位：precipitation_status']
+  "降水品質旗標" varchar(64) [note: '原欄位：precipitation_quality_flag']
+  "前十分鐘平均風速_公尺每秒" decimal(7,3) [note: '原欄位：mean_wind_speed_m_s']
+  "風速品質旗標" varchar(64) [note: '原欄位：wind_speed_quality_flag']
+  "總雲量_十分量" decimal(5,3) [note: '原欄位：total_cloud_amount_tenths']
+  "雲量觀測方法" varchar(64) [not null, note: '原欄位：cloud_measurement_type']
+  "雲量資料狀態" varchar(64) [not null, note: '原欄位：cloud_status']
+  "匯入時雲量方法待核對" tinyint(1) [not null, note: '原欄位：cloud_method_review_required；保留匯入時待核對旗標；目前是否仍需核對請看「目前雲量方法是否待核對」']
+  "資料來源" varchar(255) [not null, note: '原欄位：source']
+  "來源檔案雜湊" char(64) [not null, note: '原欄位：source_file_sha256']
+  "來源資料列序號" "int unsigned" [not null, note: '原欄位：source_row_number；CSV資料列序號；不含表頭，從1開始']
+  "匯入時間" timestamp [not null, note: '原欄位：imported_at']
+  "官方報表小時終點" datetime [note: '原欄位：official_report_hour_end；23:59 對應官方報表第24小時；各要素不全是小時平均']
+  "數值是否一致" tinyint(1) [note: '原欄位：values_match']
+  "雲量方法是否已核對" tinyint(1) [note: '原欄位：cloud_method_verified']
+  "目前雲量方法是否待核對" int [not null, note: '原欄位：effective_cloud_review_required']
+  "官方回應雜湊" char(64) [note: '原欄位：response_sha256']
+  "核對時間_UTC" datetime [note: '原欄位：verified_at_utc']
+
+  Note: '原表名：v_weather_verified；檢視表，無實體 PK/FK；氣象驗證依來源檔 SHA-256 比對'
+}
+
+Ref: "八週日曆配對基準"."活動日期" > "煙火活動場次"."活動日期"
+Ref: "八週日曆配對基準"."捷運站名" > "捷運站名對照"."捷運站名"
+Ref: "活動時間與證據"."活動日期" > "煙火活動場次"."活動日期"
+Ref: "氣象來源核對".("氣象測站代碼", "原始觀測時間標籤") > "氣象觀測".("氣象測站代碼", "原始觀測時間標籤")
+
+TableGroup "捷運原始資料" {
+  "捷運原始OD資料"
+}
+
+TableGroup "活動與人流分析" {
+  "政府辦公日曆"
+  "八週日曆配對基準"
+  "活動時間與證據"
+  "煙火活動場次"
+  "年度活動"
+  "年度活動預定預算"
+  "年度宣導經費"
+  "捷運站名對照"
+  "活動日車站逐時人流"
+  "活動日車站時段彙總"
+}
+
+TableGroup "網路搜尋趨勢" {
+  "搜尋趨勢匯入批次"
+  "每日搜尋趨勢"
+  "活動搜尋趨勢特徵"
+}
+
+TableGroup "氣象觀測與核對" {
+  "氣象來源核對"
+  "氣象測站"
+  "氣象觀測"
+  "活動與氣象測站對照"
+}
+
+TableGroup "檢視表_查詢結果" {
+  "檢視_活動日曆"
+  "檢視_已核對氣象"
+  "檢視_年度預算與宣導占比"
+  "檢視_活動量化指標"
+  "檢視_活動車站回歸資料"
+  "檢視_車站逐時回歸資料"
+}
+

@@ -1,0 +1,205 @@
+{
+  "design": {
+    "primary_events": "unchanged audited 13 Beimen dates",
+    "weather_labels": "18:00..23:00 exact six source labels; 23:59 excluded",
+    "wind_semantics": "mean of six preceding-10-minute averages, not continuous six-hour mean",
+    "correlation_response": "log1p(Y)-log1p(B)",
+    "fixed_weather_family": [
+      "temperature_six_label_mean_c",
+      "wind_six_label_mean_m_s"
+    ],
+    "pairwise_min_n": 10,
+    "minimum_distinct_per_variable": 5,
+    "resampling_count": 99999,
+    "seed": 20261005,
+    "multiplicity": "Holm within these two weather tests; not global study-wide correction",
+    "inference": "exploratory: source timing, exchangeability, same-year dependence and baseline uncertainty remain"
+  },
+  "weather_coverage": {
+    "events_in_catalog": 26,
+    "primary_weather_station_ids": [
+      "466920"
+    ],
+    "primary_daily_weather_rows": 504,
+    "primary_end_of_day_rows_excluded": 21,
+    "selected_exact_labels": 126,
+    "events_with_six_labels": 21,
+    "dates_without_primary_station": [
+      "2020-08-22",
+      "2023-07-26",
+      "2023-08-02",
+      "2024-07-24",
+      "2025-08-13"
+    ],
+    "temperature_complete_event_means": 21,
+    "wind_complete_event_means": 21,
+    "cloud_numeric_selected_labels": 90,
+    "cloud_method_review_selected_labels": 72,
+    "cloud_method_counts": {
+      "satellite_retrieved": 90,
+      "not_observed_at_this_hour": 36
+    },
+    "selected_precipitation_status_counts": {
+      "observed": 119,
+      "trace_T": 7
+    },
+    "source_time_intervals_verified": false
+  },
+  "rain_groups": [
+    {
+      "scope": "all_26_dates",
+      "rain_label_class": "wet_evidence",
+      "events": 7
+    },
+    {
+      "scope": "all_26_dates",
+      "rain_label_class": "all_six_labels_numeric_zero",
+      "events": 14
+    },
+    {
+      "scope": "all_26_dates",
+      "rain_label_class": "unknown",
+      "events": 5
+    },
+    {
+      "scope": "held_21_dates",
+      "rain_label_class": "wet_evidence",
+      "events": 7
+    },
+    {
+      "scope": "held_21_dates",
+      "rain_label_class": "all_six_labels_numeric_zero",
+      "events": 14
+    },
+    {
+      "scope": "held_21_dates",
+      "rain_label_class": "unknown",
+      "events": 0
+    },
+    {
+      "scope": "primary_13_dates",
+      "rain_label_class": "wet_evidence",
+      "events": 5
+    },
+    {
+      "scope": "primary_13_dates",
+      "rain_label_class": "all_six_labels_numeric_zero",
+      "events": 8
+    },
+    {
+      "scope": "primary_13_dates",
+      "rain_label_class": "unknown",
+      "events": 0
+    }
+  ],
+  "weather_correlations": [
+    {
+      "variable": "temperature_six_label_mean_c",
+      "n": 13,
+      "distinct_x": 13,
+      "distinct_y": 13,
+      "seed": 20261005,
+      "n_resamples": 99999,
+      "dates": [
+        "2017-08-26",
+        "2018-08-18",
+        "2020-08-29",
+        "2021-10-16",
+        "2022-07-30",
+        "2023-08-20",
+        "2024-07-17",
+        "2024-07-31",
+        "2024-08-10",
+        "2025-08-30",
+        "2026-07-25",
+        "2026-08-05",
+        "2026-08-15"
+      ],
+      "status": "exploratory_tested",
+      "rho": 0.21428571428571427,
+      "permutation_p": 0.48072,
+      "extreme_count": 48071,
+      "p_convention": "(count(abs(rho_permuted)>=abs(rho_observed))+1)/(99999+1), floating tolerance as SciPy",
+      "annual_equal_weight_n": 9,
+      "annual_mean_rho_descriptive": 0.5833333333333334,
+      "leave_one_year_rho_range": [
+        0.0,
+        0.3939393939393939
+      ],
+      "holm_two_tests_p": 0.62748
+    },
+    {
+      "variable": "wind_six_label_mean_m_s",
+      "n": 13,
+      "distinct_x": 13,
+      "distinct_y": 13,
+      "seed": 20261006,
+      "n_resamples": 99999,
+      "dates": [
+        "2017-08-26",
+        "2018-08-18",
+        "2020-08-29",
+        "2021-10-16",
+        "2022-07-30",
+        "2023-08-20",
+        "2024-07-17",
+        "2024-07-31",
+        "2024-08-10",
+        "2025-08-30",
+        "2026-07-25",
+        "2026-08-05",
+        "2026-08-15"
+      ],
+      "status": "exploratory_tested",
+      "rho": 0.3021978021978022,
+      "permutation_p": 0.31374,
+      "extreme_count": 31373,
+      "p_convention": "(count(abs(rho_permuted)>=abs(rho_observed))+1)/(99999+1), floating tolerance as SciPy",
+      "annual_equal_weight_n": 9,
+      "annual_mean_rho_descriptive": 0.3,
+      "leave_one_year_rho_range": [
+        0.12727272727272726,
+        0.5174825174825175
+      ],
+      "holm_two_tests_p": 0.62748
+    }
+  ],
+  "baseline_regression": {
+    "formula": "log1p(origin_count_window) ~ intercept + log1p(baseline_origin_window)",
+    "n": 13,
+    "residual_df": 11,
+    "intercept": 5.035740352131204,
+    "slope": 0.5532055590228926,
+    "intercept_ci95": [
+      -2.7744938147204365,
+      12.845974518982844
+    ],
+    "slope_ci95": [
+      -0.37778470445416024,
+      1.4841958224999454
+    ],
+    "slope_standard_error": 0.42298797845686814,
+    "slope_p_conditional": 0.21759580446460833,
+    "r_squared_in_sample": 0.13457215338012382,
+    "residual_sd_log1p": 0.3802245284209538,
+    "shapiro_residual_W": 0.8649579255389166,
+    "shapiro_residual_p_diagnostic": 0.0448059925008152,
+    "max_cooks_distance": 1.791850656203996,
+    "max_cooks_event": "2021-10-16",
+    "loyo_n": 13,
+    "loyo_mae_log1p": 0.38243733461542256,
+    "loyo_rmse_log1p": 0.4629832557479434,
+    "loyo_intercept_only_mae_log1p": 0.3004256420444751,
+    "loyo_intercept_only_rmse_log1p": 0.40167594213193447,
+    "loyo_slope_range": [
+      -0.15781536148282307,
+      0.8635758404260944
+    ],
+    "warning": "Conditional OLS CI assumes independent normal homoskedastic errors and treats estimated baselines as fixed. LOYO includes future years and is not forecasting validation. No weather variable was added."
+  },
+  "self_test": {
+    "five_exact_plus_2359": "mean unavailable",
+    "ampersand": "unknown, not zero",
+    "trace_T": "wet evidence, unknown amount"
+  }
+}

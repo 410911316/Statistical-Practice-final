@@ -1,0 +1,645 @@
+{
+  "schema_version": "1.0",
+  "created_on": "2026-10-07",
+  "timezone": "Asia/Taipei",
+  "title": "大稻埕煙火／捷運人流新增方法與延伸設計提案",
+  "approval_status": "awaiting_user_approval",
+  "execution_status": "research_and_proposal_only",
+  "report_path": "docs/research_review/new_methods_2026-10-07.md",
+  "actions_performed": [
+    "read_existing_project_documents",
+    "browse_primary_and_official_sources",
+    "write_proposal_markdown_and_json"
+  ],
+  "actions_not_performed": [
+    "fit_new_models",
+    "run_new_hypothesis_tests",
+    "run_new_simulations",
+    "install_packages",
+    "modify_original_data",
+    "modify_database",
+    "delegate_implementation"
+  ],
+  "evidence_basis": {
+    "local_documents": [
+      "docs/research_review/README.md",
+      "docs/research_review/github_methods.md",
+      "docs/research_review/data_gaps.md",
+      "docs/research_review/extended_statistics.md",
+      "docs/database_schema.dbml",
+      "pyproject.toml",
+      "results/research_review/2026-10-07-refresh/data_inventory/年度預算與宣導經費.csv (header and first rows checked only)"
+    ],
+    "local_database_requeried": false,
+    "data_snapshot": "README 2026-10-07 update and parent task context; not independently recomputed",
+    "independent_unit_warning": "140,789,493 OD rows are not independent event samples; 21 held events across about 10 years."
+  },
+  "data_constraints": {
+    "clean_od_rows": 140789493,
+    "od_months": 17,
+    "scheduled_dates": 26,
+    "held_events": 21,
+    "baseline_28d_eligible_held": 19,
+    "baseline_28d_years": 10,
+    "baseline_56d_eligible_held": 21,
+    "official_calendar_years": [
+      2017,
+      2026
+    ],
+    "weather_verified_records": 1008,
+    "nominal_show_end_records": 20,
+    "scheduled_stage_end_records": 4,
+    "actual_end_records_verified": 0,
+    "annual_budget_years": 10,
+    "annual_publicity_years": 5,
+    "threads_posts": 74,
+    "ptt_posts": 8,
+    "social_sample_period": [
+      "2026-07-15",
+      "2026-08-15"
+    ]
+  },
+  "not_new_or_not_requiring_new_method_label": [
+    "F=t^2",
+    "sign tests",
+    "year-equal weighting and leave-year sensitivity",
+    "Friedman and within-event permutation",
+    "Kendall W",
+    "paired station comparisons",
+    "late-evening share and peaks",
+    "Spearman",
+    "univariate OLS and leave-year errors",
+    "7-test Holm",
+    "already authorized eight-week calendar baseline sensitivity",
+    "already authorized weather alignment sensitivity"
+  ],
+  "recommendations": [
+    {
+      "id": "M1",
+      "priority": 1,
+      "title": "資訊可用性帳本與按時間向前回測",
+      "novelty_class": "extension_of_existing_proposal",
+      "existing_overlap": "10/5 已提 expanding-window 與整場分組；新增發布時點／版本帳本與可部署性門檻。",
+      "readiness": "can_start_after_approval_retrospective_only",
+      "research_question": "只使用過去且當時可取得的資訊，既有模型能否預測後面的活动？",
+      "unit": "event; report year-balanced metrics separately",
+      "inputs": [
+        "北門完整18–24時事件總量",
+        "同單位且同政策的一般日基準",
+        "event_date/event_year",
+        "source_version, observed_at, published_at, available_at, forecast_cutoff"
+      ],
+      "proposed_procedure": [
+        "按過去年度訓練、下一年度測試，整場所有站時段同邊。",
+        "固定初期訓練門檻、共同測試場次及候選基準。",
+        "發布時點未知則先做回顧式時間驗證；真正D−1重播只納入截止前已發布資料。",
+        "回填、標準化、模型選擇及調參只在訓練資料內完成。"
+      ],
+      "outputs": [
+        "folds與資料可用性帳本",
+        "逐場MAE/WAPE及log1p誤差",
+        "逐年等權誤差摘要",
+        "未能回測與模型失敗紀錄"
+      ],
+      "difference_from_existing_analysis": "既有整年留出可能看到未來；本提案禁止未來訓練並另外驗證資料發布延遲。",
+      "assumptions_and_small_sample_risks": [
+        "月OD觀測日不等於發布日；修訂日曆與事後天氣不是當時可知。",
+        "21場、約10年使晚期測試折有限；初期訓練稀少。",
+        "不得以相同事件多站多時段增加樣本或訓練/測試分列。"
+      ],
+      "tools_and_costs": [
+        {
+          "tool": "自訂Python日期切分與CSV",
+          "cost": "無必要額外軟體費；需要來源發布時點稽核時間"
+        },
+        {
+          "tool": "scikit-learn（選配相容版本）",
+          "license": "BSD-3-Clause",
+          "cost": "免費；未安裝、未測相容性"
+        }
+      ],
+      "prerequisites_for_operational_forecast": [
+        "確認月OD與標籤發布延遲",
+        "取得歷史日曆/公告/預報當時版本，或排除不能證實可用的變數"
+      ],
+      "source_ids": [
+        "S01",
+        "S02",
+        "S15"
+      ],
+      "approval_status": "awaiting_user_approval",
+      "execution_status": "not_executed",
+      "installations_performed": false
+    },
+    {
+      "id": "M2",
+      "priority": 2,
+      "title": "年度分群CR2與Satterthwaite小樣本區間",
+      "novelty_class": "new_method_for_project",
+      "existing_overlap": "與既有年度等權、留年敏感度不同，直接修正年度群聚下的標準誤。",
+      "readiness": "can_start_after_approval",
+      "research_question": "允許同年活動相依時，北門相對基準平均變化的區間有多穩定？",
+      "unit": "one event row, clustering by year",
+      "inputs": [
+        "event_date/event_year",
+        "北門完整事件總量Y",
+        "選定同單位基準B",
+        "比較日重用稽核"
+      ],
+      "proposed_procedure": [
+        "d=log1p(Y)-log1p(B)，第一版僅估截距。",
+        "以年度分群計算CR2及Satterthwaite區間，保留事件等權目標。",
+        "回報年度群大小、有效自由度、例外與影響群，不新增大量迴歸係數。"
+      ],
+      "outputs": [
+        "估計值與常規/CR2區間",
+        "群數、群大小、有效自由度",
+        "跨群基準重用與不穩定案例紀錄"
+      ],
+      "difference_from_existing_analysis": "刪除一年只是敏感度；CR2建立允許同年誤差相關的工作模型。",
+      "assumptions_and_small_sample_risks": [
+        "約10個年度群仍很少，不保證推論準確。",
+        "有效自由度可能遠少於群數減一。",
+        "年度間獨立仍需工作假設；共同趨勢與跨年相依不會被修掉。",
+        "不能完整傳播基準選日不確定性或提供因果識別。"
+      ],
+      "tools_and_costs": [
+        {
+          "tool": "R + clubSandwich",
+          "license": "GPL-3",
+          "cost": "免費；需另建/記錄R環境，未安裝"
+        }
+      ],
+      "source_ids": [
+        "S03",
+        "S04",
+        "S05",
+        "S06"
+      ],
+      "approval_status": "awaiting_user_approval",
+      "execution_status": "not_executed",
+      "installations_performed": false
+    },
+    {
+      "id": "M5",
+      "priority": 3,
+      "title": "非活動日偽事件基準校準",
+      "novelty_class": "new_method_for_project",
+      "existing_overlap": "八週敏感度只在真實活動日更換基準；本提案把其他可用日期設為驗證目標。",
+      "readiness": "can_start_coverage_audit_after_approval_numeric_analysis_conditional",
+      "research_question": "同一套基準在沒有已知煙火的日期會產生多大的偏差？",
+      "unit": "ordinary station-day, with overlap and calendar-period dependence",
+      "inputs": [
+        "17個月清理OD中的四站完整18–24時一般日總量",
+        "calendar_day",
+        "26個原訂日期",
+        "其他活動/停運/颱風及夏日節非煙火節目排除紀錄"
+      ],
+      "proposed_procedure": [
+        "先核對候選目標日及其以前比較日的覆蓋與干擾。",
+        "每一偽事件日都按既定規則只用過去一般日建立基準，排除目標日本身。",
+        "保存基準日重用、可比天數與排除原因。",
+        "按年/月描述偏差及誤差分布；活動偏離只作描述性比較。"
+      ],
+      "outputs": [
+        "逐一般日基準誤差表",
+        "年/月偏差、MAE與誤差圖",
+        "大誤差日期與干擾稽核表"
+      ],
+      "difference_from_existing_analysis": "檢查基準估計器本身在已知非煙火日的表現，並非再增加活動樣本。",
+      "assumptions_and_small_sample_risks": [
+        "未登錄活動、選月與比較日共用造成選樣和相依。",
+        "可用候選天數尚未計算；不能保證每年均足夠。",
+        "描述性百分位不是隨機化p值、因果效果或已校準警報機率。"
+      ],
+      "tools_and_costs": [
+        {
+          "tool": "既有DuckDB/Python",
+          "cost": "無必要新增商業費用；需人工干擾紀錄核對"
+        }
+      ],
+      "source_ids": [
+        "S07",
+        "S08"
+      ],
+      "approval_status": "awaiting_user_approval",
+      "execution_status": "not_executed",
+      "installations_performed": false
+    },
+    {
+      "id": "M4",
+      "priority": 4,
+      "title": "雙人主題編碼與逐標籤一致性稽核",
+      "novelty_class": "new_measurement_method_extending_existing_topic_proposal",
+      "existing_overlap": "10/5已提出人工主題與覆核；新增獨立雙編碼、正式一致性評估與保留爭議裁決。",
+      "readiness": "can_start_after_approval_second_independent_coder_required",
+      "research_question": "搜尋樣本中交通、人潮等詞代表哪些主題，兩位編碼者能否一致判定？",
+      "unit": "deduplicated post, not unique person or population opinion",
+      "inputs": [
+        "74篇Threads與8篇PTT",
+        "URL、時間、正文、納入原因及重複內容群"
+      ],
+      "proposed_procedure": [
+        "少量多標籤手冊與不確定類別，試編示例與正式評估分開。",
+        "兩位編碼者未見對方答案前獨立標記；沒有第二位則只交待覆核初稿。",
+        "逐主題列對照表、觀測一致率、分母與Cohen kappa，再保存裁決版本。"
+      ],
+      "outputs": [
+        "可追溯主題與證據表",
+        "逐標籤原始對照表及一致性",
+        "爭議例句、手冊版本與裁決紀錄"
+      ],
+      "difference_from_existing_analysis": "從詞頻與人工抽查提升為可審核的量測程序；不新增跨年社群回歸。",
+      "assumptions_and_small_sample_risks": [
+        "多標籤需逐標籤算kappa；全單一類別可能無定義。",
+        "罕見主題與邊際分布會影響kappa，不能以單一門檻證明正確。",
+        "PTT僅8篇；82篇是搜尋樣本，不能視為全平台聲量或母體比例。"
+      ],
+      "tools_and_costs": [
+        {
+          "tool": "本機CSV與簡單程式",
+          "cost": "工具可免費；主要成本是兩位人的閱讀與裁決時間"
+        },
+        {
+          "tool": "scikit-learn（選配相容版本）",
+          "license": "BSD-3-Clause",
+          "cost": "免費；不需付費LLM"
+        }
+      ],
+      "source_ids": [
+        "S09",
+        "S10",
+        "S11",
+        "S15"
+      ],
+      "approval_status": "awaiting_user_approval",
+      "execution_status": "not_executed",
+      "installations_performed": false
+    },
+    {
+      "id": "M3",
+      "priority": 5,
+      "title": "背景offset與L2收縮Poisson均值預測",
+      "novelty_class": "new_model_specification_extending_existing_count_model_proposal",
+      "existing_overlap": "10/5已列Poisson/NB；新增offset倍率基準、斜率收縮、受限調參與相同時間folds。",
+      "readiness": "defer_until_M1_and_adequate_inner_temporal_validation",
+      "research_question": "將額外係數縮向簡單活動倍率，能否比既有log1p OLS改善未來事件的人次預測？",
+      "unit": "one Beimen event row",
+      "inputs": [
+        "非負原人次Y",
+        "嚴格正值背景量B",
+        "一個預先指定日曆變數",
+        "M1共同時間folds與可用性帳本"
+      ],
+      "proposed_procedure": [
+        "log(mu)=log(B)+a+beta*z(log(B))+gamma*holiday，額外斜率L2收縮，截距不懲罰。",
+        "z只用訓練期統計；少量懲罰強度只在內層向前切分選擇。",
+        "內層樣本不足則固定懲罰作明示敏感度、只保留倍率模型或延後，不用外層測試挑參數。"
+      ],
+      "outputs": [
+        "同folds原人次MAE/WAPE、Poisson deviance",
+        "逐場正值預測",
+        "懲罰/收斂/例外紀錄"
+      ],
+      "difference_from_existing_analysis": "正值均值模型與偏向簡單基準的收縮；不是重新命名OLS，也不承諾更準。",
+      "assumptions_and_small_sample_risks": [
+        "B是估計背景量，不是實測暴露；offset是額外建模假設。",
+        "過度分散和同年相依不因Poisson或L2消失。",
+        "不能用獨立Poisson標準誤作確定推論。",
+        "少數事件不適合複雜負二項混合模型、零膨脹或大規模特徵選擇。"
+      ],
+      "tools_and_costs": [
+        {
+          "tool": "statsmodels GLM.fit_regularized",
+          "license": "BSD-3-Clause",
+          "cost": "免費；現有pyproject未列該套件，未安裝或測相容性"
+        }
+      ],
+      "source_ids": [
+        "S12",
+        "S13",
+        "S14"
+      ],
+      "approval_status": "awaiting_user_approval",
+      "execution_status": "not_executed",
+      "installations_performed": false
+    },
+    {
+      "id": "M6",
+      "priority": 6,
+      "title": "按列車隊列守恆與校準資料門檻",
+      "novelty_class": "extension_of_existing_simulation_proposal",
+      "existing_overlap": "10/5已有SimPy批次列車情境；新增可辨識性、觀測對帳與樣本外校準門檻。",
+      "readiness": "needs_new_operational_and_platform_data",
+      "research_question": "哪些分方向需求與餘裕容量組合導致滯留，哪些觀測可校準候車模型？",
+      "unit": "station-direction-train and 1–5 minute platform interval",
+      "inputs": [
+        "實際列車到離時間與方向",
+        "到站載客/下車/可用容量",
+        "1–5分鐘月台到達/隊列/上車/未登車",
+        "初始與結束殘留、限流、步行延遲",
+        "若以散場為零點則需實際活動結束",
+        "等待分位數需個人或批次到達時間與上車對應"
+      ],
+      "proposed_procedure": [
+        "簡化守恆：boarded=min(Qprev+A,C)，Q=Qprev+A-boarded。",
+        "先核對不離隊/不改線/容量可用等假設與觀測平衡。",
+        "取得實測後分開校準與驗證場次/時段，再考慮等待時間。"
+      ],
+      "outputs": [
+        "資料字典與可辨識性表",
+        "未來可驗證的隊列/上車/滯留軌跡",
+        "資料未齊時僅有明示假設的情境框架"
+      ],
+      "difference_from_existing_analysis": "不把使用SimPy本身當新方法；先要求可觀測輸入和守恆驗證。",
+      "assumptions_and_small_sample_risks": [
+        "小時起站OD不能識別分鐘月台到達和方向；迄站同來源分箱不是出閘時間。",
+        "按小時均分只有模擬假設。",
+        "目前不宜估真實候車、95分位或最佳班距；情境範圍不是信賴區間或尖銳界限。"
+      ],
+      "tools_and_costs": [
+        {
+          "tool": "Python守恆程式／SimPy（選配）",
+          "license": "SimPy MIT",
+          "cost": "工具免費；歷史營運資料可得性和費用未知，現地計數需人工協調；本輪未申請"
+        }
+      ],
+      "source_ids": [
+        "S16",
+        "S17",
+        "S18"
+      ],
+      "approval_status": "awaiting_user_approval",
+      "execution_status": "not_executed",
+      "installations_performed": false
+    }
+  ],
+  "annual_finance_guardrail": {
+    "status": "descriptive_inventory_already_completed_by_main_agent",
+    "unit": "one row per year",
+    "completed_output_path": "results/research_review/2026-10-07-refresh/data_inventory/年度預算與宣導經費.csv",
+    "completed_scope": "年度金額、占比、來源與口徑的純描述，屬本次既有授權，毋須重新批准。",
+    "new_regression_or_inference_status": "awaiting_user_approval",
+    "prohibited_interpretations": [
+      "per-event independent monetary exposure from repeated annual amounts",
+      "causal extra passengers per advertising dollar",
+      "return on investment from planned/required instead of paid costs"
+    ],
+    "limitations": [
+      "預算10年、宣導5年；年級變化不可藉重複每場擴增。",
+      "年度趨勢、場次規模、疫情與行銷策略難以同時分離。",
+      "CR2、random effects或正則化不創造因果識別。"
+    ]
+  },
+  "not_recommended_now": [
+    {
+      "method": "Budget/publicity causal regression or ROI",
+      "reason": "10/5 annual observations and observational inputs cannot identify causal spending effects."
+    },
+    {
+      "method": "Complex NB mixed models, zero-inflated models, broad automated feature search",
+      "reason": "Only 21 held events and around 10 year clusters."
+    },
+    {
+      "method": "DiD/synthetic control using the other three core stations or cancelled dates as untreated controls",
+      "reason": "Core stations may all be affected; cancellations are selected by weather/policy; no validated comparison design."
+    },
+    {
+      "method": "Calibrated real queue waiting or optimal headways from hourly OD",
+      "reason": "Missing direction, platform arrivals, actual service and residual capacities."
+    }
+  ],
+  "approval_choices": [
+    {
+      "id": "A",
+      "label": "先補結論可靠度（建議）",
+      "method_ids": [
+        "M2",
+        "M5"
+      ],
+      "concrete_deliverable": "年度CR2區間與一般日偽事件基準校準；資料不符條件則只交覆蓋/干擾審核。",
+      "novelty": "兩項真正新增方法",
+      "status": "awaiting_user_approval"
+    },
+    {
+      "id": "B",
+      "label": "先驗證預測是否有用",
+      "method_ids": [
+        "M1"
+      ],
+      "concrete_deliverable": "既有模型向前回測、資訊可用性帳本與逐場誤差。",
+      "novelty": "舊提案補強；不含M3新模型",
+      "status": "awaiting_user_approval"
+    },
+    {
+      "id": "C",
+      "label": "先把社群變成可核對結果",
+      "method_ids": [
+        "M4"
+      ],
+      "concrete_deliverable": "82篇主題稽核表與獨立雙編碼/爭議紀錄；第二人未具備則只交待覆核初稿。",
+      "novelty": "主題舊提案增加新的量測可靠度方法",
+      "status": "awaiting_user_approval"
+    }
+  ],
+  "approval_boundary": "使用者明確同意後才交其他代理實作所選項目；選A/B/C不自動批准M3、M6或年度金額新回歸/推論。年度金額純描述已由主代理完成。提案本身可供範圍與來源審查。",
+  "sources": [
+    {
+      "id": "S01",
+      "title": "Forecasting: Principles and Practice (3rd ed), §5.10 Time series cross-validation",
+      "url": "https://otexts.com/fpp3/tscv.html",
+      "kind": "author_textbook",
+      "supports": "訓練只使用測試觀測以前的資訊；rolling forecasting origin；早期觀測可因訓練不足不納入測試。",
+      "accessed_on": "2026-10-07",
+      "access_method": "web_browsing",
+      "used_as_scientific_validation_of_project_results": false
+    },
+    {
+      "id": "S02",
+      "title": "scikit-learn TimeSeriesSplit",
+      "url": "https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.TimeSeriesSplit.html",
+      "kind": "official_documentation",
+      "supports": "按時間累積訓練；相同時間跨度的 folds 可比較性須注意等間距條件；不代表直接適用不規則的活動長表。",
+      "accessed_on": "2026-10-07",
+      "access_method": "web_browsing",
+      "used_as_scientific_validation_of_project_results": false
+    },
+    {
+      "id": "S03",
+      "title": "Pustejovsky and Tipton, Small sample methods for cluster-robust variance estimation and hypothesis testing in fixed effects models",
+      "url": "https://arxiv.org/abs/1601.01981",
+      "kind": "primary_paper_author_preprint",
+      "supports": "偏誤修正線性化與 Satterthwaite 小樣本群聚推論；不能由群數單獨保證有效。",
+      "accessed_on": "2026-10-07",
+      "access_method": "web_browsing",
+      "used_as_scientific_validation_of_project_results": false
+    },
+    {
+      "id": "S04",
+      "title": "clubSandwich: Cluster-robust standard errors and hypothesis tests in panel data models",
+      "url": "https://jepusto.github.io/clubSandwich/articles/panel-data-CRVE.html",
+      "kind": "author_official_documentation",
+      "supports": "CR2 與小樣本修正、工作模型、少量群數時的限制。",
+      "accessed_on": "2026-10-07",
+      "access_method": "web_browsing",
+      "used_as_scientific_validation_of_project_results": false
+    },
+    {
+      "id": "S05",
+      "title": "clubSandwich coef_test",
+      "url": "https://jepusto.github.io/clubSandwich/reference/coef_test.html",
+      "kind": "author_official_documentation",
+      "supports": "Satterthwaite 修正與回報估計自由度的介面。",
+      "accessed_on": "2026-10-07",
+      "access_method": "web_browsing",
+      "used_as_scientific_validation_of_project_results": false
+    },
+    {
+      "id": "S06",
+      "title": "clubSandwich DESCRIPTION",
+      "url": "https://github.com/jepusto/clubSandwich/blob/main/DESCRIPTION",
+      "kind": "author_official_repository",
+      "supports": "License: GPL-3；R 套件，與 Python 主專案分開記錄環境。",
+      "accessed_on": "2026-10-07",
+      "access_method": "web_browsing",
+      "used_as_scientific_validation_of_project_results": false
+    },
+    {
+      "id": "S07",
+      "title": "Abadie (2021), Using Synthetic Controls: Feasibility, Data Requirements, and Methodological Aspects",
+      "url": "https://economics.mit.edu/sites/default/files/publications/jel.20191450.pdf",
+      "kind": "primary_paper_author_copy",
+      "supports": "§7、期刊 p.414–415 的 backdating/in-time placebo 診斷；本文只借診斷想法，未宣稱使用合成控制或其因果估計量。",
+      "accessed_on": "2026-10-07",
+      "access_method": "web_browsing",
+      "used_as_scientific_validation_of_project_results": false
+    },
+    {
+      "id": "S08",
+      "title": "Forecasting: Principles and Practice (3rd ed), §5.4 Residual diagnostics",
+      "url": "https://otexts.com/fpp3/diagnostics.html",
+      "kind": "author_textbook",
+      "supports": "以預測誤差檢查偏差與其他系統型態；本文的一般日抽樣規則為自行設計。",
+      "accessed_on": "2026-10-07",
+      "access_method": "web_browsing",
+      "used_as_scientific_validation_of_project_results": false
+    },
+    {
+      "id": "S09",
+      "title": "Artstein and Poesio (2008), Inter-Coder Agreement for Computational Linguistics",
+      "url": "https://aclanthology.org/J08-4004/",
+      "kind": "research_article",
+      "supports": "文字標記一致性指標的假設及解釋限制；不是本專案編碼已通過驗證。",
+      "accessed_on": "2026-10-07",
+      "access_method": "web_browsing",
+      "used_as_scientific_validation_of_project_results": false
+    },
+    {
+      "id": "S10",
+      "title": "scikit-learn cohen_kappa_score",
+      "url": "https://scikit-learn.org/stable/modules/generated/sklearn.metrics.cohen_kappa_score.html",
+      "kind": "official_documentation",
+      "supports": "兩位編碼者的 Cohen kappa 定義及公式。",
+      "accessed_on": "2026-10-07",
+      "access_method": "web_browsing",
+      "used_as_scientific_validation_of_project_results": false
+    },
+    {
+      "id": "S11",
+      "title": "scikit-learn Model evaluation: Cohen's kappa",
+      "url": "https://scikit-learn.org/stable/modules/model_evaluation.html#cohen-s-kappa",
+      "kind": "official_documentation",
+      "supports": "多標籤需逐標籤計算；兩位人工編碼者的一致性不等於分類真值準確率。",
+      "accessed_on": "2026-10-07",
+      "access_method": "web_browsing",
+      "used_as_scientific_validation_of_project_results": false
+    },
+    {
+      "id": "S12",
+      "title": "statsmodels GLM",
+      "url": "https://www.statsmodels.org/stable/generated/statsmodels.genmod.generalized_linear_model.GLM.html",
+      "kind": "official_documentation",
+      "supports": "GLM offset/exposure 介面；offset 係數固定為一。",
+      "accessed_on": "2026-10-07",
+      "access_method": "web_browsing",
+      "used_as_scientific_validation_of_project_results": false
+    },
+    {
+      "id": "S13",
+      "title": "statsmodels GLM.fit_regularized",
+      "url": "https://www.statsmodels.org/stable/generated/statsmodels.genmod.generalized_linear_model.GLM.fit_regularized.html",
+      "kind": "official_documentation",
+      "supports": "elastic net 的 L1/L2 懲罰；L1_wt=0 為純 L2；alpha 可依係數指定。",
+      "accessed_on": "2026-10-07",
+      "access_method": "web_browsing",
+      "used_as_scientific_validation_of_project_results": false
+    },
+    {
+      "id": "S14",
+      "title": "statsmodels LICENSE.txt",
+      "url": "https://github.com/statsmodels/statsmodels/blob/main/LICENSE.txt",
+      "kind": "official_repository",
+      "supports": "BSD-3-Clause 授權。",
+      "accessed_on": "2026-10-07",
+      "access_method": "web_browsing",
+      "used_as_scientific_validation_of_project_results": false
+    },
+    {
+      "id": "S15",
+      "title": "scikit-learn COPYING",
+      "url": "https://github.com/scikit-learn/scikit-learn/blob/main/COPYING",
+      "kind": "official_repository",
+      "supports": "BSD-3-Clause 授權；未表示目前 Python 3.10.11 能安裝最新版。",
+      "accessed_on": "2026-10-07",
+      "access_method": "web_browsing",
+      "used_as_scientific_validation_of_project_results": false
+    },
+    {
+      "id": "S16",
+      "title": "TCRP Report 165, Transit Capacity and Quality of Service Manual, Third Edition (2013), Chapter 8: Rail Transit Capacity",
+      "url": "https://www.nationalacademies.org/read/24766/chapter/9",
+      "kind": "official_research_manual",
+      "supports": "軌道容量章節與概念參考；不宣稱為最新版，隊列守恆式為本專案自行提出的簡化模型。",
+      "accessed_on": "2026-10-07",
+      "access_method": "web_browsing",
+      "used_as_scientific_validation_of_project_results": false
+    },
+    {
+      "id": "S17",
+      "title": "SimPy Shared Resources",
+      "url": "https://simpy.readthedocs.io/en/stable/topical_guides/resources.html",
+      "kind": "official_documentation",
+      "supports": "Resource、Container、Store 提供資源／存量機制；列車批次模型仍需自訂。",
+      "accessed_on": "2026-10-07",
+      "access_method": "web_browsing",
+      "used_as_scientific_validation_of_project_results": false
+    },
+    {
+      "id": "S18",
+      "title": "SimPy License",
+      "url": "https://simpy.readthedocs.io/en/stable/about/license.html",
+      "kind": "official_documentation",
+      "supports": "MIT 授權。",
+      "accessed_on": "2026-10-07",
+      "access_method": "web_browsing",
+      "used_as_scientific_validation_of_project_results": false
+    }
+  ],
+  "proposal_review": {
+    "reviewer": "/root/review_refreshed_analysis",
+    "reviewed_on": "2026-10-07",
+    "scope": "documentation_scope_and_source_sanity_check",
+    "status": "accepted_no_required_fixes",
+    "independently_checked_source_ids": [
+      "S01",
+      "S03",
+      "S05",
+      "S07",
+      "S13",
+      "S16"
+    ],
+    "does_not_constitute_user_approval": true,
+    "empirical_validation_performed": false
+  }
+}
+

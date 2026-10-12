@@ -1,0 +1,216 @@
+{
+  "scenarios": [
+    {
+      "scenario": "2026-10-05 四週13場",
+      "n_events": 13,
+      "n_years": 9,
+      "geometric_ratio_plus_one": 3.6297436959968263,
+      "ratio_ci_low": 2.881437633400793,
+      "ratio_ci_high": 4.572383988432527,
+      "F": 148.01636542011198,
+      "F_p_conditional": 4.148162678874282e-08,
+      "sign_p": 0.000244140625,
+      "friedman_Q": 39.0,
+      "kendall_W": 1.0,
+      "observed_late_share": 0.622789770220802,
+      "baseline_late_share": 0.3111363072512336,
+      "late_difference_pp": 31.165346296956848,
+      "OLS_slope": 0.5532055590228926,
+      "OLS_R2": 0.13457215338012382,
+      "LOYO_MAE": 0.38243733461542256,
+      "LOYO_naive_MAE": 0.3004256420444751,
+      "LOYO_RMSE": 0.4629832557479434,
+      "LOYO_naive_RMSE": 0.40167594213193447
+    },
+    {
+      "scenario": "2026-10-07 四週19場",
+      "n_events": 19,
+      "n_years": 10,
+      "geometric_ratio_plus_one": 3.187433803616962,
+      "ratio_ci_low": 2.631337405558012,
+      "ratio_ci_high": 3.861053406142562,
+      "F": 161.36010787664082,
+      "F_p_conditional": 2.0080144391559568e-10,
+      "sign_p": 3.814697265625e-06,
+      "friedman_Q": 57.0,
+      "kendall_W": 1.0,
+      "observed_late_share": 0.5905361602075901,
+      "baseline_late_share": 0.29046673651147425,
+      "late_difference_pp": 30.006942369611583,
+      "OLS_slope": 0.33080624176088763,
+      "OLS_R2": 0.04307290285745339,
+      "LOYO_MAE": 0.3605673678316079,
+      "LOYO_naive_MAE": 0.3061003641907412,
+      "LOYO_RMSE": 0.4310809959453966,
+      "LOYO_naive_RMSE": 0.39064022200605375
+    },
+    {
+      "scenario": "2026-10-07 八週21場（敏感度）",
+      "n_events": 21,
+      "n_years": 10,
+      "geometric_ratio_plus_one": 3.132670072626523,
+      "ratio_ci_low": 2.6126131871270033,
+      "ratio_ci_high": 3.7562475119868592,
+      "F": 172.16270440816103,
+      "F_p_conditional": 2.7618876185177122e-11,
+      "sign_p": 9.5367431640625e-07,
+      "friedman_Q": 63.0,
+      "kendall_W": 1.0,
+      "observed_late_share": 0.5921221495346811,
+      "baseline_late_share": 0.28348850904532663,
+      "late_difference_pp": 30.86336404893545,
+      "OLS_slope": 0.23030941422356482,
+      "OLS_R2": 0.019409615340178425,
+      "LOYO_MAE": 0.3575314056698079,
+      "LOYO_naive_MAE": 0.3126042814325484,
+      "LOYO_RMSE": 0.43577454420202255,
+      "LOYO_naive_RMSE": 0.39151558300761624
+    }
+  ],
+  "weather_timing": [
+    {
+      "baseline_policy": "four_week_primary",
+      "weather_timing": "18..23 原整點標籤",
+      "variable": "temperature_six_label_mean_c",
+      "n": 19,
+      "rho": 0.04385964912280702,
+      "permutation_p": 0.85798,
+      "holm_two_p": 0.85798,
+      "year_equal_weight_rho": 0.7939393939393938,
+      "leave_year_rho_min": -0.07533539731682146,
+      "leave_year_rho_max": 0.36785714285714277
+    },
+    {
+      "baseline_policy": "four_week_primary",
+      "weather_timing": "18..23 原整點標籤",
+      "variable": "wind_six_label_mean_m_s",
+      "n": 19,
+      "rho": 0.22982456140350876,
+      "permutation_p": 0.34102,
+      "holm_two_p": 0.68204,
+      "year_equal_weight_rho": 0.4666666666666666,
+      "leave_year_rho_min": 0.11455108359133126,
+      "leave_year_rho_max": 0.42142857142857143
+    },
+    {
+      "baseline_policy": "four_week_primary",
+      "weather_timing": "19..24 已核對小時終點",
+      "variable": "temperature_six_label_mean_c",
+      "n": 19,
+      "rho": 0.031578947368421054,
+      "permutation_p": 0.89939,
+      "holm_two_p": 1.0,
+      "year_equal_weight_rho": 0.8545454545454544,
+      "leave_year_rho_min": -0.08978328173374613,
+      "leave_year_rho_max": 0.36785714285714277
+    },
+    {
+      "baseline_policy": "four_week_primary",
+      "weather_timing": "19..24 已核對小時終點",
+      "variable": "wind_six_label_mean_m_s",
+      "n": 19,
+      "rho": 0.15533130060501543,
+      "permutation_p": 0.52238,
+      "holm_two_p": 1.0,
+      "year_equal_weight_rho": 0.29696969696969694,
+      "leave_year_rho_min": 0.028910690481543478,
+      "leave_year_rho_max": 0.28529411764705886
+    },
+    {
+      "baseline_policy": "eight_week_sensitivity",
+      "weather_timing": "18..23 原整點標籤",
+      "variable": "temperature_six_label_mean_c",
+      "n": 21,
+      "rho": -0.015584415584415586,
+      "permutation_p": 0.94827,
+      "holm_two_p": 0.94827,
+      "year_equal_weight_rho": 0.7818181818181817,
+      "leave_year_rho_min": -0.13684210526315788,
+      "leave_year_rho_max": 0.23928571428571427
+    },
+    {
+      "baseline_policy": "eight_week_sensitivity",
+      "weather_timing": "18..23 原整點標籤",
+      "variable": "wind_six_label_mean_m_s",
+      "n": 21,
+      "rho": 0.1948051948051948,
+      "permutation_p": 0.39361,
+      "holm_two_p": 0.78722,
+      "year_equal_weight_rho": 0.5151515151515151,
+      "leave_year_rho_min": 0.08421052631578946,
+      "leave_year_rho_max": 0.30075187969924805
+    },
+    {
+      "baseline_policy": "eight_week_sensitivity",
+      "weather_timing": "19..24 已核對小時終點",
+      "variable": "temperature_six_label_mean_c",
+      "n": 21,
+      "rho": -0.023376623376623374,
+      "permutation_p": 0.92282,
+      "holm_two_p": 1.0,
+      "year_equal_weight_rho": 0.8424242424242423,
+      "leave_year_rho_min": -0.14586466165413534,
+      "leave_year_rho_max": 0.24285714285714283
+    },
+    {
+      "baseline_policy": "eight_week_sensitivity",
+      "weather_timing": "19..24 已核對小時終點",
+      "variable": "wind_six_label_mean_m_s",
+      "n": 21,
+      "rho": 0.13186100078368282,
+      "permutation_p": 0.56718,
+      "holm_two_p": 1.0,
+      "year_equal_weight_rho": 0.4424242424242424,
+      "leave_year_rho_min": 0.012786762844840486,
+      "leave_year_rho_max": 0.22339226852456615
+    }
+  ],
+  "validation": {
+    "unchanged_prior_sample_n": 13,
+    "old_sample_value_differences": {
+      "origin_count_window": 0,
+      "baseline_origin_window": 0,
+      "baseline_min_days": 0
+    },
+    "added_primary_dates": [
+      "2019-08-03",
+      "2023-07-05",
+      "2023-07-12",
+      "2023-07-19",
+      "2025-08-06",
+      "2025-08-20"
+    ],
+    "old_sample_using_latest_input": {
+      "n": 13,
+      "mean_log1p_difference": 1.2891620386205476,
+      "sd_log1p_difference": 0.3820536180501942,
+      "t": 12.166197656626823,
+      "F": 148.01636542011198,
+      "df_num": 1,
+      "df_denom": 12,
+      "p": 4.148162678874282e-08,
+      "mean_log1p_difference_ci95": [
+        1.0582893478639952,
+        1.5200347293771
+      ],
+      "geometric_ratio_plus_one": 3.6297436959968263,
+      "geometric_ratio_plus_one_ci95": [
+        2.881437633400793,
+        4.572383988432527
+      ],
+      "paired_standardized_mean": 3.3742961137229104,
+      "positive": 13,
+      "zero": 0,
+      "sign_test_two_sided_p": 0.000244140625
+    },
+    "weather_report_hour_end_verified_rows": 504,
+    "supplement_counts": [
+      {
+        "values_matched": 1008,
+        "verification_total": 1008,
+        "cloud_methods_verified": 1008
+      }
+    ]
+  },
+  "limitations": "Exploratory; events within years and shared baselines dependent; calendar controls are limited; weather is retrospective; LOYO is not forecasting; no family-wise coverage across all sensitivity runs"
+}

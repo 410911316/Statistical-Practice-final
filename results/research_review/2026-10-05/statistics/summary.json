@@ -1,0 +1,261 @@
+{
+  "design": {
+    "primary_station": "北門",
+    "stations": [
+      "北門",
+      "大橋頭站",
+      "雙連",
+      "民權西路"
+    ],
+    "hours": [
+      18,
+      24
+    ],
+    "minimum_baseline_days_per_hour": 2,
+    "fixed_test": "two-sided event paired log1p contrast; F=t^2",
+    "independent_working_unit": "event_date",
+    "inference_status": "exploratory; event independence and common distribution not assured",
+    "seed": 20261005
+  },
+  "coverage": {
+    "events": 26,
+    "status_counts": {
+      "held": 21,
+      "cancelled": 4,
+      "postponed": 1
+    },
+    "selected_window_rows": 104,
+    "selected_hourly_rows": 624,
+    "complete_origin_window_rows": 104,
+    "beimen_primary_n": 13,
+    "beimen_primary_dates": [
+      "2017-08-26",
+      "2018-08-18",
+      "2020-08-29",
+      "2021-10-16",
+      "2022-07-30",
+      "2023-08-20",
+      "2024-07-17",
+      "2024-07-31",
+      "2024-08-10",
+      "2025-08-30",
+      "2026-07-25",
+      "2026-08-05",
+      "2026-08-15"
+    ],
+    "beimen_primary_years": [
+      2017,
+      2018,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "eligible_min_baseline_days_counts": {
+      "4": 5,
+      "3": 4,
+      "2": 4
+    },
+    "hourly_missing_origin": 0,
+    "hourly_missing_baseline": 264
+  },
+  "primary_F_test": {
+    "n": 13,
+    "mean_log1p_difference": 1.2891620386205476,
+    "sd_log1p_difference": 0.3820536180501942,
+    "t": 12.166197656626823,
+    "F": 148.01636542011198,
+    "df_num": 1,
+    "df_denom": 12,
+    "p": 4.148162678874282e-08,
+    "mean_log1p_difference_ci95": [
+      1.0582893478639952,
+      1.5200347293771
+    ],
+    "geometric_ratio_plus_one": 3.6297436959968263,
+    "geometric_ratio_plus_one_ci95": [
+      2.881437633400793,
+      4.572383988432527
+    ],
+    "paired_standardized_mean": 3.3742961137229104,
+    "positive": 13,
+    "zero": 0,
+    "sign_test_two_sided_p": 0.000244140625
+  },
+  "year_equal_weight_sensitivity": {
+    "n": 9,
+    "mean_log1p_difference": 1.3455731900829848,
+    "sd_log1p_difference": 0.32723022115980915,
+    "t": 12.336023109178369,
+    "F": 152.17746615018274,
+    "df_num": 1,
+    "df_denom": 8,
+    "p": 1.7365143377958373e-06,
+    "mean_log1p_difference_ci95": [
+      1.094041775696887,
+      1.5971046044690826
+    ],
+    "geometric_ratio_plus_one": 3.8403871816942368,
+    "geometric_ratio_plus_one_ci95": [
+      2.986319747785991,
+      4.938712177842229
+    ],
+    "paired_standardized_mean": 4.112007703059456,
+    "positive": 9,
+    "zero": 0,
+    "sign_test_two_sided_p": 0.00390625
+  },
+  "year_bootstrap": {
+    "unit": "year mean, each year equally weighted",
+    "replications": 20000,
+    "mean_log1p_difference_percentile_ci95": [
+      1.138337696837393,
+      1.5361988371480733
+    ],
+    "geometric_ratio_plus_one_ci95": [
+      3.1215750458753955,
+      4.6468930600297
+    ],
+    "warning": "few years; exploratory, not a guarantee of valid coverage"
+  },
+  "diagnostics": {
+    "shapiro_W": 0.8402919192397735,
+    "shapiro_p": 0.021377828260069565,
+    "shapiro_interpretation": "non-rejection is not proof of normality; QQ and design also matter",
+    "leave_one_year_geometric_ratio_range": [
+      3.494708297275876,
+      3.8908786592322833
+    ]
+  },
+  "station_descriptive": [
+    {
+      "station": "北門",
+      "held_complete_events": 21,
+      "eligible_events": 13,
+      "median_origin_all_held": 13992.0,
+      "mean_origin_all_held": 15221.809523809523,
+      "median_origin_eligible": 17077.0,
+      "mean_origin_eligible": 16905.23076923077,
+      "mean_baseline_eligible": 4514.455128205129,
+      "mean_excess_eligible": 12390.775641025639,
+      "median_peak_hour_count": 8910.0,
+      "geometric_ratio_plus_one": 3.6297436959968263
+    },
+    {
+      "station": "大橋頭站",
+      "held_complete_events": 21,
+      "eligible_events": 13,
+      "median_origin_all_held": 7393.0,
+      "mean_origin_all_held": 7611.333333333333,
+      "median_origin_eligible": 8347.0,
+      "mean_origin_eligible": 8427.076923076924,
+      "mean_baseline_eligible": 3608.846153846154,
+      "mean_excess_eligible": 4818.2307692307695,
+      "median_peak_hour_count": 3271.0,
+      "geometric_ratio_plus_one": 2.2758766873615164
+    },
+    {
+      "station": "雙連",
+      "held_complete_events": 21,
+      "eligible_events": 13,
+      "median_origin_all_held": 10091.0,
+      "mean_origin_all_held": 9972.047619047618,
+      "median_origin_eligible": 10091.0,
+      "mean_origin_eligible": 9781.0,
+      "mean_baseline_eligible": 6544.416666666666,
+      "mean_excess_eligible": 3236.583333333333,
+      "median_peak_hour_count": 2835.0,
+      "geometric_ratio_plus_one": 1.505121015268646
+    },
+    {
+      "station": "民權西路",
+      "held_complete_events": 21,
+      "eligible_events": 13,
+      "median_origin_all_held": 7162.0,
+      "mean_origin_all_held": 8219.761904761905,
+      "median_origin_eligible": 6741.0,
+      "mean_origin_eligible": 7259.076923076923,
+      "mean_baseline_eligible": 6472.294871794871,
+      "mean_excess_eligible": 786.7820512820514,
+      "median_peak_hour_count": 1676.0,
+      "geometric_ratio_plus_one": 1.1456635947725724
+    }
+  ],
+  "freshness": {
+    "files": [
+      {
+        "path": "data\\processed\\regression_event_station.parquet",
+        "bytes": 36816,
+        "modified_at_utc": "2026-09-29T06:23:49.055216+00:00",
+        "sha256": "d139565eacad5f6954068495554fa3db2de8d4b2d1626f77ddccf9b1dea7a947"
+      },
+      {
+        "path": "data\\processed\\station_hourly.parquet",
+        "bytes": 5234799,
+        "modified_at_utc": "2026-09-29T06:23:48.924591+00:00",
+        "sha256": "93af1086e9df332d7ec978404fdc24c5260efd92a07d3e9a2f4ef45fa6bb8db4"
+      },
+      {
+        "path": "results\\preprocessing\\summary.json",
+        "bytes": 1252,
+        "modified_at_utc": "2026-09-29T06:23:51.526495+00:00",
+        "sha256": "28a36da2dddacc1a7ccad331411065c00fc983400584ba8eae442b0eb4f22140"
+      }
+    ],
+    "selected_rows_compared": 104,
+    "snapshot_value_differences": {
+      "origin_count_window": 0,
+      "baseline_origin_window": 0,
+      "baseline_min_days": 0,
+      "observed_event_status": 0,
+      "trends_missing": 0
+    },
+    "preprocessing_generated_at_utc": "2026-09-29T06:23:49.257189+00:00",
+    "preprocessing_all_month_totals": {
+      "od_passengers": 839324028,
+      "origin_passengers": 839324028,
+      "destination_passengers": 839324028,
+      "source_rows": 116732817,
+      "clean_rows": 116732817
+    },
+    "prior_all_month_reconciliation_not_recomputed": true
+  },
+  "reconciliation": {
+    "selected_hourly_window_matches": 104,
+    "network_event_windows": 26,
+    "network_available_origin_sum": 17189198,
+    "network_available_destination_sum": 17189198,
+    "network_db_equals_processed": true,
+    "network_station_hour_rows": 18720,
+    "network_origin_incomplete_rows": 342,
+    "network_destination_incomplete_rows": 1596,
+    "network_origin_null_rows": 342,
+    "network_destination_null_rows": 1596,
+    "network_dates_with_incomplete_label_hours": [
+      "2023-07-05",
+      "2023-07-12",
+      "2023-07-19",
+      "2023-07-26",
+      "2023-08-02",
+      "2023-08-09",
+      "2023-08-16",
+      "2023-08-20",
+      "2024-07-17",
+      "2024-07-24",
+      "2024-07-31",
+      "2024-08-10",
+      "2025-08-06",
+      "2025-08-13",
+      "2025-08-20",
+      "2025-08-30",
+      "2026-07-25",
+      "2026-08-05",
+      "2026-08-15"
+    ],
+    "network_all_label_hours_complete": false,
+    "meaning": "SUM ignores NULL; matching available-row sums do not establish whole-network coverage. Incomplete label-hours may reflect historical labels absent in a source period, not proven reporting omissions. Four selected stations are complete."
+  }
+}

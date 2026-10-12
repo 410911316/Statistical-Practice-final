@@ -1,0 +1,8 @@
+﻿id,question,n,raw_p,method,status,holm_seven_p,internal_adjustment_slot
+station_omnibus,四站增幅的整體比較,19,5e-06,"Friedman statistic, within-event Monte Carlo permutation",exploratory_tested,2.6702880859375e-05,5e-06
+beimen_vs_大橋頭站,北門增幅與大橋頭站比較,19,3.814697265625e-06,two-sided paired sign test,exploratory_tested,2.6702880859375e-05,3.814697265625e-06
+beimen_vs_雙連,北門增幅與雙連比較,19,3.814697265625e-06,two-sided paired sign test,exploratory_tested,2.6702880859375e-05,3.814697265625e-06
+beimen_vs_民權西路,北門增幅與民權西路比較,19,3.814697265625e-06,two-sided paired sign test,exploratory_tested,2.6702880859375e-05,3.814697265625e-06
+beimen_late_share,北門晚間後段占比與基準比較,19,3.814697265625e-06,two-sided paired sign test,exploratory_tested,2.6702880859375e-05,3.814697265625e-06
+temperature_six_label_mean_c,氣溫與北門相對增幅,19,0.85798,"Spearman, absolute-rho Monte Carlo permutation",exploratory_tested,0.85798,0.85798
+wind_six_label_mean_m_s,風速與北門相對增幅,19,0.34102,"Spearman, absolute-rho Monte Carlo permutation",exploratory_tested,0.68204,0.34102

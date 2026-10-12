@@ -1,0 +1,105 @@
+﻿event_date,station,policy_name,window_start_hour,window_end_hour_exclusive,baseline_n_days,baseline_dates,baseline_origin_mean,event_origin_total,eligible,source_run_sha256
+2017-08-26,北門,same_weekday_calendar_56d_nearest4_v1,18,24,3,"[""2017-08-19"", ""2017-08-12"", ""2017-08-05""]",3734.6666666666665,18420,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2017-08-26,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,3,"[""2017-08-19"", ""2017-08-12"", ""2017-08-05""]",3766.3333333333335,8716,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2017-08-26,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,3,"[""2017-08-19"", ""2017-08-12"", ""2017-08-05""]",6212.666666666667,6773,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2017-08-26,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,3,"[""2017-08-19"", ""2017-08-12"", ""2017-08-05""]",7096.333333333333,13205,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2018-08-18,北門,same_weekday_calendar_56d_nearest4_v1,18,24,2,"[""2018-08-11"", ""2018-08-04""]",4287.5,12850,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2018-08-18,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,2,"[""2018-08-11"", ""2018-08-04""]",3968.0,7393,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2018-08-18,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,2,"[""2018-08-11"", ""2018-08-04""]",6194.5,6494,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2018-08-18,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,2,"[""2018-08-11"", ""2018-08-04""]",7228.5,9679,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2019-08-03,北門,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2019-07-27"", ""2019-07-20"", ""2019-07-13"", ""2019-07-06""]",4777.75,20137,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2019-08-03,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2019-07-27"", ""2019-07-20"", ""2019-07-13"", ""2019-07-06""]",4188.75,9663,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2019-08-03,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2019-07-27"", ""2019-07-20"", ""2019-07-13"", ""2019-07-06""]",6530.0,7162,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2019-08-03,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2019-07-27"", ""2019-07-20"", ""2019-07-13"", ""2019-07-06""]",7189.5,11392,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2020-08-22,北門,same_weekday_calendar_56d_nearest4_v1,18,24,3,"[""2020-08-15"", ""2020-08-08"", ""2020-08-01""]",3725.3333333333335,6586,0,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2020-08-22,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,3,"[""2020-08-15"", ""2020-08-08"", ""2020-08-01""]",3820.6666666666665,5592,0,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2020-08-22,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,3,"[""2020-08-15"", ""2020-08-08"", ""2020-08-01""]",5452.666666666667,6332,0,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2020-08-22,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,3,"[""2020-08-15"", ""2020-08-08"", ""2020-08-01""]",5623.666666666667,7446,0,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2020-08-29,北門,same_weekday_calendar_56d_nearest4_v1,18,24,3,"[""2020-08-15"", ""2020-08-08"", ""2020-08-01""]",3725.3333333333335,19182,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2020-08-29,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,3,"[""2020-08-15"", ""2020-08-08"", ""2020-08-01""]",3820.6666666666665,10601,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2020-08-29,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,3,"[""2020-08-15"", ""2020-08-08"", ""2020-08-01""]",5452.666666666667,6429,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2020-08-29,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,3,"[""2020-08-15"", ""2020-08-08"", ""2020-08-01""]",5623.666666666667,10091,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2021-10-16,北門,same_weekday_calendar_56d_nearest4_v1,18,24,2,"[""2021-10-09"", ""2021-10-02""]",2707.5,5702,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2021-10-16,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,2,"[""2021-10-09"", ""2021-10-02""]",2728.5,4504,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2021-10-16,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,2,"[""2021-10-09"", ""2021-10-02""]",3585.0,4101,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2021-10-16,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,2,"[""2021-10-09"", ""2021-10-02""]",3718.0,4667,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2022-07-30,北門,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2022-07-23"", ""2022-07-16"", ""2022-07-09"", ""2022-07-02""]",2984.25,17077,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2022-07-30,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2022-07-23"", ""2022-07-16"", ""2022-07-09"", ""2022-07-02""]",2930.75,8347,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2022-07-30,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2022-07-23"", ""2022-07-16"", ""2022-07-09"", ""2022-07-02""]",4049.5,4699,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2022-07-30,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2022-07-23"", ""2022-07-16"", ""2022-07-09"", ""2022-07-02""]",4234.0,7871,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-07-05,北門,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2023-06-28"", ""2023-06-21"", ""2023-06-14"", ""2023-06-07""]",4766.25,9320,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-07-05,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2023-06-28"", ""2023-06-21"", ""2023-06-14"", ""2023-06-07""]",3965.0,5164,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-07-05,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2023-06-28"", ""2023-06-21"", ""2023-06-14"", ""2023-06-07""]",9455.5,9603,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-07-05,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2023-06-28"", ""2023-06-21"", ""2023-06-14"", ""2023-06-07""]",8247.0,9416,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-07-12,北門,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2023-06-28"", ""2023-06-21"", ""2023-06-14"", ""2023-06-07""]",4766.25,10362,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-07-12,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2023-06-28"", ""2023-06-21"", ""2023-06-14"", ""2023-06-07""]",3965.0,5115,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-07-12,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2023-06-28"", ""2023-06-21"", ""2023-06-14"", ""2023-06-07""]",9455.5,9545,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-07-12,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2023-06-28"", ""2023-06-21"", ""2023-06-14"", ""2023-06-07""]",8247.0,9980,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-07-19,北門,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2023-06-28"", ""2023-06-21"", ""2023-06-14"", ""2023-06-07""]",4766.25,9848,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-07-19,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2023-06-28"", ""2023-06-21"", ""2023-06-14"", ""2023-06-07""]",3965.0,5135,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-07-19,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2023-06-28"", ""2023-06-21"", ""2023-06-14"", ""2023-06-07""]",9455.5,9565,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-07-19,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2023-06-28"", ""2023-06-21"", ""2023-06-14"", ""2023-06-07""]",8247.0,9603,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-07-26,北門,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2023-06-28"", ""2023-06-21"", ""2023-06-14"", ""2023-06-07""]",4766.25,4643,0,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-07-26,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2023-06-28"", ""2023-06-21"", ""2023-06-14"", ""2023-06-07""]",3965.0,3355,0,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-07-26,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2023-06-28"", ""2023-06-21"", ""2023-06-14"", ""2023-06-07""]",9455.5,8856,0,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-07-26,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2023-06-28"", ""2023-06-21"", ""2023-06-14"", ""2023-06-07""]",8247.0,7753,0,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-08-02,北門,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2023-06-28"", ""2023-06-21"", ""2023-06-14"", ""2023-06-07""]",4766.25,5202,0,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-08-02,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2023-06-28"", ""2023-06-21"", ""2023-06-14"", ""2023-06-07""]",3965.0,3798,0,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-08-02,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2023-06-28"", ""2023-06-21"", ""2023-06-14"", ""2023-06-07""]",9455.5,9724,0,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-08-02,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2023-06-28"", ""2023-06-21"", ""2023-06-14"", ""2023-06-07""]",8247.0,8683,0,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-08-09,北門,same_weekday_calendar_56d_nearest4_v1,18,24,3,"[""2023-06-28"", ""2023-06-21"", ""2023-06-14""]",4830.333333333333,11615,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-08-09,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,3,"[""2023-06-28"", ""2023-06-21"", ""2023-06-14""]",4008.6666666666665,5673,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-08-09,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,3,"[""2023-06-28"", ""2023-06-21"", ""2023-06-14""]",9438.666666666666,10008,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-08-09,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,3,"[""2023-06-28"", ""2023-06-21"", ""2023-06-14""]",8350.0,10291,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-08-16,北門,same_weekday_calendar_56d_nearest4_v1,18,24,2,"[""2023-06-28"", ""2023-06-21""]",4843.0,10703,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-08-16,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,2,"[""2023-06-28"", ""2023-06-21""]",4116.0,5218,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-08-16,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,2,"[""2023-06-28"", ""2023-06-21""]",9415.0,9856,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-08-16,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,2,"[""2023-06-28"", ""2023-06-21""]",8409.0,9953,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-08-20,北門,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2023-08-13"", ""2023-08-06"", ""2023-07-30"", ""2023-07-23""]",3780.5,16693,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-08-20,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2023-08-13"", ""2023-08-06"", ""2023-07-30"", ""2023-07-23""]",3360.5,7963,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-08-20,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2023-08-13"", ""2023-08-06"", ""2023-07-30"", ""2023-07-23""]",4736.25,5697,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2023-08-20,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2023-08-13"", ""2023-08-06"", ""2023-07-30"", ""2023-07-23""]",4888.0,7461,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2024-07-17,北門,same_weekday_calendar_56d_nearest4_v1,18,24,2,"[""2024-07-10"", ""2024-07-03""]",5784.0,12395,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2024-07-17,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,2,"[""2024-07-10"", ""2024-07-03""]",3976.5,6283,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2024-07-17,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,2,"[""2024-07-10"", ""2024-07-03""]",10588.5,10641,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2024-07-17,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,2,"[""2024-07-10"", ""2024-07-03""]",8648.0,10594,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2024-07-24,北門,same_weekday_calendar_56d_nearest4_v1,18,24,2,"[""2024-07-10"", ""2024-07-03""]",5784.0,678,0,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2024-07-24,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,2,"[""2024-07-10"", ""2024-07-03""]",3976.5,403,0,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2024-07-24,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,2,"[""2024-07-10"", ""2024-07-03""]",10588.5,799,0,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2024-07-24,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,2,"[""2024-07-10"", ""2024-07-03""]",8648.0,821,0,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2024-07-31,北門,same_weekday_calendar_56d_nearest4_v1,18,24,2,"[""2024-07-10"", ""2024-07-03""]",5784.0,12574,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2024-07-31,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,2,"[""2024-07-10"", ""2024-07-03""]",3976.5,6466,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2024-07-31,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,2,"[""2024-07-10"", ""2024-07-03""]",10588.5,11115,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2024-07-31,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,2,"[""2024-07-10"", ""2024-07-03""]",8648.0,10566,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2024-08-10,北門,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2024-08-03"", ""2024-07-27"", ""2024-07-20"", ""2024-07-13""]",5154.5,26423,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2024-08-10,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2024-08-03"", ""2024-07-27"", ""2024-07-20"", ""2024-07-13""]",3788.5,12227,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2024-08-10,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2024-08-03"", ""2024-07-27"", ""2024-07-20"", ""2024-07-13""]",5706.25,6741,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2024-08-10,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2024-08-03"", ""2024-07-27"", ""2024-07-20"", ""2024-07-13""]",6898.25,12333,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2025-08-06,北門,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2025-07-30"", ""2025-07-23"", ""2025-07-16"", ""2025-07-09""]",5940.5,13913,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2025-08-06,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2025-07-30"", ""2025-07-23"", ""2025-07-16"", ""2025-07-09""]",4123.25,6847,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2025-08-06,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2025-07-30"", ""2025-07-23"", ""2025-07-16"", ""2025-07-09""]",10989.5,11389,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2025-08-06,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2025-07-30"", ""2025-07-23"", ""2025-07-16"", ""2025-07-09""]",8956.5,10798,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2025-08-13,北門,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2025-07-30"", ""2025-07-23"", ""2025-07-16"", ""2025-07-09""]",5940.5,5889,0,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2025-08-13,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2025-07-30"", ""2025-07-23"", ""2025-07-16"", ""2025-07-09""]",4123.25,3790,0,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2025-08-13,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2025-07-30"", ""2025-07-23"", ""2025-07-16"", ""2025-07-09""]",10989.5,10333,0,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2025-08-13,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2025-07-30"", ""2025-07-23"", ""2025-07-16"", ""2025-07-09""]",8956.5,8665,0,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2025-08-20,北門,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2025-07-30"", ""2025-07-23"", ""2025-07-16"", ""2025-07-09""]",5940.5,13992,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2025-08-20,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2025-07-30"", ""2025-07-23"", ""2025-07-16"", ""2025-07-09""]",4123.25,7471,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2025-08-20,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2025-07-30"", ""2025-07-23"", ""2025-07-16"", ""2025-07-09""]",10989.5,11119,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2025-08-20,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2025-07-30"", ""2025-07-23"", ""2025-07-16"", ""2025-07-09""]",8956.5,10827,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2025-08-30,北門,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2025-08-23"", ""2025-08-16"", ""2025-08-09"", ""2025-08-02""]",5425.75,23848,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2025-08-30,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2025-08-23"", ""2025-08-16"", ""2025-08-09"", ""2025-08-02""]",3964.25,11400,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2025-08-30,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2025-08-23"", ""2025-08-16"", ""2025-08-09"", ""2025-08-02""]",6180.25,6841,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2025-08-30,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2025-08-23"", ""2025-08-16"", ""2025-08-09"", ""2025-08-02""]",7140.0,10676,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2026-07-25,北門,same_weekday_calendar_56d_nearest4_v1,18,24,3,"[""2026-07-18"", ""2026-07-11"", ""2026-07-04""]",4131.333333333333,19330,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2026-07-25,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,3,"[""2026-07-18"", ""2026-07-11"", ""2026-07-04""]",2855.6666666666665,9100,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2026-07-25,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,3,"[""2026-07-18"", ""2026-07-11"", ""2026-07-04""]",4413.666666666667,6738,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2026-07-25,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,3,"[""2026-07-18"", ""2026-07-11"", ""2026-07-04""]",5123.333333333333,9782,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2026-08-05,北門,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2026-07-29"", ""2026-07-22"", ""2026-07-15"", ""2026-07-08""]",5944.25,14044,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2026-08-05,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2026-07-29"", ""2026-07-22"", ""2026-07-15"", ""2026-07-08""]",4085.5,6579,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2026-08-05,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2026-07-29"", ""2026-07-22"", ""2026-07-15"", ""2026-07-08""]",10940.75,11098,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2026-08-05,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2026-07-29"", ""2026-07-22"", ""2026-07-15"", ""2026-07-08""]",9180.0,10451,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2026-08-15,北門,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2026-08-08"", ""2026-08-01"", ""2026-07-18"", ""2026-07-11""]",4159.0,21230,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2026-08-15,大橋頭站,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2026-08-08"", ""2026-08-01"", ""2026-07-18"", ""2026-07-11""]",2899.5,9973,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2026-08-15,民權西路,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2026-08-08"", ""2026-08-01"", ""2026-07-18"", ""2026-07-11""]",4361.75,7001,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e
+2026-08-15,雙連,same_weekday_calendar_56d_nearest4_v1,18,24,4,"[""2026-08-08"", ""2026-08-01"", ""2026-07-18"", ""2026-07-11""]",5239.75,9777,1,a9c1dbb2ef3442b3a61e5eca1a826493cfdd3c2d7c4dbbf6c850251cd563fd8e

@@ -1,0 +1,65 @@
+{
+  "extracted_at_utc": "2026-10-05T07:08:40.544019+00:00",
+  "generated_at_utc": "2026-10-05T07:26:58.125234+00:00",
+  "database": "taipei_metro_analysis",
+  "read_only": true,
+  "sql_sha256": "a4968672df8372b616b36ce4fffe2788c0f185d9e19efec5543a31ceb5a906a3",
+  "snapshot_local_path": ".local\\research_review\\2026-10-05\\statistics_snapshot.json",
+  "snapshot_sha256": "02a659a46830b0de890a1d917866174e01f6fff0739ce8385cbbd5890da84c15",
+  "script_sha256": "ca5dc4fe18d0301c8c77a34d14401ba7ae3d035da42057fb7bdeed75d38d205d",
+  "source_run_sha256": [
+    "878459052d4b9da5272eda750bfe012871ee8c3dae708d8f1c690d3e9e2ab1ef"
+  ],
+  "python": "3.10.11",
+  "packages": {
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "scipy": "1.15.3",
+    "matplotlib": "3.10.9",
+    "duckdb": "1.5.6"
+  },
+  "method_sources": {
+    "ttest_1samp": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_1samp.html",
+    "f_test": "https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.OLSResults.f_test.html",
+    "binomtest": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binomtest.html",
+    "shapiro": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.shapiro.html"
+  },
+  "source_files": [
+    {
+      "path": "data\\processed\\regression_event_station.parquet",
+      "bytes": 36816,
+      "modified_at_utc": "2026-09-29T06:23:49.055216+00:00",
+      "sha256": "d139565eacad5f6954068495554fa3db2de8d4b2d1626f77ddccf9b1dea7a947"
+    },
+    {
+      "path": "data\\processed\\station_hourly.parquet",
+      "bytes": 5234799,
+      "modified_at_utc": "2026-09-29T06:23:48.924591+00:00",
+      "sha256": "93af1086e9df332d7ec978404fdc24c5260efd92a07d3e9a2f4ef45fa6bb8db4"
+    },
+    {
+      "path": "results\\preprocessing\\summary.json",
+      "bytes": 1252,
+      "modified_at_utc": "2026-09-29T06:23:51.526495+00:00",
+      "sha256": "28a36da2dddacc1a7ccad331411065c00fc983400584ba8eae442b0eb4f22140"
+    }
+  ],
+  "outputs": {
+    "01_beimen_event_totals.png": "129e9a7ead1da36ab2add738e9c6631cdb7bac88afebbe9ff5c461e3c145940d",
+    "02_station_hour_profiles.png": "760afa497d0b3e467677815ca208413f598d87992f252570573441b6578b6685",
+    "03_contrast_diagnostics.png": "a649b0013e27c029e719f628204488f4b68ec29670af487de4b81225570158c3",
+    "baseline_candidates.csv": "895fc8360d5257a3ff384a727a532634dab89e352542508ddccaec92acdb8682",
+    "cancelled_postponed.csv": "c41f7802f2a317de19327865a3192948100c4adb90c69ef861e793db233ff409",
+    "event_station_summary.csv": "ae8072c893f2850b438256c28ffa7e4dc83599e1b3f2733965597eaf7a52df87",
+    "excluded_beimen_events.csv": "bd166c4fc759e1b46eefa8a5d7a8b1891334b22e874a6552d37d487761ed4a59",
+    "hourly_profile.csv": "9f6a595fc64d8b8d6d37c3f13a2e81b5ef4e2fdf2ce76416f90d74a20a55bffa",
+    "hourly_window_reconciliation.csv": "c8d82418ee5070109ec45cb31b0314dfeb56a36aee119fb49e8b7d54a3e1aad8",
+    "leave_one_year_out.csv": "3f53a23e23ebc7dfd3290e9ae4f4448a8f002a559a2ae2d1f08abeb0a5f19a03",
+    "network_reconciliation.csv": "50d6b99e6952e93d516c4eeda30389d83fa5c9223050fa2aa44029bb0a3e180e",
+    "primary_beimen_events.csv": "8e44ef0844b02adca857c79a795655b14dffcaad474a32ebbe88b5bf39132aa3",
+    "station_descriptive.csv": "5034234622289287ff18a28ea12037659a72017568947ac89889025e1cc40e88",
+    "summary.json": "412a6b894f488641496dea544b93129b2dba956d3b7e334c2f572c1a725dd8ef",
+    "year_counts.csv": "95007cd157d650949fe1b6c43516ccd23c467b55e187ef92b59a608b09b418bb",
+    "year_mean_contrasts.csv": "7307727ada94bd2382fb2db8fcd016c65e0159e50e5d485849e1f9f969cb6521"
+  }
+}
