@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "checked_source_hashes": 26,
+  "verified_candidate_cache_files": 24,
+  "stopping_curves_checked": 504,
+  "insufficient_history_fallbacks": 72,
+  "paths_reaching_cap": 43,
+  "max_training_mass_error": 1.7763568394002505e-15,
+  "choices_recomputed": 27,
+  "max_selection_difference": 0.0,
+  "models_reloaded": 33,
+  "max_prediction_difference": 2.2737367544323206e-13,
+  "metric_rows": 169,
+  "max_metric_difference": 4.547473508864641e-13,
+  "original_473_909516_reproduced": true,
+  "temporal_stopping_and_selection_verified": true,
+  "historical_D1_availability_verified": false,
+  "independent_unseen_test": false
+}

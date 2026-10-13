@@ -1,6 +1,139 @@
 # 大稻埕煙火人流分析與捷運班次模擬
 
-## 最新進度：MAE／MSE 融合比較（2026-10-12）
+## 最新進度：原資料調參、Early stopping 與北門散場加權（2026-10-13）
+
+**原 MAE 473.91 已重現。保留原參數、只提高北門散場訓練權重到 4 倍，降到 440.28（改善 7.1%）；新學習率格點搭配 early stopping、不加權，降到 450.55。**
+
+保留四站訓練，比較同樣 2024–2026 九場北門、54 個小時。本次回到 V12 原資料，歷史發布時間尚未完全核實，屬回顧敏感度實驗；**不可當成已驗證 D−1 可部署模型，也不可和下方 V13 不同資料版本直接排名。**
+
+| 方法 | MAE | RMSE | 散場 2:1 誤差 |
+| --- | --- | --- | --- |
+| 原固定參數＋一般日基準 | 473.91 | 766.90 | 1,231.28 |
+| 原參數＋散場訓練 2 倍 | 461.71 | 711.66 | 1,137.02 |
+| 原參數＋散場訓練 4 倍 | 440.28 | 690.91 | 1,202.98 |
+| 新學習率／樹數格點，不早停 | 606.71 | 1,186.37 | 1,615.79 |
+| 新學習率格點＋early stopping | 450.55 | 691.74 | 1,237.56 |
+| Early stopping＋訓練 4 倍 | 451.71 | 669.27 | 1,182.51 |
+| Early stopping＋歷史選倍率 | 592.92 | 1,137.75 | 1,639.89 |
+
+- **與以前北門專用不同：**保留其他三站，只提高北門事前預定結束後兩小時的訓練重要性。每場總權重相同；不用實際尖峰決定權重。
+- **早停怎麼做：**用更早年份訓練、最近過去年份驗證決定樹數，再以全部過去資料重訓。不加權版選 186／818／63 棵；當年真值不參與停止或選參數。
+- **尖峰仍未解決：**原參數 4 倍版 MAE 較好，但尖峰平均絕對誤差僅 749.02 → 747.14，尖峰正向低估反而增加。早停 4 倍 RMSE 較低，仍非每場都改善。
+- **自動選倍率也會選錯：**只依過去 OOF 選 1／2／4 倍，早停版 MAE 592.92；不能看完九場後挑 4 倍，就說已證明未來最佳。改善主要集中於 2024，九場已反覆用於開發。
+
+![調參與訓練權重比較](result/analysis_v14/figures/comparison.png)
+
+[完整結果與解讀](result/analysis_v14/report.md)／[九場逐時圖](result/analysis_v14/figures/beimen_profiles.png)／[1、2、4 倍比較](result/analysis_v14/figures/weight_ablation.png)／[停止曲線](result/analysis_v14/figures/early_stopping.png)／[實作公式](process.md#25-第十四版原資料的早停與北門散場訓練加權)／[獨立檢核](result/analysis_v14/independent_validation.json)。
+
+方法依據：[XGBoost 官方 Early stopping](https://xgboost.readthedocs.io/en/stable/python/sklearn_estimator.html)、[sample_weight](https://xgboost.readthedocs.io/en/stable/python/python_api.html#xgboost.XGBRegressor.fit)、[Cawley & Talbot（2010），模型選擇過擬合](https://jmlr.org/papers/v11/cawley10a.html)。倍率與窗口是本案假設，文獻不保證一定改善。
+
+## 第十三版紀錄：一般日基準＋活動增量與低估 2 倍融合（2026-10-13）
+
+**相同資料與參數下，XGBoost 改成基準＋增量，MAE 830.44 → 770.69（降低 7.2%）。散場 2:1 融合 MAE 878.74，沒有勝過單一增量 XGBoost。**
+
+同樣比較 2024–2026 九場北門 18–23 時；新版四站訓練，依官方 OD 版本時間篩選一般日與訓練標籤。下表越低越好，單位人次／小時。
+
+| 方法 | MAE | RMSE | 散場 2:1 誤差 |
+| --- | --- | --- | --- |
+| 舊版固定參數（僅參考） | 473.91 | 766.90 | 1,231.28 |
+| 直接預測 XGBoost | 830.44 | 1,493.42 | 3,154.92 |
+| 基準＋增量 XGBoost | 770.69 | 1,390.12 | 2,978.86 |
+| 增量模型等權融合 | 809.27 | 1,369.30 | 2,854.91 |
+| 全時段 MAE 融合 | 808.93 | 1,393.31 | 2,927.75 |
+| 散場 1:1 融合 | 804.55 | 1,392.11 | 2,945.34 |
+| 散場 2:1 融合 | 878.74 | 1,406.80 | 2,881.48 |
+
+- **舊版 474 只作參考：**原資料缺發布核實；新版排除 2017–2020 四場、改用截止前已存在的官方 OD 版本，21 場縮為 17 場。新版直接／增量組則共用相同資料與核心參數，才能比較分解方式。
+- **模型怎麼做：**先算同站同時段、同星期且截止前可用的前 56 天均值，再預測活動日與它的差。增量允許負值，最後總人流才限制非負；它不是活動因果效果。
+- **權重怎麼做：**只用過去年份的北門 OOF，分別最小化全時段 MAE、散場 1:1 與散場 2:1。2 倍是研究假設；本輪沒有自動替換上線模型。
+- **沒有全面改善：**散場 2:1 融合的低估量比 1:1 少，但高估增加、全時段 MAE 變差；等權融合 MAE 809.27、2:1 誤差 2854.91 也都比它低。2025、2026 的 2:1 權重都是 Ridge 100%，不能把過去最適權重當成未來必勝。
+- **資料界線：**目前版本時間早於截止已檢查，但沒有完整歷史公開權限證據；同星期代理基準尚未排除所有補班／節日。沒有加入事後天氣、聲量或當場實測輸入。九場已重複檢視，仍需未見活動驗證。
+
+![一般日基準與活動增量比較](result/analysis_v13/figures/comparison.png)
+
+[完整結果與三模型比較](result/analysis_v13/report.md)／[九場曲線](result/analysis_v13/figures/beimen_profiles.png)／[基準＋增量圖](result/analysis_v13/figures/baseline_increment.png)／[年度權重圖](result/analysis_v13/figures/fusion_weights.png)／[公式與重現步驟](process.md#24-第十三版一般日基準活動增量與非對稱融合)／[獨立檢核](result/analysis_v13/independent_validation.json)。
+
+方法依據：[官方 OD 目錄](https://data.taipei/dataset/detail?id=63f31c7e-7fc3-418b-bd82-b95158755b4d)、[Azure 版本與分段校驗定義](https://learn.microsoft.com/en-us/rest/api/storageservices/get-blob)、[Breiman（1996）stacking](https://statistics.berkeley.edu/sites/default/files/tech-reports/367.pdf)、[Gneiting（2011）損失與決策目標](https://arxiv.org/abs/0912.0902)、[FPP3 時間向前驗證](https://otexts.com/fpp3/toolbox.html#time-series-cross-validation)。
+
+## 第十二版紀錄：場次定位、熱度、一般日與天氣拆分（2026-10-13）
+
+**已補壓軸／特別場並重跑 Ridge、GAM、XGBoost。新增資訊這次未改善 XGBoost 的整體表現；一般日基準有潛力，但仍需核實當時可得性。**
+
+固定四站訓練、2024–2026 年九場北門 18–23 時評估；每年度只依過去年份的時間留出預測（OOF），以「散場低估 2 倍、高估 1 倍」選參數。下列 XGBoost 單位為人次／小時，越低越好。
+
+| 輸入 | MAE | 散場 2:1 誤差 |
+|---|---:|---:|
+| 核心輸入 | 555.12 | 1244.25 |
+| ＋壓軸 | 576.71 | 1396.64 |
+| ＋壓軸／非壓軸特別場 | 573.53 | 1410.87 |
+| ＋溫度 | 659.55 | 1808.52 |
+| ＋風速 | 661.76 | 1366.87 |
+| ＋雲量 | 693.86 | 1443.07 |
+| ＋三項天氣 | 734.01 | 1924.21 |
+
+- **壓軸與特別場：**分開記錄；壓軸核實 16/21 場、特別場旗標核實 15/21 場，其餘保留未知。在各外層訓練前的已核實樣本中，壓軸與週末完全相同，新增獨立資訊有限。Ridge 加壓軸的 MAE 1114.92 → 1058.83；XGBoost 未改善。
+- **Google 已分析：**原檔是 117 個月、2017/1–2026/9 的相對指數。九個完整年度的平均指數與北門每場六小時人次之描述性相關 r=0.253；前月熱度的 XGBoost 敏感度 MAE 589.81。2025 八月三場前月值都為 15，不能區分場次；當月及當年完整指數含活動後資料。查詢條件與歷史版本尚待核實，未納入正式事前輸入。
+- **一般日已重建：**同站、同時段、前 56 天配對值與快照一致。固定參數時 XGBoost MAE 555.12 → 473.91；重新調參後為 568.98。仍缺歷史發布證據，只作回顧性敏感度。
+- **天氣已拆開：**只用截止前預報。2025/8/30 21 時真值 10,251；核心估 10,203，加溫度估 7,146，加風速估 7,209，加雲量估 10,486，三項一起估 4,784。這場主要問題出現在溫度／風速組合，但三個單項的九場合併 MAE 都沒有勝過核心。
+
+![新增輸入比較](result/analysis_v12/figures/feature_comparison.png)
+
+[完整三模型結果](result/analysis_v12/report.md)／[天氣拆分圖](result/analysis_v12/figures/weather_ablation.png)／[Google 描述分析圖](result/analysis_v12/figures/google_descriptive.png)／[北門九場曲線](result/analysis_v12/figures/beimen_profiles.png)／[一般日與 Google 敏感度圖](result/analysis_v12/figures/unverified_sensitivity.png)／[實作 process 第 23 節](process.md#23-第十二版壓軸google-熱度一般日與天氣拆分)。
+
+本節核心 555.12 是 V11 的 2:1 調參版；舊 V8 核心採 MAE 調參為 504.20。這次以相同規則比較新增資訊，不自動更換上線模型。九場已反覆使用，後續應優先補事前逐日熱度、一般日發布記錄及未見活動，避免只擴增變數與搜尋。分析系列 258 項測試通過；[獨立核對](result/analysis_v12/independent_validation.json)重算 99 次選參數、858 列指標，並完整重現 V11 的核心／煙火＋天氣控制組。
+
+資料與方法：[官方場次來源帳本](docs/d1_event_type_sources.json)、[Google 指數說明](https://support.google.com/trends/answer/4365533?hl=zh-Hant)、[FPP3 時間向前驗證](https://otexts.com/fpp3/toolbox.html#time-series-cross-validation)、[特殊活動與列車模擬文獻](https://arxiv.org/html/2106.05359)。
+
+## 第十一版紀錄：散場優先調參（2026-10-13）
+
+**已用「低估 2 倍、高估 1 倍」重選 Ridge、GAM、XGBoost 參數，另比較 1:1、3:1。Ridge 有改善；XGBoost 沒有更準，暫不替換原主要候選。**
+
+固定煙火＋天氣輸入、四站訓練；2024–2026 年同九場北門 18–23 時的結果。散場指標依事前預定結束後兩小時對「整小時誤差」加權，不是分鐘實測；越低越好。
+
+| 模型 | 原 MAE → 擴大調參後 | 原散場 2:1 誤差 → 擴大調參後 |
+|---|---:|---:|
+| Ridge | 1117.39 → **1000.13** | 4112.39 → **3386.89** |
+| GAM | 1108.64 → 1116.66 | 3341.43 → 3306.29 |
+| XGBoost | **642.59** → 666.07 | **1595.61** → 1639.36 |
+
+- **怎麼調：**Ridge 25 組收縮強度；GAM 4／5／7 基底與兩種懲罰，共 60 組；XGBoost 原 90 組＋固定抽取 90 組，共 180 組。每年度只用過去活動的時間留出誤差選參數，訓練損失仍維持原平方誤差。
+- **改善來自哪裡：**Ridge 原網格只改評分已達 MAE 982.30；擴大網格的 1000.13 反而略差。更多搜尋不保證更好。3:1 XGBoost 亦未改善，不事後更換主分析。2 倍是研究偏好，不是已估計的成本。
+- **排隊資料：**有特殊活動的五分鐘 AFC 曲線文獻，也有臺灣捷運十五分鐘實測圖；尚未取得北門活動日一／五分鐘資料。目前只能做均勻、寬峰、集中峰的情境分析，不能稱為真實分鐘分布或最佳班表。
+
+![散場優先調參比較](result/analysis_v11/figures/tuning_ablation.png)
+
+[完整結果與年度參數](result/analysis_v11/report.md)／[實作流程與公式](process.md#22-第十一版散場優先調參與分鐘資料依據)／[分鐘資料來源與排隊銜接](docs/minute_arrivals_evidence.md)／[1、2、3 倍比較圖](result/analysis_v11/figures/penalty_sensitivity.png)／[北門九場曲線](result/analysis_v11/figures/beimen_tuned_profiles.png)。[獨立檢核](result/analysis_v11/independent_validation.json)已重算 108 次選參數與 546 列指標。
+
+本輪延用 D−1 輸入限制；歷史 OD 發布時間及日曆版本仍未完全核實，且九場已反覆檢視，因此是探索性回顧，尚未部署。文獻：[Gneiting（2011），損失與預測目的](https://arxiv.org/abs/0912.0902)、[Bergstra & Bengio（2012），隨機調參](https://jmlr.org/papers/v13/bergstra12a.html)、[Cawley & Talbot（2010），選擇偏誤](https://jmlr.org/papers/v11/cawley10a.html)、[Santanam 等（2021），到站曲線與列車模擬](https://arxiv.org/html/2106.05359)。
+
+## 第十版紀錄：融合採用與北門專用模型（2026-10-12）
+
+**兩種北門聚焦實驗都已完成：只改權重有改善；連模型都只用北門重訓，本次沒有更準。目前保留四站訓練的 XGBoost 為主要候選。**
+
+固定「煙火＋天氣」輸入，同 2024–2026 年九場、北門 18–23 時共 54 列；單位人次／小時，誤差越低越好：
+
+| 訓練與使用方式 | MAE | RMSE |
+|---|---:|---:|
+| 四站訓練 XGBoost | **642.59** | **982.09** |
+| 四站訓練＋四站學融合權重 | 787.27 | 1168.11 |
+| 四站訓練＋只用北門學權重 | **724.65** | **1103.49** |
+| 四站訓練＋北門權重＋採用機制 | **642.59** | **982.09** |
+| 北門專用 XGBoost | 813.60 | 1288.15 |
+| 北門專用三模型＋融合 | 876.12 | 1277.55 |
+| 北門專用三模型＋採用機制 | 903.98 | 1328.37 |
+
+- **誤差互補有限：**2026 年以前的北門時間 OOF，Ridge／XGBoost 誤差相關 0.71、GAM／XGBoost 0.69；一個高估、一個低估的比例約 23%、20%。另外檢查誤差幅度及 XGBoost 低估時能否補救，不能只看相關係數。
+- **只改融合對象：**北門權重讓原融合 MAE 降低 **8.0%**，尖峰正向低估由 1338.54 降至 1094.52；仍不及單獨 XGBoost 的 889.81。完整指標含尖峰絕對誤差，避免把高估記 0 誤認為準確。
+- **採用機制：**先用更早活動學權重，再用較晚的過去活動檢查融合是否勝過 XGBoost；勝出才採用，資料不足或平手就用 XGBoost。四站模型在三年度均選 XGBoost，所以成績相同，並非融合超越它。**北門重訓的機制曾選錯，整體 MAE 903.98 反而較差**，程序也不保證未來必勝。
+- **完整北門重訓：**Ridge、GAM、XGBoost 都重新調參；候選資訊、網格及時間切分維持一致。資料仍是 21 場，從四站 504 列變為單站 126 列；不能把變差唯一歸因於資料量，跨站資訊、設計及最適參數也同時改變。
+
+![北門聚焦實驗比較](result/analysis_v10/figures/beimen_focus_comparison.png)
+
+[完整報告](result/analysis_v10/report.md)／[誤差互補圖](result/analysis_v10/figures/error_complementarity.png)／[北門九場曲線](result/analysis_v10/figures/beimen_focus_profiles.png)／[實作與重現](process.md#21-第十版誤差互補融合採用與北門專用重訓)。新增 22 項測試通過；另獨立重算 54 個權重問題、27 個採用決策及全部摘要，見 [檢核紀錄](result/analysis_v10/independent_validation.json)。
+
+本次沒有新增事後變數；既有 D−1 18:00 篩選沿用，歷史 OD 發布時間／日曆版本未完全核實。這九場已多次檢視，仍屬探索性比較，尚未部署或完成排隊調度驗證。文獻依據：[Breiman（1996）stacking](https://statistics.berkeley.edu/sites/default/files/tech-reports/367.pdf)、[Cawley & Talbot（2010）模型選擇偏誤](https://jmlr.org/papers/v11/cawley10a.html)、[FPP3 時間向前驗證](https://otexts.com/fpp3/toolbox.html#time-series-cross-validation)；本次採用門檻為自行明定，並非文獻保證最適。
+
+## 第九版紀錄：MAE／MSE 融合比較（2026-10-12）
 
 **目前 MAE 學權重較好，換成 MSE 沒有改善北門尖峰；XGBoost 單獨仍較準。** 固定第八版 Ridge、GAM、XGBoost 的時間留出預測，只改融合權重的目標。兩種融合都限制權重非負且加總為 1，使用相同過去 OOF，基模型調參維持 MAE。
 

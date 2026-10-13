@@ -1,0 +1,448 @@
+{
+  "config": {
+    "version": "analysis_v12_feature_audit_20261013",
+    "outer_years": [
+      2024,
+      2025,
+      2026
+    ],
+    "primary_ratio": 2,
+    "grid_source": "configs/analysis_v11.json",
+    "feature_selection": "none; all prespecified ablations reported; no outer-test winner deployment",
+    "variants": {
+      "core": [],
+      "finale": [
+        "planned_finale"
+      ],
+      "event_type": [
+        "planned_finale",
+        "planned_enhanced_nonfinale"
+      ],
+      "temperature": [
+        "forecast_temperature_c"
+      ],
+      "wind": [
+        "forecast_wind_speed_m_s"
+      ],
+      "cloud": [
+        "forecast_cloud_cover_pct"
+      ],
+      "weather": [
+        "forecast_temperature_c",
+        "forecast_wind_speed_m_s",
+        "forecast_cloud_cover_pct"
+      ],
+      "fire_weather": [
+        "planned_fireworks_minutes",
+        "planned_fireworks_start_hour",
+        "forecast_temperature_c",
+        "forecast_wind_speed_m_s",
+        "forecast_cloud_cover_pct"
+      ],
+      "event_type_weather": [
+        "planned_finale",
+        "planned_enhanced_nonfinale",
+        "forecast_temperature_c",
+        "forecast_wind_speed_m_s",
+        "forecast_cloud_cover_pct"
+      ],
+      "sensitivity_baseline": [
+        "retrospective_baseline_56d"
+      ],
+      "sensitivity_google": [
+        "unverified_google_prev_month"
+      ]
+    },
+    "sensitivity_only": [
+      "sensitivity_baseline",
+      "sensitivity_google"
+    ],
+    "metrics": [
+      "mae",
+      "rmse",
+      "cost_2",
+      "peak_under",
+      "peak_abs",
+      "peak_hour"
+    ],
+    "fixed_control": "V11 core expanded-grid r2 selections frozen for all variants; separates inputs from parameter changes",
+    "retuned_control": "Identical V11 expanded grids, past-year Beimen OOF, r2 dispatch score; no outer labels for tuning",
+    "baseline_policy": "Reconstruct selected previous same-weekday/calendar-matched days (56d, nearest4, at least2). Publication unverified, sensitivity only.",
+    "google_policy": "117 monthly raw records; <1 -> [0,1) interval, midpoint only for labelled descriptive/lag sensitivity; previous complete month, no current month or current year aggregate in predictors; metadata unverified."
+  },
+  "d1_deployable": false,
+  "limitations": [
+    "Previously inspected nine outer events; exploratory",
+    "Historical OD label release and calendar vintages unverified",
+    "Google query/geography/retrieval window unknown; lagging does not repair vintage",
+    "Baseline source observation dates are past, publication dates unverified"
+  ],
+  "baseline_metadata": {
+    "manifest": [
+      {
+        "path": "data/processed/event_station_hourly_context.csv",
+        "sha256": "11f1c426a14ba08542b1895a999d71f9ac4dfe5ed63558b14afc41167d8f6468",
+        "bytes": 259430
+      },
+      {
+        "path": "data/processed/calendar_baseline/candidate_audit.csv",
+        "sha256": "a62fd0549da4d607cf061696995712c006b8d6568e12ae9844e13f7ddc4bcef5",
+        "bytes": 57218
+      },
+      {
+        "path": "data/processed/station_hourly.parquet",
+        "sha256": "2bc4c399d8a7ab8ae9672c5c7e31b5a459281acda9f05be6345258f2c3bdb85f",
+        "bytes": 6340054
+      },
+      {
+        "path": ".local/research_review/2026-10-07-refresh/statistics_snapshot.json",
+        "sha256": "e9688eb20c03b199bc32a22290a3afdf88e9bd7a844199e9438fbddf807b2aed",
+        "bytes": 372301
+      }
+    ],
+    "audit": {
+      "evaluation_status": "retrospective_non_deployable",
+      "d1_deployable": false,
+      "reason": "Historical OD publication/available_at timestamps are unverified; chronological observation dates alone do not prove D-1 availability.",
+      "baseline_policy": "same_weekday_calendar_56d_nearest4_v1",
+      "selected_dates_strictly_past": true,
+      "baseline_source_lag_days": [
+        7,
+        56
+      ],
+      "calendar_note": "Existing selected-date audit uses a retrospective government calendar; historical calendar vintages are not verified.",
+      "target_definition": "Origin trips in source hourly bins; not verified platform arrivals or physical passenger trajectories.",
+      "model_feature_whitelist": [
+        "baseline_hourly_56d",
+        "station",
+        "hour",
+        "is_weekend",
+        "day_of_year",
+        "year_index"
+      ],
+      "year_index_origin": 2017,
+      "optional_activity_snapshot": "loaded for EDA only; actual outcomes are excluded from MODEL_FEATURES",
+      "source_target_counts_match": true,
+      "hourly_and_window_baseline_match": true,
+      "comparison_date_lists_match": true
+    },
+    "missing_summary": {
+      "event_date": 0,
+      "year": 0,
+      "station": 0,
+      "hour": 0,
+      "y": 0,
+      "baseline_hourly_56d": 0,
+      "is_weekend": 0,
+      "day_of_year": 0,
+      "year_index": 0,
+      "temperature_at_report_time_c": 0,
+      "wind_preceding_10min_mean_m_s": 0,
+      "precipitation_hour_ending_mm": 28,
+      "precipitation_raw": 0,
+      "precipitation_status": 0,
+      "cloud_at_report_time_tenths": 144,
+      "cloud_measurement_type": 0,
+      "cloud_method_verified": 0,
+      "weather_report_hour_end": 0,
+      "weather_station_id": 0,
+      "observed_has_drone_show": 432,
+      "observed_fireworks_seconds": 0
+    },
+    "feature_eligibility": {
+      "baseline_hourly_56d": {
+        "use": "retrospective_model",
+        "d1_deployable": false
+      },
+      "station": {
+        "use": "retrospective_model",
+        "d1_deployable": true
+      },
+      "hour": {
+        "use": "retrospective_model",
+        "d1_deployable": true
+      },
+      "is_weekend": {
+        "use": "retrospective_model",
+        "d1_deployable": true
+      },
+      "day_of_year": {
+        "use": "retrospective_model",
+        "d1_deployable": true
+      },
+      "year_index": {
+        "use": "retrospective_model",
+        "d1_deployable": true
+      },
+      "observed_weather": {
+        "use": "EDA_only",
+        "reason": "Measured after forecast cutoff; no historical forecast vintage supplied."
+      },
+      "observed_has_drone_show": {
+        "use": "EDA_only",
+        "reason": "Sparse actual event status; not a verified pre-event announcement."
+      },
+      "observed_fireworks_seconds": {
+        "use": "EDA_only",
+        "reason": "Actual duration, not verified planned duration available at D-1."
+      },
+      "annual_finance": {
+        "use": "excluded",
+        "reason": "Annual-level sparse funding and unverified release timing."
+      },
+      "social_trends": {
+        "use": "excluded",
+        "reason": "No comparable complete historical D-1 series."
+      }
+    },
+    "activity_counts": {
+      "context_dates": 26,
+      "held_dates": 21,
+      "rows": 504,
+      "years": 10,
+      "dates": [
+        "2017-08-26",
+        "2018-08-18",
+        "2019-08-03",
+        "2020-08-29",
+        "2021-10-16",
+        "2022-07-30",
+        "2023-07-05",
+        "2023-07-12",
+        "2023-07-19",
+        "2023-08-09",
+        "2023-08-16",
+        "2023-08-20",
+        "2024-07-17",
+        "2024-07-31",
+        "2024-08-10",
+        "2025-08-06",
+        "2025-08-20",
+        "2025-08-30",
+        "2026-07-25",
+        "2026-08-05",
+        "2026-08-15"
+      ],
+      "by_year": {
+        "2017": 1,
+        "2018": 1,
+        "2019": 1,
+        "2020": 1,
+        "2021": 1,
+        "2022": 1,
+        "2023": 6,
+        "2024": 3,
+        "2025": 3,
+        "2026": 3
+      },
+      "by_status": {
+        "cancelled": 4,
+        "held": 21,
+        "postponed": 1
+      }
+    }
+  },
+  "old_audit": {
+    "evaluation_status": "retrospective_non_deployable",
+    "d1_deployable": false,
+    "reason": "Historical OD publication/available_at timestamps are unverified; chronological observation dates alone do not prove D-1 availability.",
+    "baseline_policy": "same_weekday_calendar_56d_nearest4_v1",
+    "selected_dates_strictly_past": true,
+    "baseline_source_lag_days": [
+      7,
+      56
+    ],
+    "calendar_note": "Existing selected-date audit uses a retrospective government calendar; historical calendar vintages are not verified.",
+    "target_definition": "Origin trips in source hourly bins; not verified platform arrivals or physical passenger trajectories.",
+    "model_feature_whitelist": [
+      "station",
+      "hour",
+      "is_weekend",
+      "day_of_year",
+      "year_index",
+      "planned_fireworks_minutes",
+      "planned_fireworks_start_hour",
+      "forecast_temperature_c",
+      "forecast_wind_speed_m_s",
+      "forecast_cloud_cover_pct",
+      "planned_end_0_60_beimen",
+      "planned_end_0_60_daqiaotou",
+      "planned_end_0_60_shuanglian",
+      "planned_end_0_60_minquan_west",
+      "planned_end_60_120_beimen",
+      "planned_end_60_120_daqiaotou",
+      "planned_end_60_120_shuanglian",
+      "planned_end_60_120_minquan_west"
+    ],
+    "year_index_origin": 2017,
+    "optional_activity_snapshot": "loaded for EDA only; actual outcomes are excluded from MODEL_FEATURES",
+    "source_target_counts_match": true,
+    "hourly_and_window_baseline_match": true,
+    "comparison_date_lists_match": true,
+    "new_d1_features": [
+      "planned_fireworks_minutes",
+      "planned_fireworks_start_hour",
+      "forecast_temperature_c",
+      "forecast_wind_speed_m_s",
+      "forecast_cloud_cover_pct",
+      "planned_end_0_60_beimen",
+      "planned_end_0_60_daqiaotou",
+      "planned_end_0_60_shuanglian",
+      "planned_end_0_60_minquan_west",
+      "planned_end_60_120_beimen",
+      "planned_end_60_120_daqiaotou",
+      "planned_end_60_120_shuanglian",
+      "planned_end_60_120_minquan_west"
+    ],
+    "new_d1_source_files": [
+      {
+        "path": "docs/d1_program_sources.json",
+        "sha256": "12a2535b789ebd5516ed5f901947660824dd8296541f643c9d40df3624b38304",
+        "bytes": 62250
+      },
+      {
+        "path": "docs/d1_weather_sources.json",
+        "sha256": "362c523f2b9763df4079076e10785a23b2fa2dc897a80daa6e4d002b7e3afc88",
+        "bytes": 993450
+      }
+    ],
+    "new_d1_cutoff": "D-1 18:00 Asia/Taipei",
+    "baseline_excluded_from_fitted_models": true,
+    "planned_show_end_sources": [
+      {
+        "path": "docs/d1_show_end_sources.json",
+        "sha256": "f7d53dd7c8887aa7eb9c031cf0e0f43992e8da638ea04eddedbe7b6eb5cc0d3b",
+        "bytes": 22552
+      },
+      {
+        "path": "docs/d1_program_sources.json",
+        "sha256": "12a2535b789ebd5516ed5f901947660824dd8296541f643c9d40df3624b38304",
+        "bytes": 62250
+      }
+    ],
+    "planned_show_end_summary": {
+      "events": 21,
+      "known_events": 18,
+      "unknown_events": 3,
+      "known_by_scope": {
+        "fireworks_only": 16,
+        "combined_sky_program": 2
+      },
+      "policy": "station_specific_overlap_0_60_and_60_120_minutes",
+      "cutoff": "D-1 18:00 Asia/Taipei",
+      "limitation": "Announcement-version fields are audited; no archived historical website version. Planned end is not observed egress or station arrival."
+    }
+  },
+  "source_hashes": {
+    "src/run_analysis_v12.py": "5a9da0b8e164910787b6be9eca8ab862674b3f4d74551e7f2bea542786cf2704",
+    "src/analysis_v12/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/analysis_v12/data.py": "dd57a5236648c73dd84277e0a80e1e5218f2620d47b522962ab7c9bfec9de33c",
+    "src/analysis_v12/models.py": "280d173da14d7e6120d904b386c1c6fcc083a08799bbd3424d5816ee5175756b",
+    "src/analysis_v1/models.py": "46a5316431d25d175b73807c9f8e97fba361d63845b899efbf2397f0c26bbead",
+    "src/analysis_v1/data.py": "4e9c7fdfb17d3eb98dff29117e215cc7a5a0a20a1096882c2ba526198929fa77",
+    "src/analysis_v5/models.py": "aa86487eafaabe41d1aa55b902059ef6cc325e30949c79a7e7135720b12dbd66",
+    "src/analysis_v7/models.py": "465eb232a0c2f0d49f6c942c70f0edce277b1c67bb754e1f65179129d0cb4a8f",
+    "src/analysis_v11/models.py": "7bd943c89411b39613b5e5eb439eba308c3a9096401d8f9bef0a9b382b92fbf4",
+    "src/analysis_v11/evaluation.py": "abe4df31d840d7f83a6683a7d4485b5562ba57c3ba17335cf5b6d6c7cb662e3a",
+    "configs/analysis_v12.json": "b4f9bf680ca98d3637c4f7b5f2c1d7cf8f3065e8066cb5fb2efd6a4faf5b80f1",
+    "configs/analysis_v11.json": "a295fa03c80d7445076d757581555d30bdb04254457a18d3cd2483ded4c8e5c9",
+    "configs/analysis_v8_core.json": "00d59e1c05be32b5b1d02b8cf6518be8e7153ba42ebe4bdf3e0292c430ea8227",
+    "configs/analysis_v8_both.json": "452931b48e58f83b47f4e9d0714d99295c9dec610076e90d5fab19c403a9fcdd",
+    "docs/d1_event_type_sources.json": "0e8f45c0cacd65495c8d8d45eaf4415d2b56a2bd8aaacde0dd4a8124719d38a1",
+    "docs/d1_show_end_sources.json": "f7d53dd7c8887aa7eb9c031cf0e0f43992e8da638ea04eddedbe7b6eb5cc0d3b",
+    "docs/d1_weather_sources.json": "362c523f2b9763df4079076e10785a23b2fa2dc897a80daa6e4d002b7e3afc88",
+    ".local/analysis_v12/analysis_input.csv": "fd7a964929f968a3f6d9b9ecf0838071697dfcb24befaeab238d8a98c705ef4a"
+  },
+  "legacy_sources": [
+    {
+      "path": ".local/analysis_v8/core/outer_predictions.csv",
+      "sha256": "c5f44c093473a3cb9e13112327f63598c841669ac956be294da7b750cd47f4a6"
+    },
+    {
+      "path": ".local/analysis_v8/core/meta_predictions.csv",
+      "sha256": "27c48ae52ab424254385f41520cb1a6ee9de9015807b54bfb14b33769f820327"
+    },
+    {
+      "path": ".local/analysis_v8/core/analysis_input.csv",
+      "sha256": "36679711a676d976d72d35b74db4e3291abfdfac9cd837947af1c3afbbaf4102"
+    },
+    {
+      "path": "result/analysis_v8/core/folds.json",
+      "sha256": "83e30155a6a2ec1367cb7180008ecf40303cb55d6ac713ac60b18443835e8ff7"
+    },
+    {
+      "path": "result/analysis_v8/core/run_manifest.json",
+      "sha256": "d6dbd27c5861fc625ad6b7a27c07327e4571052ed385a0653589cd594777b875"
+    },
+    {
+      "path": ".local/analysis_v8/fireworks/outer_predictions.csv",
+      "sha256": "6fa1da7596477046b1c3a8ee644d7478ed6287572719e1946e7c3376c2e1d7ed"
+    },
+    {
+      "path": ".local/analysis_v8/fireworks/meta_predictions.csv",
+      "sha256": "dc2e449b2d46e91a54abc05989e36654e5def2aea7cc6b68744ea11ed873484b"
+    },
+    {
+      "path": ".local/analysis_v8/fireworks/analysis_input.csv",
+      "sha256": "b040b7df83cee1cf9b81209c303e81d7d49eb1a0428e28626f3ae6c6545c899a"
+    },
+    {
+      "path": "result/analysis_v8/fireworks/folds.json",
+      "sha256": "e849abefb4ec0c870a8ee81bf5551efca0426904c86ceaa25be39cb5111cc43d"
+    },
+    {
+      "path": "result/analysis_v8/fireworks/run_manifest.json",
+      "sha256": "fa8b77812843b51af2d6f26bc15b31dc0af8241618b13aab5a2bfd4db888fd93"
+    },
+    {
+      "path": ".local/analysis_v8/weather/outer_predictions.csv",
+      "sha256": "0b57e3827ce0b08b4b8445c0c112ede8c11f8f00ece8929249de5ed8137294a7"
+    },
+    {
+      "path": ".local/analysis_v8/weather/meta_predictions.csv",
+      "sha256": "d246b1dafcbcc623a676c1ca2fd3b94d58a3d9be58c1dca902c839179617c19a"
+    },
+    {
+      "path": ".local/analysis_v8/weather/analysis_input.csv",
+      "sha256": "f9770d6a2f7ff55d6d6327364c9298ecac8837b9574255495ca4c8a534fd1493"
+    },
+    {
+      "path": "result/analysis_v8/weather/folds.json",
+      "sha256": "621d1e9b40429ef18027a810ce504befe9787f77e43db5253ba809e7745d62d2"
+    },
+    {
+      "path": "result/analysis_v8/weather/run_manifest.json",
+      "sha256": "9941504f0e58061168c5616c3ca019240ae7a12f833dbdc27e088361f5205486"
+    },
+    {
+      "path": ".local/analysis_v8/both/outer_predictions.csv",
+      "sha256": "a033ec2e2b094cee215fb3f7fca1ddb6ae2492b1fd39a6a0c0c52f53bac1df25"
+    },
+    {
+      "path": ".local/analysis_v8/both/meta_predictions.csv",
+      "sha256": "f2e7f9ca8d01029efa10a3d9e4b45e622529296c1e3b2d20b572ab1ea55cdbc0"
+    },
+    {
+      "path": ".local/analysis_v8/both/analysis_input.csv",
+      "sha256": "81a0bc7e8420d828cd16b7814d705323d217090e93a6bb139e2fa7acdfc96c5a"
+    },
+    {
+      "path": "result/analysis_v8/both/folds.json",
+      "sha256": "9ab7c333472ab18b998650f14cc719af4f9bed8a21fbba752eac7724d776610a"
+    },
+    {
+      "path": "result/analysis_v8/both/run_manifest.json",
+      "sha256": "128a1ca73eb46ca446554a8b78efc4bd880472fa667268466d6df2bb9640bd9c"
+    },
+    {
+      "path": "result/analysis_v8/independent_validation.json",
+      "sha256": "41ce3fb58afea4c38d0ada78349df2720239220bc761edd8de09a614d7c1a7c8"
+    }
+  ],
+  "raw_google_sha256": "aff07d62d8c96143d9bf9a1a199558416188137f8871e08e1700d77e3a6f6634",
+  "candidate_fits": 23320,
+  "predictions_sha256": "d8da23cdf5c5b48b4fc4151bb36ec731a08be95f2e39ec1288c94e7c0767b23b",
+  "events": 21,
+  "outer_events": 9,
+  "outer_rows_per_model": 54
+}

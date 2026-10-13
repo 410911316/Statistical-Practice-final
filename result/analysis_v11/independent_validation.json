@@ -1,0 +1,43 @@
+{
+  "status": "passed",
+  "candidate_fits": 4240,
+  "chronological_folds": 48,
+  "selection_decisions": 108,
+  "distinct_models_replayed": 56,
+  "metric_rows": 546,
+  "max_candidate_cost_difference": 3.637978807091713e-12,
+  "max_prediction_difference": 9.094947017729282e-13,
+  "max_metric_difference": 1.8189894035458565e-12,
+  "max_gam_normal_equation_residual": 9.348219206058363e-10,
+  "note": "Independent arithmetic and saved-model replay; not new external validation",
+  "checked_files": [
+    {
+      "path": "src/verify_analysis_v11.py",
+      "sha256": "1565e7b13190a80e0f9d8bc2edc9a5590e34a137d115d04c070d171186a7ae64"
+    },
+    {
+      "path": "result/analysis_v11/run_manifest.json",
+      "sha256": "44d58e79d775faad29d2012bca6dfcbb2438f94d0b1c043ed44cb10bac85ce3e"
+    },
+    {
+      "path": "result/analysis_v11/selections.json",
+      "sha256": "cdfcc9265331878d57764637258354fd5d29bb085ec670681567b1ebcb22a08c"
+    },
+    {
+      "path": "result/analysis_v11/folds.json",
+      "sha256": "19cd8fce475eab299e595679a537f8e20273328d46d5dd0978dd421ba386a48a"
+    },
+    {
+      "path": "result/analysis_v11/tables/annual.csv",
+      "sha256": "6e85372e5b87514ae3bba1493f3c8d2dac59986ba6c26f75c8a7848eccbc5518"
+    },
+    {
+      "path": "result/analysis_v11/tables/events.csv",
+      "sha256": "5c0a5c7a7060963f0f64816b382ebfe38c4a1a66286c1f9a8e169d61d6306c59"
+    },
+    {
+      "path": "result/analysis_v11/tables/summary.csv",
+      "sha256": "81562e5c7a89ceebcbcba73112aee24f11ebf42cd0b772da7f24728ed807e714"
+    }
+  ]
+}

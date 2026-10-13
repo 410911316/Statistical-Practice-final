@@ -1,0 +1,21 @@
+{
+  "n_years": 9,
+  "years": [
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "pearson": 0.2525273103303192,
+  "spearman": 0.21666666666666667,
+  "metric": "arithmetic mean of 12 monthly Google indexes vs mean observed Beimen 18-24 trips per event",
+  "status": "descriptive_only_query_metadata_unverified_no_causal_or_D1_claim",
+  "partial_2026_excluded": true,
+  "p_values_not_reported": true,
+  "censored_lower_and_upper_are_bounds_not_confidence_intervals": true
+}

@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "verified_choices": 99,
+  "verified_folds": 264,
+  "verified_metric_rows": 858,
+  "max_selection_difference": 2.7284841053187847e-12,
+  "max_metric_difference": 1.8189894035458565e-12,
+  "core_and_both_v11_max_prediction_difference": 0.0,
+  "max_gam_normal_residual": 9.348219206058363e-10,
+  "independent_of_production_scoring_functions": true,
+  "status_is_numerical_and_temporal_integrity_not_proof_of_D1_publication": true
+}

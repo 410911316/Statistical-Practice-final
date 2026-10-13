@@ -1,0 +1,21 @@
+{
+  "version": "v13_available_baseline_increment_asymmetric_fusion",
+  "outer_years": [2024, 2025, 2026],
+  "min_train_events": 2,
+  "min_tuning_events": 3,
+  "min_fusion_events": 4,
+  "primary_ratio": 2,
+  "defaults": {
+    "ridge": {"lambda": 0.1},
+    "gam": {"lambda": 10.0, "ridge_alpha": 0.1, "n_splines": 5},
+    "xgboost": {"max_depth": 3, "n_estimators": 100, "learning_rate": 0.05, "min_child_weight": 6, "reg_lambda": 10.0, "subsample": 1.0, "colsample_bytree": 1.0, "reg_alpha": 0.0}
+  },
+  "grid_source": "configs/analysis_v11.json",
+  "parameter_policy": "Select core parameters from strictly prior version-eligible event-year OOF; freeze the same parameters for direct and increment models. No re-tuning after adding baseline.",
+  "residual_features": "same core + available_baseline for direct and increment, including station-hour interactions; do not clip signed residuals",
+  "baseline": "same weekday, prior 7..56 days, nearest 4 with minimum 2; exclude recorded activity dates; official version_at <= D-1 18:00",
+  "calendar": "No retrospectively revised holiday/calendar feature or matching; same weekday is only a proxy for comparable ordinary days",
+  "fusion": "Ridge/GAM/XGBoost increment predictions, one simplex per outer year, only earlier temporal OOF with published labels; compare equal, MAE, window 1:1 and window 2:1",
+  "old_474": "archived V12 reference only, not silently reclassified as D-1 eligible",
+  "deployment": "not deployed; current public object version evidence does not prove historical public ACLs"
+}

@@ -1,0 +1,22 @@
+{
+  "version": "v14_original_baseline_learning_rate_trees_early_stopping_training_weight",
+  "input": ".local/analysis_v12/analysis_input.csv",
+  "outer_years": [2024, 2025, 2026],
+  "seed": 20261010,
+  "max_depth": [2, 3, 4],
+  "learning_rate": [0.01, 0.03, 0.05, 0.1],
+  "min_child_weight": [1, 6],
+  "fixed_trees": [100, 250, 500, 1000],
+  "max_trees": 1000,
+  "patience": 50,
+  "fallback_trees": 250,
+  "min_base_events": 2,
+  "min_inner_training_events": 2,
+  "training_multipliers": [1, 2, 4],
+  "fixed": {"reg_lambda": 1.0, "reg_alpha": 0.0, "subsample": 1.0, "colsample_bytree": 1.0},
+  "selection_metric": "past-year Beimen six-hour event-equal MAE, including selection of training multiplier",
+  "early_stopping": "latest strictly prior YEAR for Beimen validation; earlier YEARS for four-station fitting; choose clipped MAE stopping round then refit all prior years",
+  "training_weight": "raw=1+(multiplier-1)*Beimen*D1_planned_end_0_120_hour_overlap; unknown end -> no boost; normalize each event to weight sum 24",
+  "comparison": "frozen V12 474 anchor; frozen anchor with 2x/4x weights; 96 fixed-tree vs 24 early-stopped shapes for each weight; optional weight selected only using past OOF",
+  "status": "original-input retrospective sensitivity; historical OD/calendar availability unverified; nine outer events repeatedly inspected; no deployment"
+}

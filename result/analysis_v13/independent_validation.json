@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "source_hashes": 21,
+  "verified_official_months": 17,
+  "reconstructed_baseline_events": 17,
+  "max_baseline_difference": 4.547473508864641e-13,
+  "reloaded_fits": 36,
+  "max_prediction_difference": 1.8189894035458565e-12,
+  "parameter_choices": 9,
+  "independently_solved_fusions": 9,
+  "max_LP_objective_difference": 6.821210263296962e-13,
+  "metric_rows": 195,
+  "max_metric_difference": 1.8189894035458565e-12,
+  "legacy_MAE_473_909517_reproduced": true,
+  "historical_public_ACL_proven": false,
+  "independent_unseen_test": false
+}

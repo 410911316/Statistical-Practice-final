@@ -1,0 +1,716 @@
+{
+  "training_scope": "Beimen_only",
+  "events": 21,
+  "input_rows": 126,
+  "used_models": [
+    "ridge",
+    "gam",
+    "xgboost"
+  ],
+  "config": {
+    "version": "analysis_v8_both_20261011",
+    "evaluation_kind": "exploratory_retrospective_forward_comparison_after_v1_diagnostics_not_verified_D_minus_1",
+    "seed": 20261010,
+    "outer_years": [
+      2024,
+      2025,
+      2026
+    ],
+    "min_inner_train_events": 2,
+    "min_base_train_events": 4,
+    "min_inner_folds": 2,
+    "candidate_groups": [
+      "is_weekend",
+      "day_of_year",
+      "year_index",
+      "planned_fireworks_minutes",
+      "planned_fireworks_start_hour",
+      "forecast_temperature_c",
+      "forecast_wind_speed_m_s",
+      "forecast_cloud_cover_pct",
+      "planned_end_0_60_beimen",
+      "planned_end_0_60_daqiaotou",
+      "planned_end_0_60_shuanglian",
+      "planned_end_0_60_minquan_west",
+      "planned_end_60_120_beimen",
+      "planned_end_60_120_daqiaotou",
+      "planned_end_60_120_shuanglian",
+      "planned_end_60_120_minquan_west"
+    ],
+    "ridge_lambdas": [
+      0.001,
+      0.01,
+      0.1,
+      1.0,
+      10.0
+    ],
+    "xgb_grid": [
+      {
+        "max_depth": 1,
+        "n_estimators": 50,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 50,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 50,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 50,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 50,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 50,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 100,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 100,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 100,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 100,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 100,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 100,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 250,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 250,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 250,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 250,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 250,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 1,
+        "n_estimators": 250,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 50,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 50,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 50,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 50,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 50,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 50,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 100,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 100,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 100,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 100,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 100,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 100,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 250,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 250,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 250,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 250,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 250,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 2,
+        "n_estimators": 250,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 50,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 50,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 50,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 50,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 50,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 50,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 100,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 100,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 100,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 100,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 100,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 100,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 250,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 250,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 250,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 250,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 250,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 3,
+        "n_estimators": 250,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 50,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 50,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 50,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 50,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 50,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 50,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 100,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 100,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 100,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 100,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 100,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 100,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 250,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 250,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 250,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 250,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 250,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 4,
+        "n_estimators": 250,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 50,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 50,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 50,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 50,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 50,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 50,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 100,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 100,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 100,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 100,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 100,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 100,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 250,
+        "min_child_weight": 1,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 250,
+        "min_child_weight": 1,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 250,
+        "min_child_weight": 6,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 250,
+        "min_child_weight": 6,
+        "reg_lambda": 10.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 250,
+        "min_child_weight": 24,
+        "reg_lambda": 1.0
+      },
+      {
+        "max_depth": 5,
+        "n_estimators": 250,
+        "min_child_weight": 24,
+        "reg_lambda": 10.0
+      }
+    ],
+    "xgb_fixed": {
+      "learning_rate": 0.05,
+      "min_child_weight": 24,
+      "reg_lambda": 10.0,
+      "subsample": 1.0,
+      "colsample_bytree": 1.0
+    },
+    "stack_objective": "event_balanced_mae_simplex_lp",
+    "report_title": "第八版：加入事前預定展演結束訊號的比較",
+    "output_dir": "result/analysis_v8/both",
+    "private_output_dir": ".local/analysis_v8/both",
+    "experiment_notes": [
+      "Add only prespecified D-1 planned-show-end overlap signals; retain every original event and all missing end-time events.",
+      "Hourly overlap with [planned end, end+60min) and [end+60min, end+120min), interacted with each of four stations (eight columns).",
+      "Sixteen fireworks-only ends and two combined sky-program ends have different recorded scopes; neither denotes observed egress or stage end.",
+      "Unknown source timing remains missing across all eight columns; no actual outcome or context nominal-end fallback.",
+      "Use unchanged v7 model algorithms, hyperparameter grids, fusion objectives and temporal folds; refit all models with the added candidates.",
+      "Compare against archived v7 on identical outer rows, not only records with known end times. All model predictions may change.",
+      "This is an exploratory ablation on previously inspected years, not a new independent confirmation or fully verified D-1 deployment."
+    ],
+    "tuning_diagnostics": true,
+    "d1_features": [
+      "planned_fireworks_minutes",
+      "planned_fireworks_start_hour",
+      "forecast_temperature_c",
+      "forecast_wind_speed_m_s",
+      "forecast_cloud_cover_pct"
+    ],
+    "d1_source_files": [
+      "docs/d1_program_sources.json",
+      "docs/d1_weather_sources.json"
+    ],
+    "d1_cutoff_hour": 18,
+    "include_historical_baseline": false,
+    "station_hour_interaction": true,
+    "linear_design": "full_shared_with_training_rank_filter",
+    "lasso_alphas": [
+      0.1,
+      1,
+      5,
+      10,
+      25,
+      50,
+      100,
+      250
+    ],
+    "fusion_top_k": 2,
+    "fusion_selection_scope": "past_temporal_oof_all_stations_event_mae_top2",
+    "lasso_max_iter": 1000000,
+    "lasso_tol": 1e-10,
+    "lasso_certificate_tol": 1e-06,
+    "gam_lambdas": [
+      0.1,
+      1,
+      10,
+      100,
+      1000
+    ],
+    "gam_n_splines": 5,
+    "gam_spline_order": 3,
+    "gam_min_known_events": 6,
+    "gam_min_unique": 8,
+    "gam_max_iter": 1000,
+    "gam_tol": 1e-06,
+    "gam_smooth_candidates": [
+      "day_of_year",
+      "planned_fireworks_minutes",
+      "planned_fireworks_start_hour",
+      "forecast_temperature_c",
+      "forecast_wind_speed_m_s",
+      "forecast_cloud_cover_pct"
+    ],
+    "gam_fusion_models": [
+      "ridge",
+      "gam",
+      "xgboost"
+    ],
+    "gam_ridge_alphas": [
+      0.001,
+      0.01,
+      0.1,
+      1
+    ],
+    "gam_robustness_policy": "omit_low_event_support_and_full_coefficient_ridge",
+    "gam_binary_groups": [
+      "is_weekend"
+    ],
+    "baseline_variant": "both",
+    "end_source_file": "docs/d1_show_end_sources.json",
+    "end_signal_policy": "station_specific_overlap_0_60_and_60_120_minutes"
+  },
+  "input_code_hashes": {
+    ".local/analysis_v8/both/analysis_input.csv": "81a0bc7e8420d828cd16b7814d705323d217090e93a6bb139e2fa7acdfc96c5a",
+    "configs/analysis_v8_both.json": "452931b48e58f83b47f4e9d0714d99295c9dec610076e90d5fab19c403a9fcdd",
+    "src/analysis_v1/models.py": "46a5316431d25d175b73807c9f8e97fba361d63845b899efbf2397f0c26bbead",
+    "src/analysis_v5/models.py": "aa86487eafaabe41d1aa55b902059ef6cc325e30949c79a7e7135720b12dbd66",
+    "src/analysis_v7/models.py": "465eb232a0c2f0d49f6c942c70f0edce277b1c67bb754e1f65179129d0cb4a8f",
+    "src/analysis_v10/training.py": "3f01c9c4ee889e14c1c39573da76e1c75ef6761d75a5f2ca1978a9c1db730abc"
+  },
+  "base_algorithm": "unchanged_v8_Trainer_including_train_only_encoders_and_nested_tuning",
+  "note": "Legacy trainer also fits OLS/Lasso internally; only Ridge/GAM/XGBoost are used. Single-station constants and aliases are dropped by the original train-only encoder.",
+  "output_files": [
+    {
+      "path": ".local/analysis_v10/beimen_only/temporal_predictions.csv",
+      "sha256": "9609c052e0e5e037026bc272d38a218a3d4d573967338d53bbd6f099c7294468"
+    },
+    {
+      "path": ".local/analysis_v10/beimen_only/models.joblib",
+      "sha256": "b06723cc06b7a4cb5993790e7bfdce353af35f114821eb3b1c522b8842152e7f"
+    },
+    {
+      "path": "result/analysis_v10/beimen_only/folds.json",
+      "sha256": "230d4e548cd5e790ee3df9b68fb9bf24853fa1a3437f5c1afdd0ade14ff6d479"
+    },
+    {
+      "path": "result/analysis_v10/beimen_only/inner_selection.json",
+      "sha256": "9a9c8c1a1882f7ece18f73247c39f93b49dfb873820df0e6c32e82488fbdfd23"
+    },
+    {
+      "path": "result/analysis_v10/beimen_only/temporal_folds.csv",
+      "sha256": "7c66264346d7a1e3b1bc4310029c5cc95b3c80aefbd5604b295ec263e40a2bf3"
+    },
+    {
+      "path": "result/analysis_v10/beimen_only/gam_numerical_diagnostics.json",
+      "sha256": "d04bb4e5a86624e2cc9ca67209b73491927d8d68092e48bc5c11299249778c27"
+    }
+  ]
+}
