@@ -14,6 +14,7 @@ import shutil
 
 from app.backend.database import Repository
 from app.backend.main import FLOW_FIELDS, TIME_SEMANTICS
+from app.export_rail_replay import build_rail_replay
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / 'app/frontend/public/data'
@@ -71,6 +72,7 @@ def export(repo=None, output=OUTPUT):
     output.mkdir(parents=True, exist_ok=True)
     write_json(output/'observations.json', observations)
     write_json(output/'research.json', research)
+    build_rail_replay(output)
     for event in events:
         with (output/f"flows-{event['event_date']}.csv").open('w', encoding='utf-8-sig', newline='') as stream:
             writer=csv.DictWriter(stream, fieldnames=FLOW_FIELDS)

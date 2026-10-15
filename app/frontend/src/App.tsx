@@ -49,6 +49,11 @@ const Analysis = lazy(() =>
 const Research = lazy(() =>
   import("@/pages/Research").then((m) => ({ default: m.ResearchPage })),
 );
+const RailSimulation = lazy(() =>
+  import("@/components/RailSimulation").then((m) => ({
+    default: m.RailSimulation,
+  })),
+);
 
 function useSaved<T>(
   key: string,
@@ -86,6 +91,7 @@ const statuses: Record<string, string> = {
 
 function Workspace() {
   const researchPage = useLocation().pathname === "/research";
+  const [viewMode, setViewMode] = useState<"rail" | "walk">("rail");
   const [events, setEvents] = useState<EventRecord[]>([]);
   const [date, setDate] = useSaved(
     "date",
@@ -363,12 +369,34 @@ function Workspace() {
                     <div>
                       <div className="eyebrow">URBAN MOVEMENT / 城市流動</div>
                       <h1>煙火落幕，人流未歇。</h1>
-                      <p>沿著城市的街道，探索大稻埕與周邊車站的連結。</p>
+                      <p>從散場步行到列車候車，探索大稻埕的人流與運輸情境。</p>
                     </div>
                     <Badge variant="outline" className="prototype-badge">
                       <span className="badge-dot" />
-                      散場路徑示意
+                      {viewMode === "rail" ? "列車情境回放" : "散場路徑示意"}
                     </Badge>
+                  </div>
+                  <div className="view-mode-switch" aria-label="展示模式">
+                    <Button
+                      variant={viewMode === "rail" ? "default" : "outline"}
+                      aria-pressed={viewMode === "rail"}
+                      onClick={() => {
+                        setViewMode("rail");
+                        setPlaying(false);
+                      }}
+                    >
+                      列車與候車
+                    </Button>
+                    <Button
+                      variant={viewMode === "walk" ? "default" : "outline"}
+                      aria-pressed={viewMode === "walk"}
+                      onClick={() => {
+                        setViewMode("walk");
+                        setPlaying(false);
+                      }}
+                    >
+                      步行流向
+                    </Button>
                   </div>
                   {error && (
                     <div role="alert" className="error-banner">
@@ -379,297 +407,313 @@ function Workspace() {
                       </Button>
                     </div>
                   )}
-                  <div className="metrics-row">
-                    <Metric
-                      label="觀測車站"
-                      value="04"
-                      suffix="站"
-                      note="北門 · 大橋頭 · 雙連 · 民權西路"
-                    />
-                    <Metric
-                      label="四站進站合計"
-                      value={loading ? "…" : numberText(combined)}
-                      suffix="人次"
-                      note="18–24 時，全體旅客，非活動人數"
-                    />
-                    <Metric
-                      label={`${station.name}・${currentHour} 時進站`}
-                      value={
-                        loading
-                          ? "…"
-                          : numberText(
-                              currentRow?.origin_complete
-                                ? currentRow.origin_count
-                                : null,
-                            )
+                  {viewMode === "rail" ? (
+                    <Suspense
+                      fallback={
+                        <div className="empty-state">正在載入列車回放…</div>
                       }
-                      suffix="人次"
-                      note={
-                        STATIC_MODE
-                          ? "公開快照・原始時段彙整"
-                          : "MySQL 原始時段彙整"
-                      }
-                    />
-                    <Metric
-                      label="完整資料時段"
-                      value={loading ? "…" : `${completeBins} / 24`}
-                      suffix="筆"
-                      note="4 站 × 6 小時；缺值不視為零"
-                    />
-                  </div>
-                  <div className="map-layout">
-                    <section
-                      className="map-panel panel"
-                      aria-label="大稻埕散場流向地圖"
                     >
-                      <div className="panel-header">
-                        <div>
-                          <span className="eyebrow">MOVEMENT MAP</span>
-                          <h2>大稻埕散場流向</h2>
-                        </div>
-                        <span className="map-type">
-                          <Layers2 size={14} />
-                          步行示意圖層
-                        </span>
+                      <RailSimulation date={date} onDateChange={setDate} />
+                    </Suspense>
+                  ) : (
+                    <>
+                      <div className="metrics-row">
+                        <Metric
+                          label="觀測車站"
+                          value="04"
+                          suffix="站"
+                          note="北門 · 大橋頭 · 雙連 · 民權西路"
+                        />
+                        <Metric
+                          label="四站進站合計"
+                          value={loading ? "…" : numberText(combined)}
+                          suffix="人次"
+                          note="18–24 時，全體旅客，非活動人數"
+                        />
+                        <Metric
+                          label={`${station.name}・${currentHour} 時進站`}
+                          value={
+                            loading
+                              ? "…"
+                              : numberText(
+                                  currentRow?.origin_complete
+                                    ? currentRow.origin_count
+                                    : null,
+                                )
+                          }
+                          suffix="人次"
+                          note={
+                            STATIC_MODE
+                              ? "公開快照・原始時段彙整"
+                              : "MySQL 原始時段彙整"
+                          }
+                        />
+                        <Metric
+                          label="完整資料時段"
+                          value={loading ? "…" : `${completeBins} / 24`}
+                          suffix="筆"
+                          note="4 站 × 6 小時；缺值不視為零"
+                        />
                       </div>
-                      <FlowMap
-                        selected={selected}
-                        onSelect={setSelected}
-                        minute={minute}
-                        density={density}
-                        opacity={opacity / 100}
-                        labels={labels}
-                      />
-                      <div className="timeline">
-                        <div className="timeline-head">
-                          <div className="playback-controls">
-                            <Button
-                              size="icon"
-                              className="play-button"
-                              aria-label={playing ? "暫停播放" : "開始播放"}
-                              onClick={() => {
-                                if (minute >= 359) setMinute(0);
-                                setPlaying(!playing);
-                              }}
-                            >
-                              {playing ? (
-                                <Pause size={16} />
-                              ) : (
-                                <Play size={16} />
-                              )}
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              aria-label="回到起點"
-                              onClick={() => {
-                                setMinute(0);
-                                setPlaying(false);
-                              }}
-                            >
-                              <RotateCcw size={16} />
-                            </Button>
-                            <span className="current-time num">
-                              {timeText(minute)}
-                            </span>
-                            <span className="timeline-date">
-                              台北時間 · 時間格播放
+                      <div className="map-layout">
+                        <section
+                          className="map-panel panel"
+                          aria-label="大稻埕散場流向地圖"
+                        >
+                          <div className="panel-header">
+                            <div>
+                              <span className="eyebrow">MOVEMENT MAP</span>
+                              <h2>大稻埕散場流向</h2>
+                            </div>
+                            <span className="map-type">
+                              <Layers2 size={14} />
+                              步行示意圖層
                             </span>
                           </div>
-                          <select
-                            className="speed-select"
-                            aria-label="播放速度"
-                            value={speed}
-                            onChange={(e) => setSpeed(Number(e.target.value))}
-                          >
-                            <option value={1}>1× 播放</option>
-                            <option value={5}>5× 播放</option>
-                            <option value={15}>15× 播放</option>
-                          </select>
-                        </div>
-                        <Slider
-                          aria-label="觀測時間"
-                          value={[minute]}
-                          min={0}
-                          max={359}
-                          step={1}
-                          onValueChange={(v) => {
-                            setMinute(v[0]);
-                            setPlaying(false);
-                          }}
-                        />
-                        <div className="time-labels">
-                          {[
-                            "18:00",
-                            "19:00",
-                            "20:00",
-                            "21:00",
-                            "22:00",
-                            "23:00",
-                            "24:00",
-                          ].map((t) => (
-                            <span key={t}>{t}</span>
-                          ))}
-                        </div>
-                      </div>
-                    </section>
-                    <aside className="destinations panel">
-                      <div className="panel-header">
-                        <div>
-                          <span className="eyebrow">DESTINATIONS</span>
-                          <h2>周邊觀測車站</h2>
-                        </div>
-                        <span className="small-tag">{currentHour}:00</span>
-                      </div>
-                      <p className="destination-intro">
-                        選擇車站，查看路徑與該時段的真實進站人次。
-                      </p>
-                      <div className="station-list">
-                        {STATIONS.map((s, i) => {
-                          const row = rows.find(
-                            (r) =>
-                              r.station === s.id &&
-                              hourOf(r.hour_start) === currentHour,
-                          );
-                          const count = row?.origin_complete
-                            ? row.origin_count
-                            : null;
-                          const max = Math.max(
-                            1,
-                            ...rows
-                              .filter(
-                                (r) =>
-                                  hourOf(r.hour_start) === currentHour &&
-                                  r.origin_complete,
-                              )
-                              .map((r) => r.origin_count || 0),
-                          );
-                          return (
-                            <button
-                              key={s.id}
-                              onClick={() => setSelected(s.id)}
-                              className={`station-card ${selected === s.id ? "is-selected" : ""}`}
-                            >
-                              <div className="station-top">
-                                <span className="station-number num">
-                                  0{i + 1}
-                                </span>
-                                <div>
-                                  <strong>{s.name}</strong>
-                                  <span>{s.label}</span>
-                                </div>
-                                <ArrowUpRight size={16} />
-                              </div>
-                              <div className="station-value">
-                                <span className="num">
-                                  {loading ? "…" : numberText(count)}
-                                </span>
-                                <small>進站人次</small>
-                              </div>
-                              <div className="station-track">
-                                <span
-                                  style={{
-                                    width: `${count == null ? 0 : (count / max) * 100}%`,
-                                  }}
-                                />
-                              </div>
-                            </button>
-                          );
-                        })}
-                      </div>
-                      <div className="route-description">
-                        <span className="eyebrow">SELECTED ROUTE</span>
-                        <p>{station.routeDescription}</p>
-                        <small>簡化道路示意；未核對當日水門與交通管制。</small>
-                      </div>
-                    </aside>
-                  </div>
-                  <section className="settings-panel panel">
-                    <div className="settings-title">
-                      <Settings2 size={18} />
-                      <div>
-                        <h2>展示設定</h2>
-                        <p>只改變視覺呈現，不改變觀測人次。</p>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => {
-                          setDensity(36);
-                          setOpacity(75);
-                          setLabels(true);
-                          setSpeed(5);
-                        }}
-                      >
-                        重設
-                      </Button>
-                    </div>
-                    <div className="settings-fields">
-                      <div className="setting">
-                        <label>
-                          粒子密度<span className="num">{density}</span>
-                        </label>
-                        <Slider
-                          aria-label="粒子密度"
-                          min={12}
-                          max={72}
-                          step={4}
-                          value={[density]}
-                          onValueChange={(v) => setDensity(v[0])}
-                        />
-                        <small>視覺粒子，不對應旅客數量</small>
-                      </div>
-                      <div className="setting">
-                        <label>
-                          路線清晰度<span className="num">{opacity}%</span>
-                        </label>
-                        <Slider
-                          aria-label="路線清晰度"
-                          min={20}
-                          max={100}
-                          step={5}
-                          value={[opacity]}
-                          onValueChange={(v) => setOpacity(v[0])}
-                        />
-                        <small>調整地圖上的路徑透明度</small>
-                      </div>
-                      <div className="setting setting-switch">
-                        <label htmlFor="labels">
-                          車站名稱
-                          <Switch
-                            id="labels"
-                            checked={labels}
-                            onCheckedChange={setLabels}
+                          <FlowMap
+                            selected={selected}
+                            onSelect={setSelected}
+                            minute={minute}
+                            density={density}
+                            opacity={opacity / 100}
+                            labels={labels}
                           />
-                        </label>
-                        <small>顯示車站與代表入口標籤</small>
+                          <div className="timeline">
+                            <div className="timeline-head">
+                              <div className="playback-controls">
+                                <Button
+                                  size="icon"
+                                  className="play-button"
+                                  aria-label={playing ? "暫停播放" : "開始播放"}
+                                  onClick={() => {
+                                    if (minute >= 359) setMinute(0);
+                                    setPlaying(!playing);
+                                  }}
+                                >
+                                  {playing ? (
+                                    <Pause size={16} />
+                                  ) : (
+                                    <Play size={16} />
+                                  )}
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  aria-label="回到起點"
+                                  onClick={() => {
+                                    setMinute(0);
+                                    setPlaying(false);
+                                  }}
+                                >
+                                  <RotateCcw size={16} />
+                                </Button>
+                                <span className="current-time num">
+                                  {timeText(minute)}
+                                </span>
+                                <span className="timeline-date">
+                                  台北時間 · 時間格播放
+                                </span>
+                              </div>
+                              <select
+                                className="speed-select"
+                                aria-label="播放速度"
+                                value={speed}
+                                onChange={(e) =>
+                                  setSpeed(Number(e.target.value))
+                                }
+                              >
+                                <option value={1}>1× 播放</option>
+                                <option value={5}>5× 播放</option>
+                                <option value={15}>15× 播放</option>
+                              </select>
+                            </div>
+                            <Slider
+                              aria-label="觀測時間"
+                              value={[minute]}
+                              min={0}
+                              max={359}
+                              step={1}
+                              onValueChange={(v) => {
+                                setMinute(v[0]);
+                                setPlaying(false);
+                              }}
+                            />
+                            <div className="time-labels">
+                              {[
+                                "18:00",
+                                "19:00",
+                                "20:00",
+                                "21:00",
+                                "22:00",
+                                "23:00",
+                                "24:00",
+                              ].map((t) => (
+                                <span key={t}>{t}</span>
+                              ))}
+                            </div>
+                          </div>
+                        </section>
+                        <aside className="destinations panel">
+                          <div className="panel-header">
+                            <div>
+                              <span className="eyebrow">DESTINATIONS</span>
+                              <h2>周邊觀測車站</h2>
+                            </div>
+                            <span className="small-tag">{currentHour}:00</span>
+                          </div>
+                          <p className="destination-intro">
+                            選擇車站，查看路徑與該時段的真實進站人次。
+                          </p>
+                          <div className="station-list">
+                            {STATIONS.map((s, i) => {
+                              const row = rows.find(
+                                (r) =>
+                                  r.station === s.id &&
+                                  hourOf(r.hour_start) === currentHour,
+                              );
+                              const count = row?.origin_complete
+                                ? row.origin_count
+                                : null;
+                              const max = Math.max(
+                                1,
+                                ...rows
+                                  .filter(
+                                    (r) =>
+                                      hourOf(r.hour_start) === currentHour &&
+                                      r.origin_complete,
+                                  )
+                                  .map((r) => r.origin_count || 0),
+                              );
+                              return (
+                                <button
+                                  key={s.id}
+                                  onClick={() => setSelected(s.id)}
+                                  className={`station-card ${selected === s.id ? "is-selected" : ""}`}
+                                >
+                                  <div className="station-top">
+                                    <span className="station-number num">
+                                      0{i + 1}
+                                    </span>
+                                    <div>
+                                      <strong>{s.name}</strong>
+                                      <span>{s.label}</span>
+                                    </div>
+                                    <ArrowUpRight size={16} />
+                                  </div>
+                                  <div className="station-value">
+                                    <span className="num">
+                                      {loading ? "…" : numberText(count)}
+                                    </span>
+                                    <small>進站人次</small>
+                                  </div>
+                                  <div className="station-track">
+                                    <span
+                                      style={{
+                                        width: `${count == null ? 0 : (count / max) * 100}%`,
+                                      }}
+                                    />
+                                  </div>
+                                </button>
+                              );
+                            })}
+                          </div>
+                          <div className="route-description">
+                            <span className="eyebrow">SELECTED ROUTE</span>
+                            <p>{station.routeDescription}</p>
+                            <small>
+                              簡化道路示意；未核對當日水門與交通管制。
+                            </small>
+                          </div>
+                        </aside>
                       </div>
-                    </div>
-                  </section>
-                  <div className="bottom-note">
-                    <SlidersHorizontal size={15} />
-                    <span>
-                      本頁為路徑示意；預測與候車情境請看「模型與候車」。路徑不是實測足跡。
-                    </span>
-                    <a
-                      download={`四站人流-${date}.csv`}
-                      href={
-                        date
-                          ? csvUrl(
-                              date,
-                              STATIONS.map((s) => s.id),
-                            )
-                          : undefined
-                      }
-                      aria-disabled={!date || !!error}
-                      onClick={(e) => {
-                        if (!date || error) e.preventDefault();
-                      }}
-                    >
-                      <ArrowDownToLine size={14} />
-                      匯出觀測資料
-                    </a>
-                  </div>
+                      <section className="settings-panel panel">
+                        <div className="settings-title">
+                          <Settings2 size={18} />
+                          <div>
+                            <h2>展示設定</h2>
+                            <p>只改變視覺呈現，不改變觀測人次。</p>
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              setDensity(36);
+                              setOpacity(75);
+                              setLabels(true);
+                              setSpeed(5);
+                            }}
+                          >
+                            重設
+                          </Button>
+                        </div>
+                        <div className="settings-fields">
+                          <div className="setting">
+                            <label>
+                              粒子密度<span className="num">{density}</span>
+                            </label>
+                            <Slider
+                              aria-label="粒子密度"
+                              min={12}
+                              max={72}
+                              step={4}
+                              value={[density]}
+                              onValueChange={(v) => setDensity(v[0])}
+                            />
+                            <small>視覺粒子，不對應旅客數量</small>
+                          </div>
+                          <div className="setting">
+                            <label>
+                              路線清晰度<span className="num">{opacity}%</span>
+                            </label>
+                            <Slider
+                              aria-label="路線清晰度"
+                              min={20}
+                              max={100}
+                              step={5}
+                              value={[opacity]}
+                              onValueChange={(v) => setOpacity(v[0])}
+                            />
+                            <small>調整地圖上的路徑透明度</small>
+                          </div>
+                          <div className="setting setting-switch">
+                            <label htmlFor="labels">
+                              車站名稱
+                              <Switch
+                                id="labels"
+                                checked={labels}
+                                onCheckedChange={setLabels}
+                              />
+                            </label>
+                            <small>顯示車站與代表入口標籤</small>
+                          </div>
+                        </div>
+                      </section>
+                      <div className="bottom-note">
+                        <SlidersHorizontal size={15} />
+                        <span>
+                          本頁為路徑示意；預測與候車情境請看「模型與候車」。路徑不是實測足跡。
+                        </span>
+                        <a
+                          download={`四站人流-${date}.csv`}
+                          href={
+                            date
+                              ? csvUrl(
+                                  date,
+                                  STATIONS.map((s) => s.id),
+                                )
+                              : undefined
+                          }
+                          aria-disabled={!date || !!error}
+                          onClick={(e) => {
+                            if (!date || error) e.preventDefault();
+                          }}
+                        >
+                          <ArrowDownToLine size={14} />
+                          匯出觀測資料
+                        </a>
+                      </div>
+                    </>
+                  )}
                 </>
               }
             />

@@ -1,0 +1,293 @@
+.rail-panel {
+  overflow: hidden;
+}
+.rail-heading {
+  padding: 25px 26px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+}
+.rail-heading h2 {
+  font-size: 22px;
+  font-weight: 550;
+  margin: 10px 0;
+}
+.rail-heading p {
+  font-size: 12px;
+  color: #a3aba7;
+  margin: 8px 0;
+}
+.rail-simulation-tag {
+  white-space: nowrap;
+  font-size: 11px;
+  border: 1px solid #38493f;
+  border-radius: 18px;
+  padding: 7px 11px;
+  color: #b2c6bb;
+  background: #1a231e;
+}
+.rail-controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  padding: 18px 26px;
+  background: #171b19;
+  border-block: 1px solid #303833;
+}
+.rail-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 11px;
+  color: #b3bcb7;
+}
+.rail-panel select {
+  font-size: 12px;
+  padding: 9px 12px;
+  background: #242a26;
+  border: 1px solid #3a453e;
+  border-radius: 7px;
+  color: #e4e9e6;
+  min-width: 0;
+}
+.rail-status-strip {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 17px 26px;
+  font-size: 12px;
+  color: #aeb9b2;
+  border-bottom: 1px solid #2b342e;
+}
+.rail-status-strip span {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.rail-status-strip strong {
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+}
+.rail-diagram-scroll {
+  overflow-x: auto;
+  background: #0d1210;
+}
+.rail-diagram {
+  display: block;
+  width: 100%;
+  min-width: 650px;
+  height: auto;
+  max-height: 470px;
+}
+.rail-train {
+  cursor: pointer;
+}
+.rail-train:focus-visible {
+  outline: none;
+}
+.rail-train:focus-visible > rect {
+  stroke: white;
+  stroke-width: 4;
+}
+.rail-train:hover > rect {
+  fill: #27332c;
+}
+.rail-playback {
+  padding: 18px 26px;
+  border-block: 1px solid #2c3530;
+  background: #161c18;
+}
+.rail-playback-head,
+.rail-playback-head > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.rail-playback-head strong {
+  font-size: 19px;
+  font-weight: 550;
+  letter-spacing: 0.02em;
+}
+.rail-playback input[type="range"] {
+  display: block;
+  width: 100%;
+  accent-color: #afd2b6;
+  margin: 22px 0 10px;
+  cursor: pointer;
+}
+.rail-time-labels {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  color: #9ba49d;
+  font-size: 11px;
+}
+.rail-legends {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 22px 26px;
+}
+.rail-legends > div {
+  display: grid;
+  gap: 9px;
+}
+.rail-legends strong {
+  font-size: 12px;
+  font-weight: 500;
+}
+.rail-legends span:not(.rail-gradient) {
+  font-size: 11px;
+  color: #a9b4ac;
+}
+.rail-gradient {
+  display: block;
+  height: 6px;
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    hsl(120 72% 52%),
+    hsl(60 72% 52%),
+    hsl(0 72% 52%)
+  );
+  max-width: 280px;
+}
+.rail-legends p {
+  grid-column: 1/-1;
+  color: #9ca59e;
+  font-size: 11px;
+  margin: 0;
+  line-height: 1.7;
+}
+.rail-train-detail {
+  margin: 0 26px 22px;
+  padding: 17px;
+  border: 1px solid #485d4e;
+  background: #1c2820;
+  border-radius: 9px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+}
+.rail-train-detail strong {
+  width: 100%;
+}
+.rail-train-detail span {
+  color: #c0cdc3;
+  line-height: 1.8;
+}
+.rail-assumptions {
+  padding: 0 26px 24px;
+  font-size: 12px;
+  color: #a9b1ab;
+}
+.rail-assumptions summary {
+  cursor: pointer;
+  color: #c1d1c5;
+}
+.rail-assumptions p {
+  line-height: 1.9;
+  margin: 12px 0 0;
+}
+.rail-empty {
+  padding: 35px;
+  display: grid;
+  gap: 15px;
+  font-size: 13px;
+  color: #afb8b2;
+}
+.rail-empty h2 {
+  font-size: 20px;
+  color: #eee;
+}
+.rail-dates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.view-mode-switch {
+  display: flex;
+  gap: 5px;
+  background: #1c1e1c;
+  border: 1px solid #353a35;
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 22px;
+  width: fit-content;
+}
+.view-mode-switch button {
+  font-size: 12px;
+}
+.rail-panel select:focus-visible,
+.rail-panel input:focus-visible {
+  outline: 2px solid #b6d0bf;
+  outline-offset: 3px;
+}
+@media (max-width: 800px) {
+  .rail-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 20px;
+  }
+  .rail-heading h2 {
+    font-size: 19px;
+  }
+  .rail-controls {
+    padding: 16px 20px;
+    gap: 12px;
+  }
+  .rail-controls label {
+    font-size: 10px;
+  }
+  .rail-playback {
+    padding: 18px 20px;
+  }
+  .rail-playback-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .rail-status-strip {
+    padding: 16px 20px;
+    gap: 10px;
+    font-size: 11px;
+  }
+  .rail-legends {
+    padding: 20px;
+  }
+  .rail-assumptions {
+    padding: 0 20px 20px;
+  }
+}
+@media (max-width: 530px) {
+  .rail-controls {
+    grid-template-columns: 1fr;
+  }
+  .rail-legends {
+    grid-template-columns: 1fr;
+  }
+  .rail-playback-head > div {
+    flex-wrap: wrap;
+  }
+  .rail-playback-head select {
+    font-size: 11px;
+  }
+  .rail-diagram-scroll {
+    position: relative;
+  }
+  .rail-diagram-scroll:before {
+    content: "左右滑動查看完整列車圖";
+    display: block;
+    padding: 10px 20px;
+    color: #8a9e8f;
+    font-size: 10px;
+  }
+  .rail-train-detail {
+    margin-inline: 20px;
+  }
+}
