@@ -1,0 +1,32 @@
+{
+  "source": "results\\research_review\\2026-10-07-refresh\\four_week_primary\\weather_regression",
+  "source_sha256": {
+    "primary_weather_merged.csv": "d59e698bf2b44da62d7c522f2065c526b6603bd4222b3534909b8dca3d351d18",
+    "weather_correlations.csv": "1862b9bfbd72417324a3e89ed4568b89ee0ea49c71bd40b072e581589852589a"
+  },
+  "display_response": "origin_count_window / baseline_origin_window",
+  "source_response": "log1p(origin_count_window) - log1p(baseline_origin_window)",
+  "ratios_range": [
+    1.9554156831890899,
+    5.722375806316495
+  ],
+  "rank_checks": [
+    {
+      "variable": "temperature_six_label_mean_c",
+      "n": 19,
+      "rho": 0.04385964912280702,
+      "unchanged_rank_order": true,
+      "original_holm_two_tests_p": 0.85798
+    },
+    {
+      "variable": "wind_six_label_mean_m_s",
+      "n": 19,
+      "rho": 0.22982456140350876,
+      "unchanged_rank_order": true,
+      "original_holm_two_tests_p": 0.68204
+    }
+  ],
+  "new_inference": false,
+  "measurement_window": "legacy source labels 18..23",
+  "same_year_dependence": "No new independent-event claim or confidence interval"
+}

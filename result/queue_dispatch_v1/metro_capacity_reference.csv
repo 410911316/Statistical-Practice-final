@@ -1,0 +1,2 @@
+﻿source_id,train_class,cars,max_persons_per_car,max_train_persons,is_remaining_capacity
+99bf4fab5ab133558e45d515f65d39383befe192fe95fb1735b6224e257037e4,high_capacity_6_car,6,370,2220,0

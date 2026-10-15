@@ -1,0 +1,38 @@
+{
+  "version": 17,
+  "date": "2026-10-14",
+  "input": ".local/analysis_v15/analysis_input.csv",
+  "stations": [
+    "北門",
+    "大橋頭站",
+    "雙連"
+  ],
+  "outer_years": [
+    2024,
+    2025,
+    2026
+  ],
+  "models": [
+    "ridge",
+    "xgboost"
+  ],
+  "variant": "none",
+  "event_counts": [
+    6,
+    9,
+    12,
+    15,
+    18
+  ],
+  "repeats": 10,
+  "subset_seed": 20261014,
+  "model_seed": 20261010,
+  "parameter_policy": "freeze_V16_none_per_year_no_subset_retuning",
+  "protocols": [
+    "event_subsample",
+    "oldest_first",
+    "recent_first"
+  ],
+  "score_population": "Beimen_train_and_same_three_future_events_per_year",
+  "deployment": false
+}

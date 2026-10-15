@@ -1,0 +1,179 @@
+{
+  "snapshot": "20261015",
+  "counts": {
+    "metro_source_snapshot": 16,
+    "metro_station_line": 5,
+    "metro_timetable": 10,
+    "metro_departure": 7118,
+    "metro_link_time": 187,
+    "metro_dispatch_path": 20,
+    "metro_capacity_reference": 1
+  },
+  "sources": [
+    {
+      "source_id": "e0c4636debed6825ebd573e5d44601cd4922cfbc62ac58e6329b1cfec4c588f8",
+      "source_url": "https://web.metro.taipei/pages2026/WebStation/105/7",
+      "content_sha256": "530ec4401da0ee8909e67b9d2fdb427dfc3c63aa1ff3bde8d83d330773a54f74",
+      "source_kind": "station_page",
+      "effective_from": null,
+      "retrieved_at_utc": "2026-10-15 03:13:46",
+      "local_file": "105.html"
+    },
+    {
+      "source_id": "bfd0917e563a79aaa06e121e4d0b53614713aca934dae0a104676ab781d3b343",
+      "source_url": "https://web.metro.taipei/img/ALL/timetables/105a.PDF",
+      "content_sha256": "2148f839c3c920e36826ff498288c4795d439b1cf0091ed6275e53fccbca728b",
+      "source_kind": "general_timetable",
+      "effective_from": "2026-08-30",
+      "retrieved_at_utc": "2026-10-15 03:13:46",
+      "local_file": "105a.pdf"
+    },
+    {
+      "source_id": "4621917e2a55d79dbca6e04742ec6b286e7d2e0e801a9589b952cfa3461a1705",
+      "source_url": "https://web.metro.taipei/img/ALL/timetables/105b.PDF",
+      "content_sha256": "57d97f15dd703e8a4f6368dfcc2b6fa2045f717c180dabd2bdd2e432ba9b476d",
+      "source_kind": "general_timetable",
+      "effective_from": "2026-08-30",
+      "retrieved_at_utc": "2026-10-15 03:13:46",
+      "local_file": "105b.pdf"
+    },
+    {
+      "source_id": "6d277a4d3f3d982d42647e93b709d30ecd0adbf41131bd0997569e635130e4ed",
+      "source_url": "https://web.metro.taipei/pages2026/WebStation/128/7",
+      "content_sha256": "321be5b62181098e269d0444453c266c66a4cb80db63ddfd5a9e6b6865f4f899",
+      "source_kind": "station_page",
+      "effective_from": null,
+      "retrieved_at_utc": "2026-10-15 03:13:47",
+      "local_file": "128.html"
+    },
+    {
+      "source_id": "74bd5481f44165959ee4e1bbd0036d1df0dff3fd943027b625999f7cbbacd3ae",
+      "source_url": "https://web.metro.taipei/img/ALL/timetables/128a.PDF",
+      "content_sha256": "d9dc877eb303d2e8538b2bca3e8322685167b622fb8fc03ce17259f6955ff763",
+      "source_kind": "general_timetable",
+      "effective_from": "2026-08-30",
+      "retrieved_at_utc": "2026-10-15 03:13:47",
+      "local_file": "128a.pdf"
+    },
+    {
+      "source_id": "f457aefa95067c48b3f414157a09f2d043574eff9ed25358744c68cb27bcd99b",
+      "source_url": "https://web.metro.taipei/img/ALL/timetables/128b.PDF",
+      "content_sha256": "0cfae258a1f5139019394252526fe5f46f06b1ce8c821a81f1447c849d19b619",
+      "source_kind": "general_timetable",
+      "effective_from": "2026-10-01",
+      "retrieved_at_utc": "2026-10-15 03:13:47",
+      "local_file": "128b.pdf"
+    },
+    {
+      "source_id": "e0780a0058a3df8dbd28e3ca731b66b2f252198010c0651ddb8cbe5b0439207d",
+      "source_url": "https://web.metro.taipei/pages2026/WebStation/054/7",
+      "content_sha256": "38216fc2155b1e991b516fbc713ab2d97c31ff3a583b2dfd9c5799a5bfc72596",
+      "source_kind": "station_page",
+      "effective_from": null,
+      "retrieved_at_utc": "2026-10-15 03:13:47",
+      "local_file": "054.html"
+    },
+    {
+      "source_id": "a3182fa4bf4eaccd2273a7ae26f49d198ceebe82e92c361154712a67ffdd263b",
+      "source_url": "https://web.metro.taipei/img/ALL/timetables/054a.PDF",
+      "content_sha256": "cc1f35685dad1af07e2d152951af3902bf234856eb5100a7ff2cc79fa32565d5",
+      "source_kind": "general_timetable",
+      "effective_from": "2026-08-30",
+      "retrieved_at_utc": "2026-10-15 03:13:47",
+      "local_file": "054a.pdf"
+    },
+    {
+      "source_id": "f713bb63c908e588ccae5aea3ed208b37d831541044b08685236c80aab520a0b",
+      "source_url": "https://web.metro.taipei/img/ALL/timetables/054b.PDF",
+      "content_sha256": "42722bd261ffc63088204b6dc23a16b6ab115cdf808a7a921e1b2d7b0d244179",
+      "source_kind": "general_timetable",
+      "effective_from": "2026-08-30",
+      "retrieved_at_utc": "2026-10-15 03:13:47",
+      "local_file": "054b.pdf"
+    },
+    {
+      "source_id": "2a2006d4868682ae062bdd5f45b82f8a34b16a29d11b094273989abc6c41bfbc",
+      "source_url": "https://web.metro.taipei/pages2026/WebStation/055/7",
+      "content_sha256": "f5bb84afe40145762b58b35b3fdd5534a64bb234423bc35a17bced2961bc44ac",
+      "source_kind": "station_page",
+      "effective_from": null,
+      "retrieved_at_utc": "2026-10-15 03:13:47",
+      "local_file": "055.html"
+    },
+    {
+      "source_id": "b80c16d749253c7cdf819e68fa39cf4fc8d138d2c015198546217910209f109b",
+      "source_url": "https://web.metro.taipei/img/ALL/timetables/055a.PDF",
+      "content_sha256": "0d5e355b7d9f9c8b6fa6c1473cbbf3d311eefe01155f0a09d402fe4aa557135c",
+      "source_kind": "general_timetable",
+      "effective_from": "2026-08-30",
+      "retrieved_at_utc": "2026-10-15 03:13:47",
+      "local_file": "055a.pdf"
+    },
+    {
+      "source_id": "d416d24c890c291f595b71d1ca01faffaaa80c9c96978630a7fd8a5d78a96a0c",
+      "source_url": "https://web.metro.taipei/img/ALL/timetables/055b.PDF",
+      "content_sha256": "627f021d569ef91f72839b085076316b9922c428bb3ca4a5e75af4ccea26468d",
+      "source_kind": "general_timetable",
+      "effective_from": "2026-08-30",
+      "retrieved_at_utc": "2026-10-15 03:13:47",
+      "local_file": "055b.pdf"
+    },
+    {
+      "source_id": "f7df01dcd652b696edf767742a56e80e470e0d31f6c94af26ed856597f22fbb1",
+      "source_url": "https://web.metro.taipei/img/ALL/timetables/055c.PDF",
+      "content_sha256": "d14a1ca7f97a14c3f45a0a5fdd62d59205f103365877d81943656d0dfdff0d6c",
+      "source_kind": "general_timetable",
+      "effective_from": "2026-08-30",
+      "retrieved_at_utc": "2026-10-15 03:13:47",
+      "local_file": "055c.pdf"
+    },
+    {
+      "source_id": "22e93daeb16041e79941ad6f5038c3c61fc598afcf96e10f4287baf257c44e7b",
+      "source_url": "https://web.metro.taipei/img/ALL/timetables/055d.PDF",
+      "content_sha256": "62ad8506a1c54a2042205a737d4b6d818a63f25e08399a648c3da8852ea27940",
+      "source_kind": "general_timetable",
+      "effective_from": "2026-10-01",
+      "retrieved_at_utc": "2026-10-15 03:13:47",
+      "local_file": "055d.pdf"
+    },
+    {
+      "source_id": "c755f52404ea2ef3b78026082b61b550cf0d41438968bb6e95d01406d6335129",
+      "source_url": "https://data.taipei/api/frontstage/tpeod/dataset/resource.download?rid=c32998fa-c9b2-4324-9016-e19fbe0815f1",
+      "content_sha256": "2f90d1901f3c4533b1dc2f21e01ccfebf8761552ccbd92751724997aa9ffd296",
+      "source_kind": "link_times",
+      "effective_from": null,
+      "retrieved_at_utc": "2026-10-15 03:13:48",
+      "local_file": "link_times.csv"
+    },
+    {
+      "source_id": "99bf4fab5ab133558e45d515f65d39383befe192fe95fb1735b6224e257037e4",
+      "source_url": "https://www.dorts.gov.taipei/News_Content.aspx?n=2A66A485FACB0D5B&s=F32662CFF6FE4D80",
+      "content_sha256": "7ce41f4bd1ee0f8c3982f208b9ecf9680ece402ce0c3d102abaea38cb79959ef",
+      "source_kind": "capacity_reference",
+      "effective_from": null,
+      "retrieved_at_utc": "2026-10-15 03:16:47",
+      "local_file": "capacity.html"
+    }
+  ],
+  "historical_event_timetable": false,
+  "inserted": {
+    "metro_departure": 7118,
+    "metro_link_time": 187,
+    "metro_timetable": 10,
+    "metro_station_line": 5,
+    "metro_dispatch_path": 20,
+    "metro_source_snapshot": 16,
+    "metro_capacity_reference": 1
+  },
+  "idempotent_second_import": {
+    "metro_departure": 0,
+    "metro_link_time": 0,
+    "metro_timetable": 0,
+    "metro_station_line": 0,
+    "metro_dispatch_path": 0,
+    "metro_source_snapshot": 0,
+    "metro_capacity_reference": 0
+  },
+  "existing_analysis_rows_unchanged": 74880,
+  "database_readback_verified": true
+}

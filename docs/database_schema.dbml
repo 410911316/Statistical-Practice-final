@@ -4,7 +4,7 @@
 
 Project taipei_metro_analysis {
   database_type: 'MySQL'
-  Note: '大稻埕活動、年度預算與宣導、北捷 OD、Google Trends 與氣象。18 張實體資料表及 6 張檢視表。'
+  Note: '大稻埕活動、年度預算與宣導、北捷 OD、Google Trends、氣象與官方列車營運。25 張實體資料表及 6 張檢視表。'
 }
 
 Enum dadaocheng_fireworks_events_event_status_enum {
@@ -575,4 +575,132 @@ TableGroup Views_not_physical_tables {
   v_dadaocheng_event_quantitative
   v_regression_event_station
   v_regression_station_hourly
+}
+
+// 2026-10-15：七張實際新增營運表。未知調度時間為 NULL；班表非活動實際營運。
+
+Table metro_capacity_reference {
+  source_id char(64) [not null]
+  train_class varchar(64) [not null]
+  cars int [not null]
+  max_persons_per_car int [not null]
+  max_train_persons int [not null]
+  is_remaining_capacity tinyint(1) [not null]
+  indexes {
+    (source_id, train_class) [pk]
+  }
+  Note: '與現有活動表分離；來源生效日及研究假設詳見 docs/metro_operations.md'
+}
+
+Table metro_departure {
+  source_id char(64) [not null]
+  day_type varchar(24) [not null]
+  departure_minute smallint [not null]
+  terminal varchar(64) [not null]
+  is_underlined tinyint(1) [not null]
+  indexes {
+    (source_id, day_type, departure_minute) [pk]
+  }
+  Note: '與現有活動表分離；來源生效日及研究假設詳見 docs/metro_operations.md'
+}
+
+Table metro_dispatch_path {
+  source_id char(64) [not null]
+  route_name varchar(64) [not null]
+  origin varchar(64) [not null]
+  station_label varchar(64) [not null]
+  line_code varchar(2) [not null]
+  path_text text [not null]
+  run_seconds int [not null]
+  intermediate_dwell_seconds int [not null]
+  travel_seconds int [not null]
+  reverse_assumed tinyint(1) [not null]
+  ready_seconds int [null]
+  depot_exit_seconds int [null]
+  insertion_wait_seconds int [null]
+  total_dispatch_seconds int [null]
+  indexes {
+    (source_id, route_name, origin, station_label) [pk]
+  }
+  Note: '與現有活動表分離；來源生效日及研究假設詳見 docs/metro_operations.md'
+}
+
+Table metro_link_time {
+  source_id char(64) [not null]
+  link_no int [not null]
+  route_name varchar(64) [not null]
+  station_a varchar(64) [not null]
+  station_b varchar(64) [not null]
+  run_seconds int [not null]
+  route_seq int [not null]
+  dwell_at_a_seconds int [not null]
+  effective_date date [not null]
+  indexes {
+    (source_id, link_no) [pk]
+    (source_id, route_name, route_seq) [unique]
+  }
+  Note: '與現有活動表分離；來源生效日及研究假設詳見 docs/metro_operations.md'
+}
+
+Table metro_source_snapshot {
+  source_id char(64) [not null]
+  source_url text [not null]
+  content_sha256 char(64) [not null]
+  source_kind varchar(32) [not null]
+  effective_from date [null]
+  retrieved_at_utc datetime [not null]
+  local_file varchar(128) [not null]
+  indexes {
+    (source_id) [pk]
+  }
+  Note: '與現有活動表分離；來源生效日及研究假設詳見 docs/metro_operations.md'
+}
+
+Table metro_station_line {
+  station_label varchar(64) [not null]
+  line_code varchar(2) [not null]
+  station_code varchar(6) [not null]
+  web_id char(3) [not null]
+  indexes {
+    (station_label, line_code) [pk]
+  }
+  Note: '與現有活動表分離；來源生效日及研究假設詳見 docs/metro_operations.md'
+}
+
+Table metro_timetable {
+  source_id char(64) [not null]
+  station_label varchar(64) [not null]
+  line_code varchar(2) [not null]
+  direction_text varchar(128) [not null]
+  is_event_specific tinyint(1) [not null]
+  indexes {
+    (source_id) [pk]
+  }
+  Note: '與現有活動表分離；來源生效日及研究假設詳見 docs/metro_operations.md'
+}
+
+Ref: metro_capacity_reference.(source_id) > metro_source_snapshot.(source_id)
+
+Ref: metro_departure.(source_id) > metro_timetable.(source_id)
+
+Ref: metro_dispatch_path.(source_id) > metro_source_snapshot.(source_id)
+
+Ref: metro_dispatch_path.(station_label, line_code) > metro_station_line.(station_label, line_code)
+
+Ref: metro_link_time.(source_id) > metro_source_snapshot.(source_id)
+
+Ref: metro_station_line.(station_label) > analysis_station_label.(station)
+
+Ref: metro_timetable.(source_id) > metro_source_snapshot.(source_id)
+
+Ref: metro_timetable.(station_label, line_code) > metro_station_line.(station_label, line_code)
+
+TableGroup Official_operations {
+  metro_capacity_reference
+  metro_departure
+  metro_dispatch_path
+  metro_link_time
+  metro_source_snapshot
+  metro_station_line
+  metro_timetable
 }

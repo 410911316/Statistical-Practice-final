@@ -119,6 +119,15 @@ def create_app(repository: Repository | None = None, frontend_dist: Path | None 
 
     api.add_api_route("/", index, methods=["GET"], include_in_schema=False)
     api.add_api_route("/analysis", index, methods=["GET"], include_in_schema=False)
+    api.add_api_route("/research", index, methods=["GET"], include_in_schema=False)
+
+    @api.get("/data/{asset_path:path}", include_in_schema=False)
+    def public_data(asset_path: str):
+        base = (dist / "data").resolve()
+        file = (base / asset_path).resolve()
+        if not file.is_relative_to(base) or not file.is_file():
+            raise HTTPException(404, "找不到公開快照。")
+        return FileResponse(file, headers={"Cache-Control": "no-cache"})
 
     @api.get("/assets/{asset_path:path}", include_in_schema=False)
     def asset(asset_path: str):

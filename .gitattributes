@@ -1,0 +1,4 @@
+# Preserve byte-for-byte public snapshot manifests on Windows and Linux.
+app/frontend/public/data/* -text whitespace=cr-at-eol
+# Matplotlib emits trailing spaces inside SVG path coordinates.
+*.svg whitespace=-blank-at-eol

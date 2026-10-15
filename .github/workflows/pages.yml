@@ -1,0 +1,48 @@
+name: Publish research website
+
+on:
+  push:
+    branches: [main]
+    paths: ['app/**', 'tests/test_public_snapshot.py', '.github/workflows/pages.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: app/frontend/package-lock.json
+      - run: python3 -m unittest discover -s tests -p test_public_snapshot.py
+      - run: npm ci
+        working-directory: app/frontend
+      - run: npm test && npm run lint && npm run build
+        working-directory: app/frontend
+        env:
+          VITE_DATA_MODE: snapshot
+          VITE_BASE_PATH: /Statistical-Practice-final/
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: app/frontend/dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deploy

@@ -44,4 +44,8 @@ __pycache__/
 # Website dependencies and generated bundles
 node_modules/
 /app/frontend/dist/
+/app/frontend/dist-pages/
 /app/.runtime/
+
+# Independent legacy Sites checkout, not a submodule of this repository.
+/web/meta-review/

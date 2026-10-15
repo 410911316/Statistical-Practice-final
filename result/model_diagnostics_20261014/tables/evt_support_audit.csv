@@ -1,0 +1,4 @@
+﻿prediction_year,training_event_maxima,past_oof_events,oof_rows,illustrative_residual_p90,exceeding_rows,exceeding_events
+2024,12,8,48,864.723376464844,5,3
+2025,15,11,66,1175.2155151367188,7,4
+2026,18,14,84,932.3883911132814,9,4

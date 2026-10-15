@@ -1,0 +1,15 @@
+{
+  "prediction_path": ".local/analysis_v14/predictions.csv",
+  "prediction_sha256": "8e227869ffe2f4827fb983723dfc7b4ab181eb2c240023ffb3b4cfda5a90da74",
+  "prediction_column": "frozen_w4",
+  "operations_snapshot": "20261015",
+  "first_hour": 18,
+  "last_hour": 23,
+  "platform_delay_minutes": 5,
+  "northbound_shares": [0.4, 0.5, 0.6],
+  "remaining_capacity_fractions": [0.25, 0.5, 0.75],
+  "peak_centers_minutes": [15, 30, 45],
+  "shapes": {"uniform": null, "broad": 20, "concentrated": 5},
+  "display_event": "2024-08-10",
+  "interpretation": "Current general timetable counterfactual with archived forecasts; not actual historical queues or calibrated minute arrivals."
+}

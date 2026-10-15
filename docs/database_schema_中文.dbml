@@ -1,5 +1,5 @@
 // 中文展示版：複製整份內容，貼到 https://dbdiagram.io 的左側 DBML 編輯區。
-// 18 張實體資料表、6 張檢視表、17 條實際外鍵關聯；保留所有欄位與索引。
+// 25 張實體資料表、6 張檢視表；關係線為實際外鍵，新增七張官方營運表。
 // 中文名稱用於畫圖；正式 MySQL 英文名稱保留在各表與欄位註解中。
 // PK＝主鍵；Ref 指向端為被參照的鍵；檢視表另行分組，不虛構外鍵。
 // 這是展示用途的中文對照，不是對現有 MySQL 執行改名的遷移腳本。
@@ -10,7 +10,7 @@
 
 Project "大稻埕活動與捷運人流資料庫" {
   database_type: 'MySQL'
-  Note: '大稻埕活動、年度預算與宣導、北捷 OD、Google Trends 與氣象。18 張實體資料表及 6 張檢視表。'
+  Note: '大稻埕活動、年度預算與宣導、北捷 OD、Google Trends、氣象與官方列車營運。25 張實體資料表及 6 張檢視表。'
 }
 
 Enum "活動狀態選項" {
@@ -581,5 +581,133 @@ TableGroup "檢視表_查詢結果" {
   "檢視_活動量化指標"
   "檢視_活動車站回歸資料"
   "檢視_車站逐時回歸資料"
+}
+
+// 2026-10-15：七張實際新增營運表。未知調度時間為 NULL；班表非活動實際營運。
+
+Table "列車容量參考" {
+  "來源版本編號" char(64) [not null, note: '原欄位：source_id']
+  "列車類別" varchar(64) [not null, note: '原欄位：train_class']
+  "車廂數" int [not null, note: '原欄位：cars']
+  "每節最大人數" int [not null, note: '原欄位：max_persons_per_car']
+  "整列最大人數" int [not null, note: '原欄位：max_train_persons']
+  "是否剩餘容量" tinyint(1) [not null, note: '原欄位：is_remaining_capacity']
+  indexes {
+    ("來源版本編號", "列車類別") [pk]
+  }
+  Note: '原表名：metro_capacity_reference；與現有活動表分離；來源生效日及研究假設詳見 docs/metro_operations.md'
+}
+
+Table "官方離站時刻" {
+  "來源版本編號" char(64) [not null, note: '原欄位：source_id']
+  "服務日型" varchar(24) [not null, note: '原欄位：day_type']
+  "服務日起算離站分鐘" smallint [not null, note: '原欄位：departure_minute']
+  "列車終點" varchar(64) [not null, note: '原欄位：terminal']
+  "原表底線標記" tinyint(1) [not null, note: '原欄位：is_underlined']
+  indexes {
+    ("來源版本編號", "服務日型", "服務日起算離站分鐘") [pk]
+  }
+  Note: '原表名：metro_departure；與現有活動表分離；來源生效日及研究假設詳見 docs/metro_operations.md'
+}
+
+Table "候選發車路徑" {
+  "來源版本編號" char(64) [not null, note: '原欄位：source_id']
+  "營運區間" varchar(64) [not null, note: '原欄位：route_name']
+  "候選發車站" varchar(64) [not null, note: '原欄位：origin']
+  "捷運站名" varchar(64) [not null, note: '原欄位：station_label']
+  "路線代碼" varchar(2) [not null, note: '原欄位：line_code']
+  "路徑" text [not null, note: '原欄位：path_text']
+  "行駛秒數" int [not null, note: '原欄位：run_seconds']
+  "中途停靠秒數" int [not null, note: '原欄位：intermediate_dwell_seconds']
+  "行車與中停秒數" int [not null, note: '原欄位：travel_seconds']
+  "是否反向對稱假設" tinyint(1) [not null, note: '原欄位：reverse_assumed']
+  "整備秒數_未知" int [note: '原欄位：ready_seconds']
+  "出庫秒數_未知" int [note: '原欄位：depot_exit_seconds']
+  "插車等待秒數_未知" int [note: '原欄位：insertion_wait_seconds']
+  "完整調度秒數_未知" int [note: '原欄位：total_dispatch_seconds']
+  indexes {
+    ("來源版本編號", "營運區間", "候選發車站", "捷運站名") [pk]
+  }
+  Note: '原表名：metro_dispatch_path；與現有活動表分離；來源生效日及研究假設詳見 docs/metro_operations.md'
+}
+
+Table "官方站間時間" {
+  "來源版本編號" char(64) [not null, note: '原欄位：source_id']
+  "來源路段序號" int [not null, note: '原欄位：link_no']
+  "營運區間" varchar(64) [not null, note: '原欄位：route_name']
+  "起站" varchar(64) [not null, note: '原欄位：station_a']
+  "迄站" varchar(64) [not null, note: '原欄位：station_b']
+  "行駛秒數" int [not null, note: '原欄位：run_seconds']
+  "區間內序號" int [not null, note: '原欄位：route_seq']
+  "起站停靠秒數_解讀待確認" int [not null, note: '原欄位：dwell_at_a_seconds']
+  "路段生效日" date [not null, note: '原欄位：effective_date']
+  indexes {
+    ("來源版本編號", "來源路段序號") [pk]
+    ("來源版本編號", "營運區間", "區間內序號") [unique]
+  }
+  Note: '原表名：metro_link_time；與現有活動表分離；來源生效日及研究假設詳見 docs/metro_operations.md'
+}
+
+Table "捷運營運來源版本" {
+  "來源版本編號" char(64) [not null, note: '原欄位：source_id']
+  "官方網址" text [not null, note: '原欄位：source_url']
+  "內容雜湊" char(64) [not null, note: '原欄位：content_sha256']
+  "來源種類" varchar(32) [not null, note: '原欄位：source_kind']
+  "生效日期" date [note: '原欄位：effective_from']
+  "下載時間_UTC" datetime [not null, note: '原欄位：retrieved_at_utc']
+  "本機檔名" varchar(128) [not null, note: '原欄位：local_file']
+  indexes {
+    ("來源版本編號") [pk]
+  }
+  Note: '原表名：metro_source_snapshot；與現有活動表分離；來源生效日及研究假設詳見 docs/metro_operations.md'
+}
+
+Table "研究車站與路線" {
+  "捷運站名" varchar(64) [not null, note: '原欄位：station_label']
+  "路線代碼" varchar(2) [not null, note: '原欄位：line_code']
+  "官方站碼" varchar(6) [not null, note: '原欄位：station_code']
+  "官網站號" char(3) [not null, note: '原欄位：web_id']
+  indexes {
+    ("捷運站名", "路線代碼") [pk]
+  }
+  Note: '原表名：metro_station_line；與現有活動表分離；來源生效日及研究假設詳見 docs/metro_operations.md'
+}
+
+Table "官方方向班表" {
+  "來源版本編號" char(64) [not null, note: '原欄位：source_id']
+  "捷運站名" varchar(64) [not null, note: '原欄位：station_label']
+  "路線代碼" varchar(2) [not null, note: '原欄位：line_code']
+  "方向說明" varchar(128) [not null, note: '原欄位：direction_text']
+  "是否活動專用表" tinyint(1) [not null, note: '原欄位：is_event_specific']
+  indexes {
+    ("來源版本編號") [pk]
+  }
+  Note: '原表名：metro_timetable；與現有活動表分離；來源生效日及研究假設詳見 docs/metro_operations.md'
+}
+
+Ref: "列車容量參考".("來源版本編號") > "捷運營運來源版本".("來源版本編號")
+
+Ref: "官方離站時刻".("來源版本編號") > "官方方向班表".("來源版本編號")
+
+Ref: "候選發車路徑".("來源版本編號") > "捷運營運來源版本".("來源版本編號")
+
+Ref: "候選發車路徑".("捷運站名", "路線代碼") > "研究車站與路線".("捷運站名", "路線代碼")
+
+Ref: "官方站間時間".("來源版本編號") > "捷運營運來源版本".("來源版本編號")
+
+Ref: "研究車站與路線".("捷運站名") > "捷運站名對照".("捷運站名")
+
+Ref: "官方方向班表".("來源版本編號") > "捷運營運來源版本".("來源版本編號")
+
+Ref: "官方方向班表".("捷運站名", "路線代碼") > "研究車站與路線".("捷運站名", "路線代碼")
+
+TableGroup "官方營運與調度參考" {
+  "列車容量參考"
+  "官方離站時刻"
+  "候選發車路徑"
+  "官方站間時間"
+  "捷運營運來源版本"
+  "研究車站與路線"
+  "官方方向班表"
 }
 

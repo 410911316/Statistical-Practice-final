@@ -1,0 +1,43 @@
+{
+  "model_refitted": false,
+  "predictions_sha256": "8e227869ffe2f4827fb983723dfc7b4ab181eb2c240023ffb3b4cfda5a90da74",
+  "normalized_snapshot_sha256": "b395e542f9531bdf31a8ed31ac0306883af7e4d80954f6022bf7355585174d56",
+  "implementation_sha256": {
+    "configs/queue_dispatch_v1.json": "6a0904642a9fa7bf82360c9e128a5e7ee082bf77fc2a90c9bc97806f49885e80",
+    "src/run_queue_scenarios.py": "410c83444ec5d2b9bc7f88cc79df902f08a1a2711b9513255fec3fbe291c17d2",
+    "src/queue_scenarios.py": "806c190002a2b746fe9b163c99e770dfc1fa6034bb0f16b05ce6949f4353c917",
+    "src/metro_operations.py": "91c8d3c2e929446a210bbf5be3581780a6c397728ddc5db642a24d7656d4b74d",
+    "src/analysis_v1/queueing.py": "bccc3a47ca85720730569cab0d7f0960107f7e9f3d5aba59a23b48617ae7fa67"
+  },
+  "scenarios": 1134,
+  "max_conservation_error": 1.0913936421275139e-11,
+  "all_cleared": true,
+  "max_residual_queue": 0.0,
+  "uses_observed_y": false,
+  "official_timetable_effective_from": [
+    "2026-08-30",
+    "2026-10-01"
+  ],
+  "historical_reconstruction": false,
+  "outputs": {
+    "additional_reference_sources.json": "08d284f9aa7b2ebb55129b2c89842f9330d42aa192c3b53ed6f96f2f59e82c60",
+    "cost_reference.csv": "3f319152d2023d6689e0e7a8abe61f770d36ac30bcf82bbdd8a8b9979fd29b79",
+    "dbml_check.json": "c6d34f142c69506b2b3b6fda00c27e54dce9ca97dc56383fd1c6b4d90250fece",
+    "event_summary.csv": "b6f948e6261368d36cee31d9b9374305fa58c96aae6a2c7fdc3c8c5c8d7d96b4",
+    "import_audit.json": "a78a4a95ffbf8254271e1fb2d1b76e3366011a8c86a871ed09882b48e150cc99",
+    "import_conflict_check.json": "9c5cd8be54b596ea059d3b61f93b72ce64cc1ea5c63a25787e942217049688dc",
+    "metro_capacity_reference.csv": "744d6b7fc20286c7df19641cde9730b86a072cc86d0dcabc67329dcf8c2ef4a5",
+    "metro_departure.csv": "07e41bfbad6813b0e654d13ee0b0d3954113266ef2d7d9749915c5dc389f7c99",
+    "metro_dispatch_path.csv": "e154af965929bf738933ddc975bb081256465a65bcf4e78a46eaf1e2636f1a06",
+    "metro_link_time.csv": "97fd554d528d721809d926d2cdeeff9234b40e4b12778d52909bc3f1180092ad",
+    "metro_source_snapshot.csv": "03651d2702eaadf9194cd964b2a4dab6e5a654fdcbe561117452554a75f3ce51",
+    "metro_station_line.csv": "84aec044d34adb8e6dda016f8537b4ec312eb0a746a323c2e4141064cbfde9fd",
+    "metro_timetable.csv": "ee45204326b1ac31d5949f1ccc62ad5be6ea9b1eeda6e780084be73485461802",
+    "report.md": "8425c593e5ef1cfa84a255a4e801659548ea5099863edcc3e7cfb2fc3b7f59b4",
+    "scenarios.csv": "d5722776871b9f42311cdf09bd1c5cb9887451bae04b5e74557dc0371b8623d6",
+    "summary.csv": "77a5ff358fa99ed5a22aed20585965f463c4a392a7ccd7045b7fb5c2f3d43a0c",
+    "test_summary.json": "9a14dedd09dd44165bd9489e7d849c0734794ccc4e2dfb27ef9d268a605d2fd2",
+    "figures\\arrival_queue_comparison.png": "d99e752c1ab57a275a9efb31564d3e71083596eb81b364c26e6c285041307b7d",
+    "figures\\capacity_sensitivity.png": "a7ad85fc45de1028047ca8509cf7fe35d9750e83728bd23587d98821928122f5"
+  }
+}

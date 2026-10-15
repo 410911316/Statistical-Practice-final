@@ -1,8 +1,50 @@
 # 大稻埕人流網站
 
-React＋shadcn 黑灰介面、MapLibre 地圖、FastAPI 與現有 MySQL。提供「人流展示」及「資料分析」兩頁；第一版讀取活動日期、各站逐時人流與資料完整性，分析模型尚未加入。
+React＋shadcn 黑灰介面、MapLibre 地圖。提供「人流展示」「資料分析」「模型與候車」三頁；公開版使用結果快照，本機版可保留 FastAPI／MySQL。
 
-## 啟動
+## 公開成果網站（GitHub Pages）
+
+網址：[稻埕觀測室](https://shu-ming0808.github.io/Statistical-Practice-final/)；[模型與候車](https://shu-ming0808.github.io/Statistical-Practice-final/#/research)。不需要 Tailscale，電腦關機後仍可看。
+
+- 人流展示／資料分析：26 個活動日期、四站 18–23 時共 624 筆彙總觀測；缺值不補成 0。CSV 下載依當前所選車站。
+- 預測結果：九場、54 小時，實際／預測比較及 MAE、RMSE。沿用 V14，未重訓。
+- 候車情境：切換場次、方向、剩餘空間、方向比例與峰位置，比較三種到達形狀。北門高運量六節編組；每班 555／1,110／1,665 人是剩餘空間假設。
+- 班表與調度：四站分線、方向、日型與終點；附官方 PDF、生效日及來源。候選路徑只計發車後行車時間，完整調度提前量仍缺整備、出庫與插車等待。
+
+公開版只讀 `frontend/public/data/` 的彙總快照，頁面標示匯出時間；不會查詢 MySQL 或自動重算模型。模型九場驗證已反覆使用，候車為現行一般班表的情境估計，不是歷史實測。MySQL、原始 CSV、SQL dump、帳密與 `.local/` 都不發布。
+
+### 更新公開快照
+
+在本機更新資料與分析結果後，從專案根目錄執行：
+
+```powershell
+.\.venv\Scripts\python.exe -X utf8 -m app.export_snapshot
+.\.venv\Scripts\python.exe -X utf8 -m unittest discover -s tests -p test_public_snapshot.py
+npm.cmd --prefix app/frontend test
+```
+
+檢查 `app/frontend/public/data/` 的變更，再 commit／push。匯出程式核對封存模型 SHA256，模型有改動時會拒絕繼續，需先更新分析來源及快照契約。GitHub Actions 只建置與發布已審查快照，不需要資料庫憑證。
+
+### 本機預覽公開版
+
+```powershell
+$env:VITE_DATA_MODE='snapshot'
+$env:VITE_BASE_PATH='/Statistical-Practice-final/'
+npm.cmd --prefix app/frontend run build -- --outDir dist-pages
+npm.cmd --prefix app/frontend run preview -- --host 127.0.0.1 --port 4173 --outDir dist-pages
+```
+
+網址 `http://127.0.0.1:4173/Statistical-Practice-final/`。預覽完清除這兩個環境變數，才能建置下方即時資料庫版：
+
+```powershell
+Remove-Item Env:VITE_DATA_MODE, Env:VITE_BASE_PATH -ErrorAction SilentlyContinue
+```
+
+Pages 採 `HashRouter`（`#/research`），重新整理與分享子頁不會 404；建置會附上專案路徑前綴。工作流程見 [pages.yml](../.github/workflows/pages.yml)，部署只上傳前端 `dist/`，不會上傳整個專案。
+
+依據：[GitHub Pages 自訂工作流程](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)、[Vite GitHub Pages 部署](https://vite.dev/guide/static-deploy.html#github-pages)。
+
+## 啟動本機 MySQL 版
 
 主機需有 Node.js 22.12 以上的相容 LTS、uv、本機 MySQL，以及既有的 `codex-local` MySQL login path。在專案根目錄執行：
 

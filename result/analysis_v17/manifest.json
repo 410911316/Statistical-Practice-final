@@ -1,0 +1,166 @@
+{
+  "config": {
+    "version": 17,
+    "date": "2026-10-14",
+    "input": ".local/analysis_v15/analysis_input.csv",
+    "stations": [
+      "北門",
+      "大橋頭站",
+      "雙連"
+    ],
+    "outer_years": [
+      2024,
+      2025,
+      2026
+    ],
+    "models": [
+      "ridge",
+      "xgboost"
+    ],
+    "variant": "none",
+    "event_counts": [
+      6,
+      9,
+      12,
+      15,
+      18
+    ],
+    "repeats": 10,
+    "subset_seed": 20261014,
+    "model_seed": 20261010,
+    "parameter_policy": "freeze_V16_none_per_year_no_subset_retuning",
+    "protocols": [
+      "event_subsample",
+      "oldest_first",
+      "recent_first"
+    ],
+    "score_population": "Beimen_train_and_same_three_future_events_per_year",
+    "deployment": false
+  },
+  "groups": [
+    "is_weekend",
+    "day_of_year",
+    "year_index",
+    "planned_end_0_60_beimen",
+    "planned_end_0_60_daqiaotou",
+    "planned_end_0_60_shuanglian",
+    "planned_end_0_60_minquan_west",
+    "planned_end_60_120_beimen",
+    "planned_end_60_120_daqiaotou",
+    "planned_end_60_120_shuanglian",
+    "planned_end_60_120_minquan_west",
+    "retrospective_baseline_56d"
+  ],
+  "source_hashes": {
+    "src/run_analysis_v12.py": "5a9da0b8e164910787b6be9eca8ab862674b3f4d74551e7f2bea542786cf2704",
+    "src/analysis_v12/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/analysis_v12/data.py": "dd57a5236648c73dd84277e0a80e1e5218f2620d47b522962ab7c9bfec9de33c",
+    "src/analysis_v12/models.py": "280d173da14d7e6120d904b386c1c6fcc083a08799bbd3424d5816ee5175756b",
+    "src/analysis_v1/models.py": "46a5316431d25d175b73807c9f8e97fba361d63845b899efbf2397f0c26bbead",
+    "src/analysis_v1/data.py": "4e9c7fdfb17d3eb98dff29117e215cc7a5a0a20a1096882c2ba526198929fa77",
+    "src/analysis_v5/models.py": "aa86487eafaabe41d1aa55b902059ef6cc325e30949c79a7e7135720b12dbd66",
+    "src/analysis_v7/models.py": "465eb232a0c2f0d49f6c942c70f0edce277b1c67bb754e1f65179129d0cb4a8f",
+    "src/analysis_v11/models.py": "7bd943c89411b39613b5e5eb439eba308c3a9096401d8f9bef0a9b382b92fbf4",
+    "src/analysis_v11/evaluation.py": "abe4df31d840d7f83a6683a7d4485b5562ba57c3ba17335cf5b6d6c7cb662e3a",
+    "configs/analysis_v12.json": "b4f9bf680ca98d3637c4f7b5f2c1d7cf8f3065e8066cb5fb2efd6a4faf5b80f1",
+    "configs/analysis_v11.json": "a295fa03c80d7445076d757581555d30bdb04254457a18d3cd2483ded4c8e5c9",
+    "configs/analysis_v8_core.json": "00d59e1c05be32b5b1d02b8cf6518be8e7153ba42ebe4bdf3e0292c430ea8227",
+    "configs/analysis_v8_both.json": "452931b48e58f83b47f4e9d0714d99295c9dec610076e90d5fab19c403a9fcdd",
+    "docs/d1_event_type_sources.json": "0e8f45c0cacd65495c8d8d45eaf4415d2b56a2bd8aaacde0dd4a8124719d38a1",
+    "docs/d1_show_end_sources.json": "f7d53dd7c8887aa7eb9c031cf0e0f43992e8da638ea04eddedbe7b6eb5cc0d3b",
+    "docs/d1_weather_sources.json": "362c523f2b9763df4079076e10785a23b2fa2dc897a80daa6e4d002b7e3afc88",
+    ".local/analysis_v12/analysis_input.csv": "fd7a964929f968a3f6d9b9ecf0838071697dfcb24befaeab238d8a98c705ef4a",
+    "src/run_analysis_v14.py": "94b2b9498fa9b55f5e849e945fb45bd3eb5253a5f914381d4172bccdb34b2b6e",
+    "src/analysis_v14/__init__.py": "002ac5cb774c8775cc146a0d9e0b97c54030d65ff7eeaee430e698ef46f94d7a",
+    "src/analysis_v14/experiment.py": "8a0c9c6a306fb073cf9e785ac48f2a9f64b1f44f05d5003d11ac9dd85ead6a62",
+    "configs/analysis_v14.json": "2c89d8def2795a2de75a7902fa3d862bcb8596c8c2a9c887bb23da3a2565a567",
+    "result/analysis_v12/selections.json": "cf412326f0ee443b56b26b2f625bb01263e9efdf2db4385bc733493d4ce8c26c",
+    "result/analysis_v12/manifest.json": "9f6b9c2854c47c847d7f5eae306f10f4600d725ca7b7a473d44740adea19b8a4",
+    ".local/analysis_v12/predictions.csv": "d8da23cdf5c5b48b4fc4151bb36ec731a08be95f2e39ec1288c94e7c0767b23b",
+    ".local/analysis_v14/analysis_input.csv": "2db20f52a107db121d0c02bdf1f721933473c5e09378f623b991a1d1f2e13435",
+    "configs/analysis_v15.json": "244d66f3535162fe27803969ed500eea84d2f29696c878892a33ad73b0384741",
+    "src/run_analysis_v15.py": "6749bb0c3b787494816c0f0ba03dcfa1bfcaa209b8de7fa827dc66833f464503",
+    "src/analysis_v15/__init__.py": "47490b95403492ce4f2ffaf33742c5b724cfe7b2083fc4ef2e6435b644af1435",
+    "src/analysis_v15/experiment.py": "53d8042c31fbd7a459473c7680f2e8ebbebd7601818900e4c961dcec6692ed09",
+    "data/processed/station_hourly.parquet": "2bc4c399d8a7ab8ae9672c5c7e31b5a459281acda9f05be6345258f2c3bdb85f",
+    "data/processed/calendar_baseline/candidate_audit.csv": "a62fd0549da4d607cf061696995712c006b8d6568e12ae9844e13f7ddc4bcef5",
+    "result/analysis_v14/manifest.json": "59a8cc63660dfd854b5d57c2cfaa14ef5480bff51e4cf7bd1e2c2b6f9947e858",
+    ".local/analysis_v15/analysis_input.csv": "2b4ac4e63cb15ae2e53bddcf79a4fb2c8fca256fd2eda6096933cefe137b49d0",
+    ".local/analysis_v15/snapshot_features.csv": "a4cb31618a72d6e536427d77278f26af78244efeaaef069eb4c7ffab30abf69c",
+    ".local/analysis_v15/feature_audit.json": "910023bb7bfc26fce1b6ee5cfc832327fc474b08116ca9d4c803889fa971e051",
+    "configs/analysis_v16.json": "4969395e15fb8decc24e17aad18cd40722a62f8830cd3db6e7f0a43bfc12b497",
+    "src/run_analysis_v16.py": "a90070e104bb34996f5811542ecb0ca91ed448758e0fd1c2841616dc0f0edfc9",
+    "src/analysis_v16/__init__.py": "2a23b222ca36fc522728af0d1d0c312bb4143f666b300e7d11575a0b18a03e69",
+    "src/analysis_v16/experiment.py": "71d2a20c6097adbe50936005f07f675149b73866f0df9bdf80f7b6dfaa79e69c",
+    "result/analysis_v15/manifest.json": "156aa6562ea811566f9da16812886216bc841cd64dfa0d4348b62f9b6973b58b",
+    "result/analysis_v15/fits.json": "7c6d944a397990bad8b439d1581106653d0ef334b0b8be8d131be00faaca00f5",
+    ".local/analysis_v15/predictions.csv": "758c400995f9eb72ea6beb4892f0bbeb4136f7d8d58ab5aa20b300a89d9fe5dd",
+    "src/run_analysis_v17.py": "a3b8aca21472cb96253de4031c42fc9b0feebf0bb39ed6a91bd828263c738c00",
+    "configs/analysis_v17.json": "69e1e5c2d5859a70d85d5facd96a6a9dd765d76496d9cac6b0f44d934b97da85",
+    "src/analysis_v17/__init__.py": "15175ee466c214112c0bde1278948bac0ffb04710be7c1182ac5ea97650e43fc",
+    "src/analysis_v17/experiment.py": "ccbe0294382254f2be36e10217e59331622fe5b17159cbccbbef67489ef0aff6",
+    "result/analysis_v16/manifest.json": "7d5fc7acbbdcd4184a999de68d858e9016cebed5796c3ce84712e0b2be3d16dc",
+    "result/analysis_v16/fits.json": "86693c67d4767b7fe0952042b6dce3a638d1e7c797eea20d2969a27c50fc3aaf",
+    ".local/analysis_v16/predictions.csv": "375eef93bff6895dd76aef577ad9856d5c67b050dafee4beed3e60a6298face3"
+  },
+  "prediction_sha256": "ca3b959d011a470a5de54882887c41a9b7fd7db813995aa09fd9945b858c5d36",
+  "fits_sha256": "3e86068472679d4c6e4cbac1132dec36ea4495625e39e07afcced148489ce54c",
+  "scores_sha256": "c411c93864bf1c140047508d03e370e1f588a1d0a39df87efb50ea4d31b0b47d",
+  "curves_sha256": "f2902e2428f001ff71f2f4181457d51f491a249312109219a03301f03fddc62e",
+  "versions": {
+    "python": "3.10.11",
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "sklearn": "1.7.2",
+    "xgboost": "3.1.3",
+    "duckdb": "1.5.6",
+    "joblib": "1.6.0"
+  },
+  "models_fitted": 222,
+  "controls": [
+    {
+      "year": 2024,
+      "model": "ridge",
+      "max_error": 4.547473508864641e-13
+    },
+    {
+      "year": 2024,
+      "model": "xgboost",
+      "max_error": 0.0
+    },
+    {
+      "year": 2025,
+      "model": "ridge",
+      "max_error": 4.547473508864641e-13
+    },
+    {
+      "year": 2025,
+      "model": "xgboost",
+      "max_error": 5.684341886080802e-14
+    },
+    {
+      "year": 2026,
+      "model": "ridge",
+      "max_error": 4.547473508864641e-13
+    },
+    {
+      "year": 2026,
+      "model": "xgboost",
+      "max_error": 0.0
+    }
+  ],
+  "deployed": false,
+  "independent_unseen_test": false,
+  "parameter_search": false,
+  "limitations": [
+    "Monthly data do not prove same-day availability",
+    "Source-bin clock basis and interval endpoints remain unverified",
+    "Original V12 history publication times remain partly unverified",
+    "Nine development events have been inspected repeatedly; all windows reported without choosing on test",
+    "Cohort removal also reduces data and learned station effects; it is not a causal test of noise",
+    "Activity subsampling changes composition; no causal estimate of sample-size benefit",
+    "Bands describe ten overlapping past-event subsets; not confidence intervals or new future events",
+    "Frozen hyperparameters and background inputs retain information from wider past data",
+    "No new same-day lag inputs; none variant only; no optimum size selected on validation"
+  ]
+}

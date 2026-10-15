@@ -114,7 +114,11 @@ export function Analysis({ date, rows, loading, error, retry }: AnalysisProps) {
           </p>
         </div>
         {isReady && stationRows.length > 0 && (
-          <a className="analysis-download" href={csvUrl(date, [station.id])}>
+          <a
+            className="analysis-download"
+            download={`人流-${date}-${station.id}.csv`}
+            href={csvUrl(date, [station.id])}
+          >
             <ArrowDownToLine size={15} aria-hidden="true" /> 下載 CSV
           </a>
         )}
@@ -413,7 +417,7 @@ export function Analysis({ date, rows, loading, error, retry }: AnalysisProps) {
             </div>
           </section>
           <p className="analysis-deferred-note">
-            模型分析將於研究方法確認後加入；目前僅呈現原始彙整結果。
+            本頁呈現逐時觀測；預測與候車成果請看「模型與候車」。
           </p>
         </>
       )}

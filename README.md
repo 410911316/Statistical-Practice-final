@@ -1,6 +1,134 @@
 # 大稻埕煙火人流分析與捷運班次模擬
 
-## 最新進度：原資料調參、Early stopping 與北門散場加權（2026-10-13）
+**公開網站：[稻埕觀測室](https://shu-ming0808.github.io/Statistical-Practice-final/)** · [直接看模型與候車](https://shu-ming0808.github.io/Statistical-Practice-final/#/research)
+
+網站提供人流地圖、逐時觀測、九場北門預測比較、1,134 組候車情境及四站官方班表／候選調度路徑。**北門為高運量六節編組**；候車採每班剩餘空間假設，沒有把整列 2,220 人上限當成北門可上車人數。GitHub Pages 使用公開彙總快照，不需要 Tailscale、不連本機 MySQL；資料更新後重新匯出並發布。[更新方式](app/README.md)／[前端實作](process.md#32-公開成果網站與-github-pages)。
+
+## 北門候車情境與四站官方班表（2026-10-15）
+
+保留 **V14 四站 XGBoost `frozen_w4`（北門 MAE 440.28）**，已接上官方一般班表，完成 **1,134 組單方向候車情境**，未重訓，前端直接呈現封存模型結果。四站 10 份班表、7,118 個離站時刻、187 筆站間資料與 20 條候選調度路徑已匯入 MySQL；來源列在本頁最下方。
+
+相同逐時人數，僅調整最高預測小時內的到達形狀；下表是九場平均候車分鐘，方向各 50%、峰中心在半點、站內步行 5 分鐘，皆為假設。
+
+| 到達情境 | 每班剩 555 人 | 每班剩 1,110 人 | 每班剩 1,665 人 |
+|---|---:|---:|---:|
+| 均勻 | 3.39 | 3.12 | 3.12 |
+| 寬峰（σ=20 分鐘） | 4.10 | 3.12 | 3.12 |
+| 集中峰（σ=5 分鐘） | 7.94 | 4.22 | 3.52 |
+
+![北門分鐘到達與候車情境](result/queue_dispatch_v1/figures/arrival_queue_comparison.png)
+
+**這是現行一般班表的情境比較，不是歷史活動實際候車。** 北門表從 2026/8/30 生效，晚於九場需求；官方另註明大型活動可能不適用一般表。2,220 人是六節編組上限，剩餘容量、方向比例、分鐘形狀仍需校準。
+
+[完整結果與調度時間](result/queue_dispatch_v1/report.md)／[容量敏感度圖](result/queue_dispatch_v1/figures/capacity_sensitivity.png)／[車上人數估法、成本及缺資料](docs/metro_operations.md)／[實作細節](process.md#31-官方班表入庫與分鐘候車情境)。舊排隊範例保留；這次另以新入口串接 XGBoost，尚未完成全線可行班表最佳化。
+
+## 目前模型與實際差距（2026-10-14）
+
+同樣九場北門、54 個來源時段：近期可比實驗中最低 MAE 的四站 XGBoost 為 **440.28**，目前三站基準為 **491.32**；但三站的實際尖峰平均絕對誤差較低（641.23 vs 747.14）。四站最低 MAE 版本在 2024/8/10 尖峰仍由實際 11101 估成 8359，低估 **2742 人次、24.7%**。這是反覆使用九場資料的回顧比較，尚未自動更換模型。
+
+![最低 MAE 候選與實際人流](result/model_diagnostics_20261014/figures/best_four_actual.png)
+
+[九場逐時圖](result/model_diagnostics_20261014/figures/best_four_hourly.png)／[目前三站圖](result/model_diagnostics_20261014/figures/current_three_actual.png)／[誤差直方圖](result/model_diagnostics_20261014/figures/error_histogram.png)／[差距、極值可行性與新變數來源報告](result/model_diagnostics_20261014/report.md)。極值樣本量核對顯示，每年度可用過去活動最大值僅 12–18 個；尚未擬合 GEV／GPD。下一步建議先補分場地舞台時間及 D−1 預報雨量，分組比較。
+
+## 最新進度：共用模型＋少量散場修正（2026-10-14）
+
+**已實作；散場低估有減少，但整體 MAE 沒改善、實際尖峰誤差反而增加。**保留北門、大橋頭、雙連共用模型，只從過去年份的留出預測誤差學兩個修正係數；依事前預定結束時間啟用，最多調整原預測 ±25%。
+
+下表為相同九場北門的 XGBoost，比較原版與「低估罰 2 倍」修正版；各指標越低越好，單位人次／來源時段。
+
+| 指標 | 原三站共用模型 | ＋散場修正 | 變化 |
+| --- | ---: | ---: | --- |
+| 全六時段 MAE | 491.32 | 492.99 | 惡化 0.3% |
+| 全六時段 RMSE | 760.23 | 735.10 | 改善 3.3% |
+| 實際尖峰時段絕對誤差 | 641.23 | 834.83 | 惡化 30.2% |
+| 預定散場 2:1 誤差 | 1184.98 | 1109.15 | 改善 6.4% |
+
+- **如何實作：**北門預定結束後第一／第二小時各一個係數，帶收縮與上下限；窗口外、其他站、結束時間未知者維持原模型。這不是用實際尖峰選資料，也沒有新增當日 lag。
+- **修正也會選錯方向：**2024/8/10 尖峰低估 1827 → 2651 人次，變差；2026/8/15 則 865 → 541，改善。只用少量過去活動學到的調整，未必能區分每場規模與散場形狀。
+- **高估一起上升：**預定窗口正向低估 384.61 → 301.12，但高估 415.75 → 506.91。因此 2:1 分數較好不能等同「全面更準」或實際調度成本已降低。
+- **Ridge／1:1 也已比較：**Ridge 的 2:1 MAE 854.66 → 854.17，改善很小；XGBoost 的 1:1 修正 MAE 545.62。完整報告保留全部版本。
+- **目前採用建議：**原三站 XGBoost 繼續作基準，修正版作候選情境。九場已反覆用於開發，原歷史發布時點與來源時段定義限制保留；未自動替換網站模型。
+
+![共用模型加散場修正](result/analysis_v18/figures/comparison.png)
+
+[完整報告與逐場解讀](result/analysis_v18/report.md)／[九場曲線](result/analysis_v18/figures/beimen_profiles.png)／[修正係數](result/analysis_v18/figures/correction_coefficients.png)／[實作公式](process.md#29-第十八版共用模型少量散場修正)／[獨立檢核](result/analysis_v18/independent_validation.json)。完成 12 個共用模型與 12 個修正擬合，347 項分析測試通過。
+
+方法依據：[Montero-Manso & Hyndman（2021），跨序列共用模型](https://arxiv.org/abs/2008.00444)、[Breiman（1996），以留出預測建立第二層](https://statistics.berkeley.edu/sites/default/files/tech-reports/367.pdf)、[Gneiting（2011），損失與預測目標](https://arxiv.org/abs/0912.0902)。兩個有界修正係數、±25% 與 L1 懲罰是本案延伸，不是原文保證最佳。
+
+## 第十七版紀錄：活動場數學習曲線（2026-10-14）
+
+**結果支持「活動樣本少是限制之一」，但場次組成與模型也重要，不能只靠增加筆數解決。**固定三站、原模型輸入及年度參數，比較 Ridge／XGBoost；每個年度固定同樣三場北門驗證，只增加過去的完整訓練活動。
+
+| 固定驗證年度 | 訓練場數 | XGBoost：6 場平均 MAE | 全部過去活動 MAE | 相對 6 場改善 |
+| --- | --- | ---: | ---: | ---: |
+| 2024 | 6 → 12 | 1126.49 | 784.95 | 30.3% |
+| 2025 | 6 → 15 | 746.65 | 246.20 | 67.0% |
+| 2026 | 6 → 18 | 661.21 | 442.82 | 33.0% |
+
+- **不是新模型勝過舊模型：**6 場結果為 10 次整場抽樣平均；全資料終點重現三站 XGBoost 合併 MAE 491.32。這輪是診斷資料量，沒有挑最佳場數或更換模型。
+- **改善開始變小：**2026 年 15 → 18 場的抽樣平均 MAE 448.00 → 442.82，只改善約 1.2%；Ridge 也較早停滯。
+- **哪些活動也很重要：**同樣 6 場，2025 的最早六場 MAE 1067.53、最近六場 289.72；但近期資料不是每年必勝。2026 某些 15 場組合反而比全部 18 場好。
+- **圖中陰影不是信賴區間：**表示 10 次過去活動抽樣的第 10–90 百分位；最右端只有唯一全資料組合，沒有陰影不代表沒有未來不確定性。
+- **比較界線：**只縮減擬合的活動場數；既有背景特徵與凍結參數仍利用較廣的過去資料。原發布時點限制、九場重複用於開發等問題保留，不能稱為新未見測試。
+
+![活動場數學習曲線](result/analysis_v17/figures/learning_mae.png)
+
+[完整報告](result/analysis_v17/report.md)／[尖峰曲線](result/analysis_v17/figures/learning_peak.png)／[不同加入順序](result/analysis_v17/figures/subset_order.png)／[實作細節](process.md#28-第十七版整場活動學習曲線)／[獨立檢核](result/analysis_v17/independent_validation.json)。完成 222 個模型擬合與獨立重算，327 項分析測試通過。
+
+方法依據：[scikit-learn 學習曲線](https://scikit-learn.org/stable/modules/learning_curve.html)、[FPP3 向前驗證](https://otexts.com/fpp3/toolbox.html#time-series-cross-validation)。整場抽樣、場數格點與重複次數為本案設定。
+
+## 第十六版紀錄：三站與四站訓練比較（2026-10-14）
+
+**已改用北門、大橋頭、雙連，移除民權西路重跑。原 XGBoost 的北門 MAE 473.91 → 491.32，略差；尖峰絕對誤差 749.02 → 641.23，改善 14.4%。因此不能直接說「站太多就是不準的原因」。**
+
+Ridge、XGBoost 各比較七種輸入；固定原年度參數、相同九場北門 54 筆，只改訓練車站。下列為未加當日前段人流的原模型，數字越低越好，單位人次／來源時段。
+
+| 模型與訓練範圍 | 北門 MAE | 北門 RMSE | 尖峰絕對誤差 | 散場 2:1 誤差 |
+| --- | ---: | ---: | ---: | ---: |
+| XGBoost 四站 | 473.91 | 766.90 | 749.02 | 1231.28 |
+| XGBoost 三站 | 491.32 | 760.23 | 641.23 | 1184.98 |
+| Ridge 四站 | 845.44 | 1547.49 | 2681.26 | 3376.59 |
+| Ridge 三站 | 854.66 | 1518.92 | 2637.12 | 3354.17 |
+
+- **整體與尖峰有取捨：**三站原 XGBoost 的 MAE 惡化 3.7%，尖峰與散場平均誤差改善；但 2026 年尖峰誤差反而上升，並非每年更準。
+- **其他站也一起看：**大橋頭 MAE 245.69 → 235.07；雙連 166.93 → 200.54。同樣共同三站的 162 筆總 MAE 295.51 → 308.98，沒有全面改善。
+- **前段人流也已比較：**進站＋目的站前 1 時段，三站比相應四站好（643.45 → 577.47），仍未勝過原四站 473.91；全部七種輸入都列入報告。
+- **比較範圍：**這輪未重選參數、未新增融合或散場訓練加權。Ridge 固定 λ，實際 alpha=nλ 隨訓練樣本量調整。
+- **保留資料限制：**原歷史發布時點尚未完全核實；前段人流另外假設活動當天能取得。九場已反覆用於開發，屬回顧探索，未自動替換網站模型。
+
+![三站與四站北門比較](result/analysis_v16/figures/comparison.png)
+
+[完整結果](result/analysis_v16/report.md)／[九場曲線](result/analysis_v16/figures/beimen_profiles.png)／[七種輸入](result/analysis_v16/figures/lag_comparison.png)／[逐站比較](result/analysis_v16/figures/stations.png)／[實作細節](process.md#27-第十六版三站與四站訓練的配對比較)／[獨立檢核](result/analysis_v16/independent_validation.json)。84 個模型及全部 315 項分析測試通過檢核。
+
+## 第十五版紀錄：活動當日前段人流更新（2026-10-13）
+
+**已完成前 1／3／5 個來源時段的比較。整體 MAE 沒有變好；最近 1 個時段有局部改善，五個時段並非越多越好。**
+
+保留四站訓練、同樣九場北門測試，Ridge 與 XGBoost 各比較七種輸入；凍結各年度原參數，只改前段人流特徵。名義 18:00 截止，只使用來源時段 13–17，後續預測不偷放 18–23 真值。
+
+| XGBoost 輸入 | MAE | RMSE | 尖峰絕對誤差 |
+| --- | ---: | ---: | ---: |
+| 原模型 | 473.91 | 766.90 | 749.02 |
+| 加進站前 1 時段 | 481.77 | 758.90 | 707.42 |
+| 加進站前 3 時段 | 581.55 | 879.43 | 848.10 |
+| 加進站前 5 時段 | 619.53 | 1052.53 | 1311.65 |
+| 再加目的站前 1 時段 | 643.45 | 1105.38 | 1042.65 |
+| 再加目的站前 3 時段 | 689.61 | 1194.52 | 1176.06 |
+| 再加目的站前 5 時段 | 650.58 | 1047.36 | 1373.58 |
+
+- **1 時段的好處有限：**散場 2:1 誤差 1231.28 → 1130.13、尖峰絕對誤差降低 5.6%；但尖峰正向低估 556.60 → 596.33，仍有大型場低估更嚴重。
+- **較晚時段另看：**只比較來源時段 19–23，同樣 45 筆上 MAE 532.96 → 513.46（改善 3.7%）。這是預先設定的時間標示敏感度檢查，不能把 513.46 和全六時段的 473.91 直接排名。
+- **目的站資料確實存在：**按目的站北門彙總各起站 OD；但原時段是進站或出站鐘點、區間起點或終點，尚未核實，故稱「目的站旅次量」，不當作已確認的出站時刻。
+- **可得性界線：**這輪是「假設當天能拿到前段人流」的回顧實驗，不是原 D−1 預測。公開 OD 每月更新，尚未接即時資料；原歷史發布限制也保留。九場已反覆檢視，所有窗口完整報告，未挑最好的窗口部署。
+- **Ridge 也已完成：**七種版本的 MAE 均未優於自身原版；完整數字、逐場曲線及四張圖在下方報告。
+
+![前段人流比較](result/analysis_v15/figures/comparison.png)
+
+[完整結果](result/analysis_v15/report.md)／[九場曲線](result/analysis_v15/figures/beimen_profiles.png)／[年度比較](result/analysis_v15/figures/annual.png)／[較晚時段比較](result/analysis_v15/figures/target_window.png)／[實作細節](process.md#26-第十五版活動當日前段人流更新)／[獨立檢核](result/analysis_v15/independent_validation.json)。
+
+方法依據：[官方 OD 目錄](https://data.taipei/dataset/detail?id=63f31c7e-7fc3-418b-bd82-b95158755b4d)、[scikit-learn 落後特徵範例](https://scikit-learn.org/stable/auto_examples/applications/plot_time_series_lagged_features.html)、[FPP3 向前驗證](https://otexts.com/fpp3/toolbox.html#time-series-cross-validation)。18:00 與 1／3／5 時段是本案假設，並非文獻保證的最佳設定。
+
+## 第十四版紀錄：原資料調參、Early stopping 與北門散場加權（2026-10-13）
 
 **原 MAE 473.91 已重現。保留原參數、只提高北門散場訓練權重到 4 倍，降到 440.28（改善 7.1%）；新學習率格點搭配 early stopping、不加權，降到 450.55。**
 
@@ -463,9 +591,19 @@ uv sync --group analysis --group notebook --extra social --extra web --extra app
 資料來源：
 
 - [北捷分時進出站運量](https://data.taipei/dataset/detail?id=63f31c7e-7fc3-418b-bd82-b95158755b4d)
-- [固定／變動成本](https://www.metro.taipei/cp.aspx?n=20CB8DE3F41B411)：參考 114 年審定決算書。
+- [固定／變動成本](https://www.metro.taipei/cp.aspx?n=20CB8DE3F41B4111)：參考 114 年審定決算書。
 - [變動／固定公里數](https://whhr.gov.taipei/News_Content.aspx?n=0121E4C78246FC0D&s=3E147DD6A74BE990)
 - [天氣實測](https://codis.cwa.gov.tw/StationData)：氣象署 CODiS，只作事後探索。
 - [GFS 歷史操作型預報](https://gdex.ucar.edu/datasets/d084001/)／[NOAA AWS 公開時間證據](https://registry.opendata.aws/noaa-gfs-bdp-pds/)：本版事前天氣輸入。
 - [特殊節假日](https://data.gov.tw/dataset/14718)：政府行政機關辦公日曆表。
 - [大稻埕煙火排程參考](https://data.gov.tw/dataset/7778)：觀光資訊活動資料庫。
+
+候車與列車調度新增官方來源（2026-10-15 核對）：
+
+- 四站時刻表：[北門](https://web.metro.taipei/pages2026/WebStation/105/7)／[大橋頭](https://web.metro.taipei/pages2026/WebStation/128/7)／[雙連](https://web.metro.taipei/pages2026/WebStation/054/7)／[民權西路](https://web.metro.taipei/pages2026/WebStation/055/7)。八份自 2026/8/30 生效，橘線往南勢角兩份自 10/1 生效；都是一般離站表。每份 PDF 的直連與 SHA-256 見 [來源清單](result/queue_dispatch_v1/metro_source_snapshot.csv)。
+- [相鄰兩站行駛與停靠時間](https://data.taipei/dataset/detail?id=513e97fe-6a98-4a0d-b7dc-11122c8638d4)／[官方 CSV](https://data.taipei/api/frontstage/tpeod/dataset/resource.download?rid=c32998fa-c9b2-4324-9016-e19fbe0815f1)：推算同線候選發車站→四站的行車部分，不含未知整備／出庫／插車時間。
+- [高運量六節編組最大載客量](https://www.dorts.gov.taipei/News_Content.aspx?n=2A66A485FACB0D5B&s=F32662CFF6FE4D80)：370 人／節、2,220 人／列；不是剩餘容量。
+- [北捷 API 申請與資料目錄](https://www.metro.taipei/cp.aspx?n=BDEB860F2BE3E249)／[API 規格第 1 頁項次 6](https://www-ws.gov.taipei/001/Upload/405/relfile/18288/116939/26d47117-1927-48fb-9293-3f7879ec8092.pdf)：車次、方向及四級擁擠度，30 秒更新；尚未申請接入，不能直接當精確人數。
+- [北捷載重與票證人流模型](https://www.metro.taipei/News_Content.aspx?n=30CCEFD2A45592BF&s=3C06D5F73D9377D0&sms=72544237BBE4C5F6)：車上背景載客估計的官方實務依據。
+- [新莊機廠與迴龍進出軌](https://www.dorts.gov.taipei/cp.aspx?n=A7D84926581F5817&s=2091F0361804122D)／[新店機廠與小碧潭支線限制](https://www.dorts.gov.taipei/News_Content.aspx?n=2A66A485FACB0D5B&s=89085E307909460C&sms=87415A8B9CE81B16)：機廠位置與路徑線索，沒有公布活動當日可用備車與就緒時間。
+- [114 年審定決算書 PDF 第 51 頁](https://www-ws.gov.taipei/001/Upload/405/relfile/18288/7602/4627504c-4034-4a4e-b403-c692be626487.pdf#page=51)：合併勞務成本明細表的年度固定／變動運輸費用；不是單班增量成本，參見 [成本口徑](docs/metro_operations.md#4-營運成本有找到仍不能直接當每加一班的成本)。

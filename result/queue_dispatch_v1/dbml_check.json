@@ -1,0 +1,10 @@
+{
+  "docs/database_schema.dbml": {
+    "table_boxes": 31,
+    "parsed": true
+  },
+  "docs/database_schema_中文.dbml": {
+    "table_boxes": 31,
+    "parsed": true
+  }
+}

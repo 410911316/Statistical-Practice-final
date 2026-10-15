@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "source_hashes": 80,
+  "output_hashes": 7,
+  "historical_parameter_choices_checked": 12,
+  "base_models_refitted": 12,
+  "epigraph_lp_checks": 12,
+  "metric_rows": 78,
+  "max_prediction_difference": 1.8189894035458565e-12,
+  "max_metric_difference": 2.7284841053187847e-12,
+  "max_lp_objective_difference": 2.220446049250313e-16,
+  "strictly_past_labels": true,
+  "unknown_windows_unchanged": true,
+  "correction_cap": 0.25,
+  "d1_publication_fully_verified": false,
+  "independent_unseen_test": false,
+  "deployed": false
+}

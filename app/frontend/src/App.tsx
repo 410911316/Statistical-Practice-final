@@ -1,5 +1,13 @@
 import { lazy, Suspense, useEffect, useState } from "react";
-import { BrowserRouter, NavLink, Route, Routes, Link } from "react-router-dom";
+import {
+  BrowserRouter,
+  HashRouter,
+  useLocation,
+  NavLink,
+  Route,
+  Routes,
+  Link,
+} from "react-router-dom";
 import {
   Activity,
   ArrowDownToLine,
@@ -23,6 +31,7 @@ import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import {
   api,
+  STATIC_MODE,
   completeTotal,
   csvUrl,
   hourOf,
@@ -35,6 +44,10 @@ import { STATIONS, SOURCE_LINKS } from "@/data/geography";
 import { FlowMap } from "@/components/FlowMap";
 const Analysis = lazy(() =>
   import("@/pages/Analysis").then((module) => ({ default: module.Analysis })),
+);
+
+const Research = lazy(() =>
+  import("@/pages/Research").then((m) => ({ default: m.ResearchPage })),
 );
 
 function useSaved<T>(
@@ -72,6 +85,7 @@ const statuses: Record<string, string> = {
 };
 
 function Workspace() {
+  const researchPage = useLocation().pathname === "/research";
   const [events, setEvents] = useState<EventRecord[]>([]);
   const [date, setDate] = useSaved(
     "date",
@@ -220,6 +234,10 @@ function Workspace() {
             <Activity size={18} />
             資料分析<span className="nav-number">02</span>
           </NavLink>
+          <NavLink to="/research">
+            <Layers2 size={18} />
+            模型與候車<span className="nav-number">03</span>
+          </NavLink>
         </nav>
         <div className="sidebar-note">
           <span className="eyebrow">THE RESEARCH</span>
@@ -233,7 +251,7 @@ function Workspace() {
         <div className="sidebar-bottom">
           <div className="private-label">
             <ShieldCheck size={15} />
-            團隊研究空間
+            {STATIC_MODE ? "公開研究成果" : "團隊研究空間"}
           </div>
           <p>每個人的操作獨立保留在自己的瀏覽器。</p>
           <button
@@ -244,7 +262,7 @@ function Workspace() {
             <ArrowUpRight size={14} />
           </button>
           <div className="version">
-            第一版<span>v0.1</span>
+            成果展示<span>v0.2</span>
           </div>
         </div>
       </aside>
@@ -258,43 +276,49 @@ function Workspace() {
             <span className={`connection ${connected ? "is-connected" : ""}`}>
               <i />
               {connected
-                ? "MySQL 已連線"
+                ? STATIC_MODE
+                  ? "公開快照已載入"
+                  : "MySQL 已連線"
                 : loading
                   ? "資料連接中"
-                  : "資料庫未連線"}
+                  : STATIC_MODE
+                    ? "快照未載入"
+                    : "資料庫未連線"}
             </span>
             <div className="avatar">研</div>
           </div>
         </header>
         <main className="main-content">
-          <div className="context-bar">
-            <div className="context-label">
-              <span className="eyebrow">EVENT EXPLORER</span>
-              <span className="context-dot">/</span>
-              <span>活動觀測</span>
-            </div>
-            <div className="date-control">
-              <label htmlFor="event-date">活動日期</label>
-              <div className="select-wrap">
-                <select
-                  id="event-date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  disabled={!events.length}
-                >
-                  {!events.length && <option value="">讀取中…</option>}
-                  {[...events].reverse().map((e) => (
-                    <option key={e.event_date} value={e.event_date}>
-                      {e.event_date} ·{" "}
-                      {statuses[e.event_status] || e.event_status}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDown size={14} />
+          {!researchPage && (
+            <div className="context-bar">
+              <div className="context-label">
+                <span className="eyebrow">EVENT EXPLORER</span>
+                <span className="context-dot">/</span>
+                <span>活動觀測</span>
               </div>
-              <Badge variant="outline">18:00–24:00</Badge>
+              <div className="date-control">
+                <label htmlFor="event-date">活動日期</label>
+                <div className="select-wrap">
+                  <select
+                    id="event-date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    disabled={!events.length}
+                  >
+                    {!events.length && <option value="">讀取中…</option>}
+                    {[...events].reverse().map((e) => (
+                      <option key={e.event_date} value={e.event_date}>
+                        {e.event_date} ·{" "}
+                        {statuses[e.event_status] || e.event_status}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown size={14} />
+                </div>
+                <Badge variant="outline">18:00–24:00</Badge>
+              </div>
             </div>
-          </div>
+          )}
           {sourcesOpen && (
             <div className="source-panel panel">
               <div>
@@ -307,7 +331,7 @@ function Workspace() {
                 </button>
               </div>
               <p>
-                人流來自本機 MySQL 已整理的北捷逐時
+                人流來自已整理的北捷逐時
                 OD。目的站人次沿用來源資料的時間格，尚未確認為實際出站時間。地圖是活動代表位置與車站入口；路徑與粒子是未經校準的示意，不代表實際足跡、導航或人數。底圖需連網載入。
               </p>
               <div className="source-links">
@@ -320,13 +344,16 @@ function Workspace() {
               </div>
             </div>
           )}
-          {currentEvent && currentEvent.event_status !== "held" && (
-            <div className="status-note">
-              所選活動狀態為「
-              {statuses[currentEvent.event_status] || currentEvent.event_status}
-              」。下列為該日期車站運量，不能解讀成活動散場人流。
-            </div>
-          )}
+          {!researchPage &&
+            currentEvent &&
+            currentEvent.event_status !== "held" && (
+              <div className="status-note">
+                所選活動狀態為「
+                {statuses[currentEvent.event_status] ||
+                  currentEvent.event_status}
+                」。下列為該日期車站運量，不能解讀成活動散場人流。
+              </div>
+            )}
           <Routes>
             <Route
               path="/"
@@ -377,7 +404,11 @@ function Workspace() {
                             )
                       }
                       suffix="人次"
-                      note="MySQL 原始時段彙整"
+                      note={
+                        STATIC_MODE
+                          ? "公開快照・原始時段彙整"
+                          : "MySQL 原始時段彙整"
+                      }
                     />
                     <Metric
                       label="完整資料時段"
@@ -618,9 +649,10 @@ function Workspace() {
                   <div className="bottom-note">
                     <SlidersHorizontal size={15} />
                     <span>
-                      模型參數將於研究方法確定後加入。目前不推估真實步行軌跡、候車時間或疏運成效。
+                      本頁為路徑示意；預測與候車情境請看「模型與候車」。路徑不是實測足跡。
                     </span>
                     <a
+                      download={`四站人流-${date}.csv`}
                       href={
                         date
                           ? csvUrl(
@@ -654,6 +686,18 @@ function Workspace() {
                     error={error}
                     retry={retry}
                   />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/research"
+              element={
+                <Suspense
+                  fallback={
+                    <div className="empty-state">正在載入研究成果…</div>
+                  }
+                >
+                  <Research />
                 </Suspense>
               }
             />
@@ -702,9 +746,10 @@ function Metric({
   );
 }
 export default function App() {
+  const Router = STATIC_MODE ? HashRouter : BrowserRouter;
   return (
-    <BrowserRouter>
+    <Router>
       <Workspace />
-    </BrowserRouter>
+    </Router>
   );
 }

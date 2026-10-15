@@ -1,0 +1,47 @@
+{
+  "version": 16,
+  "date": "2026-10-14",
+  "cohorts": {
+    "four": [
+      "北門",
+      "大橋頭站",
+      "雙連",
+      "民權西路"
+    ],
+    "three": [
+      "北門",
+      "大橋頭站",
+      "雙連"
+    ]
+  },
+  "evaluation_stations": [
+    "北門",
+    "大橋頭站",
+    "雙連"
+  ],
+  "outer_years": [
+    2024,
+    2025,
+    2026
+  ],
+  "models": [
+    "ridge",
+    "xgboost"
+  ],
+  "variants": [
+    "none",
+    "origin_w1",
+    "origin_w3",
+    "origin_w5",
+    "both_w1",
+    "both_w3",
+    "both_w5"
+  ],
+  "seed": 20261010,
+  "input": ".local/analysis_v15/analysis_input.csv",
+  "parameter_policy": "V12_fixed_core_same_lambda_and_tree_settings_across_cohorts",
+  "feature_policy": "same_candidate_groups_training_only_encoding",
+  "evaluation_policy": "same_nine_events_Beimen_primary_common_three_stations_secondary",
+  "model_selection": "no_test_based_cohort_or_window_selection",
+  "availability": "retrospective_original_baseline_lags_conditional_same_day"
+}

@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "source_hashes": 50,
+  "models_refitted": 222,
+  "metric_rows": 444,
+  "curve_rows": 144,
+  "full_controls": 6,
+  "max_prediction_difference": 1.8189894035458565e-12,
+  "max_metric_difference": 1.8189894035458565e-12,
+  "max_preprocessing_difference": 0.0,
+  "max_control_difference": 4.547473508864641e-13,
+  "fixed_validation_events_per_year": 3,
+  "whole_events": true,
+  "nested_subsets": true,
+  "future_labels_excluded": true,
+  "same_parameters_per_year": true,
+  "bands_are_confidence_intervals": false,
+  "deployed": false
+}

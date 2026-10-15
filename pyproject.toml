@@ -8,6 +8,10 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+transit = [
+    "pdfplumber>=0.11,<0.12",
+    "beautifulsoup4>=4.12.3,<5",
+]
 app = [
     "fastapi>=0.115,<1",
     "uvicorn>=0.30,<1",

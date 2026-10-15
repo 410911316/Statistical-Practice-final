@@ -1,0 +1,16 @@
+[
+  {
+    "file": "metro_114_final_accounts.pdf",
+    "source_url": "https://www-ws.gov.taipei/001/Upload/405/relfile/18288/7602/4627504c-4034-4a4e-b403-c692be626487.pdf",
+    "pdf_page": 51,
+    "sha256": "8ab5eeea52ae20d928c89f8af773ea3575a519b05679dd3789eeac1fce058f87",
+    "purpose": "reference_only_not_a_model_input"
+  },
+  {
+    "file": "api_spec.pdf",
+    "source_url": "https://www-ws.gov.taipei/001/Upload/405/relfile/18288/116939/26d47117-1927-48fb-9293-3f7879ec8092.pdf",
+    "pdf_page": 1,
+    "sha256": "3cb792068c0fd41ba08854ad0105c01626c801952781195b42d187ad0fc932db",
+    "purpose": "reference_only_not_a_model_input"
+  }
+]

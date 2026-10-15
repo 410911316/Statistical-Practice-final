@@ -43,6 +43,15 @@ class ApiTests(unittest.TestCase):
         self.client.close()
         self.tmp.cleanup()
 
+    def test_research_route_and_only_public_dist_data_are_served(self):
+        (self.dist / 'data').mkdir(parents=True)
+        (self.dist / 'index.html').write_text('<h1>app</h1>')
+        (self.dist / 'data' / 'research.json').write_text('{"public":true}')
+        self.assertEqual(self.client.get('/research').status_code, 200)
+        self.assertEqual(self.client.get('/data/research.json').json(), {'public': True})
+        self.assertEqual(self.client.get('/data/missing.json').status_code, 404)
+        self.assertEqual(self.client.get('/data/..%2Findex.html').status_code, 404)
+
     def test_valid_flow_keeps_missing_values_and_semantics(self):
         response = self.client.get("/api/flows", params={"event_date": "2026-08-15", "stations": "北門,北門,大橋頭站"})
         self.assertEqual(response.status_code, 200)
