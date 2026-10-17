@@ -126,7 +126,7 @@ export function ResearchPage() {
       <div className="research-intro">
         <div>
           <span className="eyebrow">FROM FORECAST TO SERVICE</span>
-          <h1>從人流預測，到候車情境。</h1>
+          <h1>詳細預測資訊</h1>
           <p>保留目前模型，檢查人潮集中程度與可用運能如何改變候車。</p>
         </div>
         <Badge variant="outline">公開成果快照</Badge>

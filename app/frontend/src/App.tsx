@@ -368,7 +368,7 @@ function Workspace() {
                   <div className="page-heading">
                     <div>
                       <div className="eyebrow">URBAN MOVEMENT / 城市流動</div>
-                      <h1>煙火落幕，人流未歇。</h1>
+                      <h1>即時地圖資訊</h1>
                       <p>從散場步行到列車候車，探索大稻埕的人流與運輸情境。</p>
                     </div>
                     <Badge variant="outline" className="prototype-badge">

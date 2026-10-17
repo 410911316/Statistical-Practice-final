@@ -108,7 +108,7 @@ export function Analysis({ date, rows, loading, error, retry }: AnalysisProps) {
       <section className="analysis-intro">
         <div>
           <div className="eyebrow">DATA EXPLORER</div>
-          <h1>讓資料，說清楚人流。</h1>
+          <h1>分析資料</h1>
           <p className="muted">
             從一座車站、一個時段，觀察活動當天的人流變化。
           </p>
