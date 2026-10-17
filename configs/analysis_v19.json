@@ -1,0 +1,19 @@
+{
+  "version": 19,
+  "date": "2026-10-17",
+  "input": ".local/analysis_v15/analysis_input.csv",
+  "cohorts": {
+    "four": ["北門", "大橋頭站", "雙連", "民權西路"],
+    "three": ["北門", "大橋頭站", "雙連"],
+    "two": ["北門", "大橋頭站"]
+  },
+  "evaluation_stations": ["北門", "大橋頭站"],
+  "outer_years": [2024, 2025, 2026],
+  "methods": ["xgboost_w4", "xgboost_w1", "ridge"],
+  "seed": 20261010,
+  "parameter_policy": "Freeze each year's archived V14 frozen_w4 / V16 none parameters across all station cohorts; no new tuning",
+  "weight_policy": "For w4 use raw 1+3*Beimen*planned_end_overlap, normalize mean weight to one within each selected event",
+  "feature_policy": "Original historical-baseline and D1 planned-end groups; training-only preprocessing; no same-day lags or observed weather",
+  "selection_policy": "Exploratory paired comparison; do not replace deployed four-station model based on these repeatedly inspected nine events",
+  "d1_deployable": false
+}

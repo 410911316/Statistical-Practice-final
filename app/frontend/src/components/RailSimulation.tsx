@@ -336,7 +336,8 @@ function RailPlayback({ data, date }: { data: RailReplay; date: string }) {
                   const color = congestionColor(load.ratio);
                   const x =
                     70 + 860 * (i === 0 ? train.progress : 1 - train.progress);
-                  const name = `${direction === "north" ? "往松山" : "往新店"} ${replayTime(train.time)}，${load.full ? "滿載" : `估計載客率 ${Math.floor(load.ratio * 100)}%`}`;
+                  const phase = load.after ? "離站後" : "上車前假設";
+                  const name = `${direction === "north" ? "往松山" : "往新店"} ${replayTime(train.time)}，${phase}，${load.full ? "滿載" : `估計載客率 ${Math.floor(load.ratio * 100)}%`}`;
                   return (
                     <g
                       key={train.time}
@@ -406,6 +407,7 @@ function RailPlayback({ data, date }: { data: RailReplay; date: string }) {
                         fontSize="12"
                         fontWeight="600"
                       >
+                        {phase}{" "}
                         {load.full
                           ? "滿載 100%"
                           : `${Math.floor(load.ratio * 100)}%`}
@@ -534,7 +536,12 @@ function RailPlayback({ data, date }: { data: RailReplay; date: string }) {
             人紅
           </span>
         </div>
-        <p>車站門檻可調，僅供視覺比較，並非月台安全容量。灰色＝尚無模型。</p>
+        <p>
+          上車前顯示固定的背景載量假設，離站瞬間才加入北門上車人數。同方向隊伍超過可再載空間時，離站必為滿載；站點顯示的是雙向候車合計。
+        </p>
+        <p>
+          車站門檻可調，僅供視覺比較，並非月台安全容量。灰色＝尚無模型。尚未取得實際到站載量或模擬停站上車過程。
+        </p>
       </div>
       {selectedTrain && detail && (
         <div className="rail-train-detail" aria-live="polite">

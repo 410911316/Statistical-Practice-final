@@ -1,0 +1,13 @@
+{
+  "source_sha256": "81c5e2e23e85716709f5e930453192b9bca8c6738ff89c3bde2b2b5a0d9e7ddc",
+  "checked_train_records": 10575,
+  "records_with_left_behind": 247,
+  "nonfull_departures_with_left_behind": [],
+  "example_20260815_2102_north": {
+    "time": 182.0,
+    "boarded": 153.396143,
+    "before": 153.396143,
+    "left": 0.0
+  },
+  "interpretation": "Before service shows a fixed post-alighting background assumption; boarding occurs at departure, not at animation approach."
+}

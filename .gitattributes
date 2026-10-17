@@ -2,3 +2,7 @@
 app/frontend/public/data/* -text whitespace=cr-at-eol
 # Matplotlib emits trailing spaces inside SVG path coordinates.
 *.svg whitespace=-blank-at-eol
+# V19 records the exact bytes of its frozen fitting sources.
+configs/analysis_v19.json -text
+src/analysis_v19/*.py -text
+src/run_analysis_v19.py -text
