@@ -10,7 +10,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'src'))
-from analysis_v1.queueing import simulate_bulk_queue
+from queueing import simulate_bulk_queue
 from queue_scenarios import shaped_arrivals
 
 

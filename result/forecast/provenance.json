@@ -1,0 +1,11 @@
+{
+  "archive_commit": "2a7282cd656237b1c3ea277e5043c3f655c6a6b7",
+  "reference_sha256": "e8e04aada8c7425e41d65043da1e69e432da7e8b25af6ea9e0f9770b8e95ee8d",
+  "input_sha256": "2db20f52a107db121d0c02bdf1f721933473c5e09378f623b991a1d1f2e13435",
+  "sources": {
+    "result/analysis_v14/manifest.json": "59a8cc63660dfd854b5d57c2cfaa14ef5480bff51e4cf7bd1e2c2b6f9947e858",
+    "result/analysis_v12/manifest.json": "9f6b9c2854c47c847d7f5eae306f10f4600d725ca7b7a473d44740adea19b8a4",
+    "result/analysis_v19/independent_validation.json": "dd4b171dd88c3c1820d7be460f4b074723b5e4014b94c33f7e449611bcbf900f"
+  },
+  "note": "Historical files remain accessible in the archive Git commit; current reproduction does not import versioned modules."
+}

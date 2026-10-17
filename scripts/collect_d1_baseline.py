@@ -108,7 +108,7 @@ def main():
                     **{k:h.headers.get(k) for k in ['Last-Modified','Content-Length','Content-MD5','ETag']})
     with ThreadPoolExecutor(max_workers=8) as pool: probe=list(pool.map(head,index.to_dict('records')))
     (PRIVATE/'od_head_probe.json').write_text(json.dumps(probe,indent=2),encoding='utf-8')
-    dates=pd.read_csv(ROOT/'.local/analysis_v8/both/analysis_input.csv',usecols=['event_date']).event_date.unique()
+    dates=pd.read_csv(ROOT/'.local/forecast/analysis_input.csv',usecols=['event_date']).event_date.unique()
     plan=[dict(event_date=d) for d in sorted(dates)]
     # Exclude days already listed as activities, including cancelled scheduled days.
     context = pd.read_csv(ROOT/"data/processed/event_station_hourly_context.csv",usecols=["event_date"])

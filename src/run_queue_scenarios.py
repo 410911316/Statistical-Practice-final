@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from analysis_v1.queueing import simulate_bulk_queue
+from queueing import simulate_bulk_queue
 from metro_operations import ROOT,sha,collect
 from queue_scenarios import shaped_arrivals
 
@@ -161,7 +161,7 @@ def main():
     '逐組結果：[scenarios.csv](scenarios.csv)；逐場：[event_summary.csv](event_summary.csv)；來源及 DB 核對：[import_audit.json](import_audit.json)。']
     (out/'report.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
     audit={'model_refitted':False,'predictions_sha256':sha(path),'normalized_snapshot_sha256':sha(snapshot/'normalized.json'),
-           'implementation_sha256':{p:sha(ROOT/p) for p in ['configs/queue_dispatch_v1.json','src/run_queue_scenarios.py','src/queue_scenarios.py','src/metro_operations.py','src/analysis_v1/queueing.py']},
+           'implementation_sha256':{p:sha(ROOT/p) for p in ['configs/queue_dispatch_v1.json','src/run_queue_scenarios.py','src/queue_scenarios.py','src/metro_operations.py','src/queueing.py']},
            'scenarios':len(results),'max_conservation_error':max_conservation,'all_cleared':bool(results.cleared.all()),
            'max_residual_queue':float(results.residual_queue.max()),'uses_observed_y':False,
            'official_timetable_effective_from':sorted({s['effective_from'] for s in tables['metro_source_snapshot'] if s['source_kind']=='general_timetable'}),

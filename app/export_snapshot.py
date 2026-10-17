@@ -50,7 +50,7 @@ def export(repo=None, output=OUTPUT):
                     row_count=len(flows), missing_values='null／不完整不等於 0')
     observations = dict(events=events, rows=flows, metadata=metadata)
     qroot = ROOT / 'result/queue_dispatch_v1'
-    mroot = ROOT / 'result/model_diagnostics_20261014/tables'
+    mroot = ROOT / 'result/forecast/tables'
     config = json.loads((ROOT / 'configs/queue_dispatch_v1.json').read_text(encoding='utf-8'))
     prediction = ROOT / config['prediction_path']
     if hashlib.sha256(prediction.read_bytes()).hexdigest() != config['prediction_sha256']:
@@ -61,8 +61,8 @@ def export(repo=None, output=OUTPUT):
     scenarios = read_csv(qroot / 'scenarios.csv')
     if len(scenarios) != 1134:
         raise ValueError('Unexpected queue cohort')
-    research = dict(generated_at=metadata['generated_at'], model=dict(name='四站 XGBoost · V14 frozen_w4',
-                    hourly=hourly, events=read_csv(mroot/'best_four_events.csv'), metrics=read_csv(mroot/'summary.csv')[0],
+    research = dict(generated_at=metadata['generated_at'], model=dict(name='四站 XGBoost · 散場加權',
+                    hourly=hourly, events=read_csv(mroot/'website_events.csv'), metrics=read_csv(mroot/'website_summary.csv')[0],
                     selection_note='已反覆比較的九場開發驗證；不是全新獨立測試。'),
                     queue=dict(scenarios=scenarios, summary=read_csv(qroot/'summary.csv'), assumptions=dict(
                         platform_delay_minutes=config['platform_delay_minutes'], max_train_persons=2220, cars=6,

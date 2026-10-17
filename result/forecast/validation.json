@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "reference_max_error": {
+    "ridge": 1.8189894035458565e-12,
+    "gam": 5.4569682106375694e-12,
+    "xgboost": 5.684341886080802e-14,
+    "xgboost_weighted": 5.684341886080802e-14
+  },
+  "models": 12,
+  "independent_events": 21,
+  "evaluation_events": 9,
+  "evaluation_rows": 54,
+  "d1_deployable": false,
+  "independent_unseen_test": false,
+  "new_tuning": false,
+  "input_sha256": "2db20f52a107db121d0c02bdf1f721933473c5e09378f623b991a1d1f2e13435",
+  "prediction_sha256": "96915ef02b9ebbf6fae909209f85b65cd9da1f2682dc87497d198bdb53daf3ef",
+  "versions": {
+    "python": "3.10.11",
+    "numpy": "2.2.6",
+    "sklearn": "1.7.2",
+    "xgboost": "3.1.3"
+  }
+}

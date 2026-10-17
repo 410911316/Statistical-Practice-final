@@ -177,7 +177,7 @@ def collect_event(event_date: str, cache: Path) -> tuple[list[dict], dict]:
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--events", type=Path, default=ROOT / "result/analysis_v2/tables/eda_activity_features.csv")
+    parser.add_argument("--events", type=Path, default=ROOT / ".local/forecast/analysis_input.csv")
     parser.add_argument("--output", type=Path, default=ROOT / "docs/d1_weather_sources.json")
     parser.add_argument("--cache", type=Path, default=ROOT / ".local/d1_weather")
     parser.add_argument("--workers", type=int, choices=range(1, 5), default=3)

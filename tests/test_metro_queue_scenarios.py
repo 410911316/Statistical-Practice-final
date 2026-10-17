@@ -12,7 +12,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'src'))
 from metro_operations import parse_timetable,parse_links,dispatch_paths,minute_of_service_day,sha
 from queue_scenarios import shaped_arrivals,remaining_capacity
-from analysis_v1.queueing import simulate_bulk_queue
+from queueing import simulate_bulk_queue
 from run_queue_scenarios import prepare_forecasts
 
 
