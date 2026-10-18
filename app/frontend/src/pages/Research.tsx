@@ -125,9 +125,8 @@ export function ResearchPage() {
     <div className="research-page">
       <div className="research-intro">
         <div>
-          <span className="eyebrow">FROM FORECAST TO SERVICE</span>
           <h1>詳細預測資訊</h1>
-          <p>保留目前模型，檢查人潮集中程度與可用運能如何改變候車。</p>
+          <p>比較北門預測結果，探索到達形狀與可用運能對候車的影響。</p>
         </div>
         <Badge variant="outline">公開成果快照</Badge>
       </div>
@@ -137,7 +136,7 @@ export function ResearchPage() {
           timeZone: "Asia/Taipei",
           hour12: false,
         })}
-        （臺北）<span>模型：V14 · 四站 XGBoost</span>
+        （臺北）<span>模型：{data.model.name}</span>
         <span>候車範圍：北門雙向</span>
       </div>
       <div className="research-toolbar">
@@ -177,7 +176,7 @@ export function ResearchPage() {
       {tab === "operations" && <Operations data={data} />}
       <div className="research-links">
         <a
-          href={GITHUB + "result/model_diagnostics_20261014/report.md"}
+          href={GITHUB + "result/forecast/report.md"}
           target="_blank"
           rel="noreferrer"
         >
@@ -215,19 +214,19 @@ function Model({ data, event }: { data: Research; event: string }) {
     <>
       <div className="research-stats">
         <Stat
-          label="九場逐時 MAE"
+          label="全部九場 · MAE"
           value={format(m.mae)}
           unit="人次"
           note="54 個北門小時；平均絕對誤差"
         />
         <Stat
-          label="九場逐時 RMSE"
+          label="全部九場 · RMSE"
           value={format(m.rmse)}
           unit="人次"
           note="較重視大幅預測誤差"
         />
         <Stat
-          label="本場尖峰預測差"
+          label={`${event} · 尖峰預測差`}
           value={numberText(+current.peak_error)}
           unit="人次"
           note={`${current.actual_peak_hour}:00 同一時段比較；${format(current.peak_error_percent)}%`}
@@ -264,7 +263,7 @@ function Model({ data, event }: { data: Research; event: string }) {
                 isAnimationActive={false}
                 dataKey="predicted"
                 name="模型預測"
-                fill="#719b8b"
+                fill="#8194aa"
                 radius={[4, 4, 0, 0]}
               />
             </BarChart>
@@ -277,7 +276,13 @@ function Model({ data, event }: { data: Research; event: string }) {
         </ChartNote>
         <details>
           <summary>查看本場精確數值</summary>
-          <div className="research-table-wrap">
+          <p className="mobile-table-hint">左右滑動查看完整表格</p>
+          <div
+            className="research-table-wrap"
+            tabIndex={0}
+            role="region"
+            aria-label="可左右捲動的資料表"
+          >
             <table>
               <thead>
                 <tr>
@@ -448,7 +453,7 @@ function Queue({ data, event }: { data: Research; event: string }) {
                   isAnimationActive={false}
                   name="平均候車（分）"
                   dataKey="wait"
-                  fill="#8fae9f"
+                  fill="#8194aa"
                   radius={[5, 5, 0, 0]}
                 />
               </BarChart>
@@ -476,7 +481,7 @@ function Queue({ data, event }: { data: Research; event: string }) {
                     key={k}
                     name={k}
                     dataKey={k}
-                    stroke={["#d3d3d3", "#7fa391", "#c2a37a"][i]}
+                    stroke={["#d3d3d3", "#8194aa", "#a59b8d"][i]}
                     strokeWidth={2}
                     dot={{ r: 4 }}
                   />
@@ -494,7 +499,13 @@ function Queue({ data, event }: { data: Research; event: string }) {
             下載全部 1,134 組
           </a>
         </div>
-        <div className="research-table-wrap">
+        <p className="mobile-table-hint">左右滑動查看完整表格</p>
+        <div
+          className="research-table-wrap"
+          tabIndex={0}
+          role="region"
+          aria-label="可左右捲動的資料表"
+        >
           <table>
             <thead>
               <tr>
@@ -716,7 +727,13 @@ function Operations({ data }: { data: Research }) {
         <p>
           只計「已發車後」區間行駛＋中途停靠。不是下令後多久能到，也不表示當時有可用備車。
         </p>
-        <div className="research-table-wrap">
+        <p className="mobile-table-hint">左右滑動查看完整表格</p>
+        <div
+          className="research-table-wrap"
+          tabIndex={0}
+          role="region"
+          aria-label="可左右捲動的資料表"
+        >
           <table>
             <thead>
               <tr>

@@ -2,102 +2,179 @@
   overflow: hidden;
 }
 .rail-heading {
-  padding: 25px 26px 20px;
+  padding: 20px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 18px;
+  gap: 16px;
+  border-bottom: 1px solid #2d2d31;
+}
+.rail-station-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.rail-code {
+  font-size: 12px;
+  color: #c5c9d0;
+  border: 1px solid #505058;
+  border-radius: 4px;
+  padding: 3px 6px;
 }
 .rail-heading h2 {
-  font-size: 22px;
-  font-weight: 550;
-  margin: 10px 0;
+  font-size: 21px;
+  font-weight: 600;
 }
-.rail-heading p {
-  font-size: 12px;
-  color: #a3aba7;
-  margin: 8px 0;
+.rail-station-title > span:last-child {
+  font-size: 13px;
+  color: #9b9ba5;
 }
 .rail-simulation-tag {
   white-space: nowrap;
-  font-size: 11px;
-  border: 1px solid #38493f;
-  border-radius: 18px;
-  padding: 7px 11px;
-  color: #b2c6bb;
-  background: #1a231e;
-}
-.rail-controls {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
-  padding: 18px 26px;
-  background: #171b19;
-  border-block: 1px solid #303833;
-}
-.rail-controls label {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  font-size: 11px;
-  color: #b3bcb7;
-}
-.rail-panel select {
   font-size: 12px;
-  padding: 9px 12px;
-  background: #242a26;
-  border: 1px solid #3a453e;
-  border-radius: 7px;
-  color: #e4e9e6;
-  min-width: 0;
+  color: #b1b1ba;
 }
 .rail-status-strip {
   display: flex;
-  gap: 22px;
-  align-items: center;
   flex-wrap: wrap;
-  padding: 17px 26px;
-  font-size: 12px;
-  color: #aeb9b2;
-  border-bottom: 1px solid #2b342e;
+  align-items: center;
+  gap: 12px 24px;
+  padding: 18px 24px 0;
+  font-size: 13px;
+  color: #a3a3ae;
 }
-.rail-status-strip span {
+.rail-status-strip > span {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
+}
+.rail-status-strip > span:last-child {
+  margin-left: auto;
 }
 .rail-status-strip strong {
-  font-size: 16px;
+  font-size: 21px;
+  font-weight: 550;
   font-variant-numeric: tabular-nums;
 }
-.rail-diagram-scroll {
-  overflow-x: auto;
-  background: #0d1210;
+.rail-stage {
+  padding: 18px 24px 14px;
+  background: #131314;
 }
-.rail-diagram {
-  display: block;
-  width: 100%;
-  min-width: 650px;
-  height: auto;
-  max-height: 470px;
+.rail-lane + .rail-lane {
+  margin-top: 14px;
+}
+.rail-lane-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+}
+.rail-lane-heading strong {
+  font-weight: 500;
+  color: #d4d4da;
+}
+.rail-lane-heading > span {
+  color: #9a9aa5;
+}
+.rail-track {
+  position: relative;
+  height: 112px;
+  margin: 0 60px;
+}
+.rail-track::before {
+  content: "";
+  position: absolute;
+  inset: 59px -40px auto;
+  height: 6px;
+  border-block: 1px solid #55555e;
+}
+.rail-platform {
+  position: absolute;
+  width: 110px;
+  top: 42px;
+  height: 42px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom: 3px solid;
+  background: #202023;
+}
+.rail-platform > span {
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
 }
 .rail-train {
+  position: absolute;
+  top: 7px;
+  width: 100px;
+  height: 76px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  background: none;
+  border: 0;
+  padding: 0;
   cursor: pointer;
+  z-index: 1;
+}
+.rail-train-load {
+  font-size: 14px;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.rail-train-load small {
+  display: block;
+  color: #b2b2bd;
+  font-size: 11px;
+  margin-top: 3px;
+}
+.rail-cars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  width: 96px;
+  height: 27px;
+  padding: 4px;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  background: #141416;
+}
+.rail-cars i {
+  display: block;
+  flex: 1;
+  height: 15px;
+  border-radius: 2px;
+  background: currentColor;
+  opacity: 0.75;
+}
+.rail-train:hover .rail-cars,
+.rail-train[aria-pressed="true"] .rail-cars {
+  outline: 2px solid #e8e8eb;
+  outline-offset: 3px;
 }
 .rail-train:focus-visible {
-  outline: none;
+  outline: 2px solid #e8e8eb;
+  outline-offset: 4px;
+  border-radius: 5px;
 }
-.rail-train:focus-visible > rect {
-  stroke: white;
-  stroke-width: 4;
-}
-.rail-train:hover > rect {
-  fill: #27332c;
+.rail-stage-note {
+  color: #9797a2;
+  font-size: 12px;
+  text-align: right;
+  margin-top: 12px;
 }
 .rail-playback {
-  padding: 18px 26px;
-  border-block: 1px solid #2c3530;
-  background: #161c18;
+  border-block: 1px solid #303034;
+  background: #1b1b1e;
+  padding: 16px 24px;
 }
 .rail-playback-head,
 .rail-playback-head > div {
@@ -107,46 +184,130 @@
   gap: 10px;
 }
 .rail-playback-head strong {
-  font-size: 19px;
+  font-size: 22px;
   font-weight: 550;
   letter-spacing: 0.02em;
+}
+.rail-playback [data-slot="button"] {
+  min-height: 42px;
+  min-width: 42px;
+}
+.rail-panel select {
+  font-size: 13px;
+  min-height: 42px;
+  padding: 8px 10px;
+  color: #dedee5;
+  background: #242428;
+  border: 1px solid #44444c;
+  border-radius: 6px;
+  min-width: 0;
+  max-width: 100%;
 }
 .rail-playback input[type="range"] {
   display: block;
   width: 100%;
-  accent-color: #afd2b6;
-  margin: 22px 0 10px;
+  height: 24px;
+  accent-color: #afbacb;
+  margin: 12px 0 2px;
   cursor: pointer;
 }
 .rail-time-labels {
   position: relative;
   display: flex;
   justify-content: space-between;
-  color: #9ba49d;
-  font-size: 11px;
+  font-size: 12px;
+  color: #a4a4af;
+}
+.rail-settings {
+  border-bottom: 1px solid #303034;
+}
+.rail-settings summary {
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 24px;
+  cursor: pointer;
+  font-size: 13px;
+  list-style: none;
+}
+.rail-settings summary::-webkit-details-marker {
+  display: none;
+}
+.rail-settings summary::after {
+  content: "+";
+  font-size: 20px;
+  color: #b8b8c1;
+}
+.rail-settings[open] summary::after {
+  content: "−";
+}
+.rail-settings summary > span:first-child {
+  font-weight: 550;
+}
+.rail-settings summary > span:nth-child(2) {
+  color: #a2a2ae;
+  margin-left: auto;
+}
+.rail-controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  padding: 0 24px 22px;
+}
+.rail-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+  color: #babac4;
+}
+.rail-unmodeled {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+  padding: 20px 24px 0;
+  font-size: 13px;
+  color: #aaaab4;
+}
+.rail-unmodeled > span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.rail-unmodeled i {
+  height: 7px;
+  width: 7px;
+  background: #777b85;
+  border-radius: 50%;
+}
+.rail-unmodeled small {
+  font-size: 12px;
+  color: #9696a1;
 }
 .rail-legends {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  padding: 22px 26px;
+  gap: 14px 32px;
+  padding: 24px;
 }
 .rail-legends > div {
   display: grid;
   gap: 9px;
 }
 .rail-legends strong {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
 }
 .rail-legends span:not(.rail-gradient) {
-  font-size: 11px;
-  color: #a9b4ac;
+  font-size: 12px;
+  color: #a6a6b1;
 }
 .rail-gradient {
   display: block;
-  height: 6px;
-  border-radius: 8px;
+  height: 4px;
+  border-radius: 4px;
   background: linear-gradient(
     90deg,
     hsl(120 72% 52%),
@@ -157,52 +318,53 @@
 }
 .rail-legends p {
   grid-column: 1/-1;
-  color: #9ca59e;
-  font-size: 11px;
+  color: #a6a6b1;
+  font-size: 13px;
   margin: 0;
-  line-height: 1.7;
+  line-height: 1.8;
 }
 .rail-train-detail {
-  margin: 0 26px 22px;
-  padding: 17px;
-  border: 1px solid #485d4e;
-  background: #1c2820;
-  border-radius: 9px;
+  margin: 18px 24px;
+  padding: 16px;
+  border: 1px solid #515867;
+  background: #1d2027;
+  border-radius: 6px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
-  font-size: 12px;
+  gap: 10px;
+  font-size: 13px;
 }
 .rail-train-detail strong {
   width: 100%;
 }
 .rail-train-detail span {
-  color: #c0cdc3;
+  color: #c1c7d1;
   line-height: 1.8;
 }
 .rail-assumptions {
-  padding: 0 26px 24px;
-  font-size: 12px;
-  color: #a9b1ab;
+  padding: 0 24px 24px;
+  font-size: 13px;
+  color: #aaaab5;
 }
 .rail-assumptions summary {
   cursor: pointer;
-  color: #c1d1c5;
+  color: #c8ced9;
+  min-height: 36px;
 }
 .rail-assumptions p {
   line-height: 1.9;
   margin: 12px 0 0;
 }
 .rail-empty {
-  padding: 35px;
+  padding: 32px;
   display: grid;
-  gap: 15px;
-  font-size: 13px;
-  color: #afb8b2;
+  gap: 16px;
+  font-size: 14px;
+  color: #aaaab5;
 }
 .rail-empty h2 {
-  font-size: 20px;
+  font-size: 21px;
   color: #eee;
 }
 .rail-dates {
@@ -210,84 +372,125 @@
   flex-wrap: wrap;
   gap: 10px;
 }
-.view-mode-switch {
-  display: flex;
-  gap: 5px;
-  background: #1c1e1c;
-  border: 1px solid #353a35;
-  border-radius: 10px;
-  padding: 4px;
-  margin-bottom: 22px;
-  width: fit-content;
-}
-.view-mode-switch button {
-  font-size: 12px;
+.rail-dates button {
+  min-height: 44px;
 }
 .rail-panel select:focus-visible,
-.rail-panel input:focus-visible {
-  outline: 2px solid #b6d0bf;
+.rail-panel input:focus-visible,
+summary:focus-visible {
+  outline: 2px solid #bac7d9;
   outline-offset: 3px;
 }
-@media (max-width: 800px) {
+@media (max-width: 700px) {
   .rail-heading {
     align-items: flex-start;
     flex-direction: column;
-    padding: 20px;
+    gap: 8px;
+    padding: 16px;
   }
-  .rail-heading h2 {
-    font-size: 19px;
+  .rail-station-title {
+    gap: 10px;
   }
-  .rail-controls {
-    padding: 16px 20px;
-    gap: 12px;
-  }
-  .rail-controls label {
-    font-size: 10px;
-  }
-  .rail-playback {
-    padding: 18px 20px;
-  }
-  .rail-playback-head {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 12px;
+  .rail-station-title > span:last-child {
+    font-size: 12px;
   }
   .rail-status-strip {
-    padding: 16px 20px;
-    gap: 10px;
-    font-size: 11px;
+    padding: 16px 16px 0;
+    gap: 8px;
   }
-  .rail-legends {
-    padding: 20px;
+  .rail-status-strip > span:last-child {
+    display: none;
   }
-  .rail-assumptions {
-    padding: 0 20px 20px;
+  .rail-status-strip > span:nth-child(2) {
+    display: none;
   }
-}
-@media (max-width: 530px) {
-  .rail-controls {
-    grid-template-columns: 1fr;
+  .rail-stage {
+    padding: 16px 16px 12px;
   }
-  .rail-legends {
-    grid-template-columns: 1fr;
+  .rail-track {
+    margin-inline: 46px;
+    height: 112px;
+  }
+  .rail-track::before {
+    left: -30px;
+    right: -30px;
+  }
+  .rail-platform {
+    width: 72px;
+  }
+  .rail-train {
+    width: 84px;
+  }
+  .rail-cars {
+    width: 82px;
+    gap: 1px;
+  }
+  .rail-lane-heading {
+    font-size: 13px;
+  }
+  .rail-stage-note {
+    text-align: left;
+    font-size: 12px;
+  }
+  .rail-playback {
+    padding: 16px;
+  }
+  .rail-playback-head {
+    flex-wrap: wrap;
+    gap: 12px;
   }
   .rail-playback-head > div {
-    flex-wrap: wrap;
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .rail-playback-head > div:last-child {
+    justify-content: space-between;
+  }
+  .rail-playback-head strong {
+    margin-left: auto;
   }
   .rail-playback-head select {
-    font-size: 11px;
+    font-size: 12px;
+    padding-inline: 6px;
   }
-  .rail-diagram-scroll {
-    position: relative;
+  .rail-settings summary {
+    padding: 16px;
+    flex-wrap: wrap;
+    gap: 5px 12px;
   }
-  .rail-diagram-scroll:before {
-    content: "左右滑動查看完整列車圖";
-    display: block;
-    padding: 10px 20px;
-    color: #8a9e8f;
-    font-size: 10px;
+  .rail-settings summary > span:nth-child(2) {
+    order: 3;
+    width: 100%;
+    margin: 0;
+    font-size: 12px;
+  }
+  .rail-settings summary::after {
+    margin-left: auto;
+  }
+  .rail-controls {
+    grid-template-columns: 1fr;
+    padding: 0 16px 20px;
+    gap: 14px;
+  }
+  .rail-unmodeled {
+    padding: 18px 16px 0;
+    gap: 12px 18px;
+  }
+  .rail-unmodeled > span:first-child {
+    width: 100%;
+  }
+  .rail-legends {
+    grid-template-columns: 1fr;
+    padding: 20px 16px;
+    gap: 16px;
+  }
+  .rail-assumptions {
+    padding: 0 16px 20px;
   }
   .rail-train-detail {
-    margin-inline: 20px;
+    margin-inline: 16px;
+  }
+  .rail-empty {
+    padding: 24px 18px;
   }
 }

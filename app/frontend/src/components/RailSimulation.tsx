@@ -84,21 +84,6 @@ export function RailSimulation({
 }
 
 function RailPlayback({ data, date }: { data: RailReplay; date: string }) {
-  const diagramScroll = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const element = diagramScroll.current;
-    if (!element) return;
-    const center = () => {
-      element.scrollLeft = Math.max(
-        0,
-        (element.scrollWidth - element.clientWidth) / 2,
-      );
-    };
-    const observer = new ResizeObserver(center);
-    observer.observe(element);
-    center();
-    return () => observer.disconnect();
-  }, []);
   const [shape, setShape] = useState("broad");
   const [fraction, setFraction] = useState(0.5);
   const [threshold, setThreshold] = useState(1000);
@@ -162,57 +147,12 @@ function RailPlayback({ data, date }: { data: RailReplay; date: string }) {
   return (
     <section className="rail-panel panel" aria-label="列車載客與車站候車模擬">
       <div className="rail-heading">
-        <div>
-          <span className="eyebrow">RAIL & QUEUE / 情境回放</span>
-          <h2>看見列車載量，也看見候車壓力。</h2>
-          <p>{date} 預測需求 × 一般班表 · 北門高運量六節編組</p>
+        <div className="rail-station-title">
+          <span className="rail-code">G13</span>
+          <h2>北門</h2>
+          <span>高運量六節編組</span>
         </div>
         <span className="rail-simulation-tag">模擬估計，非即時監控</span>
-      </div>
-      <div className="rail-controls">
-        <label>
-          到達形狀
-          <select
-            value={shape}
-            onChange={(e) => {
-              setShape(e.target.value);
-              setSelectedTrain(null);
-            }}
-          >
-            <option value="uniform">均勻</option>
-            <option value="broad">寬峰 · σ 20 分</option>
-            <option value="concentrated">集中峰 · σ 5 分</option>
-          </select>
-        </label>
-        <label>
-          到北門下客後可再載
-          <select
-            value={fraction}
-            onChange={(e) => {
-              setFraction(+e.target.value);
-              setSelectedTrain(null);
-            }}
-          >
-            {[0.25, 0.5, 0.75].map((f) => (
-              <option key={f} value={f}>
-                {numberText(data.maximum * f)} 人／班
-              </option>
-            ))}
-          </select>
-        </label>
-        <label>
-          車站紅色門檻（雙向合計）
-          <select
-            value={threshold}
-            onChange={(e) => setThreshold(+e.target.value)}
-          >
-            {[500, 1000, 2000, 3000].map((n) => (
-              <option value={n} key={n}>
-                {numberText(n)} 人
-              </option>
-            ))}
-          </select>
-        </label>
       </div>
       <div className="rail-status-strip">
         <span>
@@ -227,106 +167,31 @@ function RailPlayback({ data, date }: { data: RailReplay; date: string }) {
         </span>
         <span>高運量上限 {numberText(data.maximum)} 人／列</span>
       </div>
-      <div className="rail-diagram-scroll" ref={diagramScroll}>
-        <svg
-          className="rail-diagram"
-          viewBox="0 0 1000 380"
-          role="group"
-          aria-label="北門雙向列車示意；列車依載客率、北門依候車人數變色，其他站灰色待建模"
-        >
-          <defs>
-            <pattern
-              id="rail-grid"
-              width="30"
-              height="30"
-              patternUnits="userSpaceOnUse"
-            >
-              <circle cx="1" cy="1" r=".7" fill="#333a3c" />
-            </pattern>
-          </defs>
-          <rect width="1000" height="380" fill="url(#rail-grid)" />
-          <rect
-            x="449"
-            y="46"
-            width="102"
-            height="179"
-            rx="18"
-            fill={stationColor}
-            fillOpacity=".06"
-            stroke={stationColor}
-            strokeOpacity=".45"
-          />
-          <text
-            x="500"
-            y="32"
-            textAnchor="middle"
-            fill="#e9eeec"
-            fontSize="16"
-            fontWeight="600"
-          >
-            北門 G13
-          </text>
-          <text x="70" y="32" fill="#b3c3bd" fontSize="12">
-            往松山 →
-          </text>
-          <text x="930" y="242" textAnchor="end" fill="#b3c3bd" fontSize="12">
-            ← 往新店
-          </text>
-          {(["north", "south"] as const).map((direction, i) => {
-            const y = i === 0 ? 88 : 183;
-            const trains = visibleTrains(current[direction], minute);
-            const next = current[direction].trains.find((t) => t.time > minute);
-            return (
-              <g key={direction}>
-                <line
-                  x1="70"
-                  y1={y}
-                  x2="930"
-                  y2={y}
-                  stroke="#384d45"
-                  strokeWidth="8"
-                />
-                <line
-                  x1="70"
-                  y1={y}
-                  x2="930"
-                  y2={y}
-                  stroke="#a6beb3"
-                  strokeWidth="2"
-                />
-                {[250, 750].map((x) => (
-                  <path
-                    key={x}
-                    d={
-                      i === 0
-                        ? `M ${x - 6} ${y - 5} l 7 5 -7 5`
-                        : `M ${x + 6} ${y - 5} l -7 5 7 5`
-                    }
-                    fill="none"
-                    stroke="#97b5a5"
-                    strokeWidth="2"
-                  />
-                ))}
-                <circle
-                  cx="500"
-                  cy={y}
-                  r="10"
-                  fill="#131918"
-                  stroke={stationColor}
-                  strokeWidth="4"
-                />
-                <text
-                  x={i === 0 ? 70 : 930}
-                  y={i === 0 ? 117 : 161}
-                  textAnchor={i === 0 ? "start" : "end"}
-                  fill="#9fa7a3"
-                  fontSize="11"
-                >
+      <div className="rail-stage" role="group" aria-label="北門雙向列車示意">
+        {(["north", "south"] as const).map((direction) => {
+          const next = current[direction].trains.find((t) => t.time > minute);
+          return (
+            <div className="rail-lane" key={direction}>
+              <div className="rail-lane-heading">
+                <strong>
+                  {direction === "north" ? "往松山 →" : "← 往新店"}
+                </strong>
+                <span>
                   {next
                     ? `下一班 ${replayTime(next.time).slice(0, -3)}`
                     : "本時段末班已離站"}
-                </text>
-                {trains.map((train) => {
+                </span>
+              </div>
+              <div className="rail-track">
+                <div
+                  className="rail-platform"
+                  style={{ borderColor: stationColor }}
+                >
+                  <span style={{ color: stationColor }}>
+                    {numberText(queues[direction])} 人候車
+                  </span>
+                </div>
+                {visibleTrains(current[direction], minute).map((train) => {
                   const load = trainLoad(
                     train,
                     minute,
@@ -334,131 +199,49 @@ function RailPlayback({ data, date }: { data: RailReplay; date: string }) {
                     data.maximum,
                   );
                   const color = congestionColor(load.ratio);
-                  const x =
-                    70 + 860 * (i === 0 ? train.progress : 1 - train.progress);
                   const phase = load.after ? "離站後" : "上車前假設";
                   const name = `${direction === "north" ? "往松山" : "往新店"} ${replayTime(train.time)}，${phase}，${load.full ? "滿載" : `估計載客率 ${Math.floor(load.ratio * 100)}%`}`;
                   return (
-                    <g
+                    <button
                       key={train.time}
-                      transform={`translate(${x} ${y})`}
                       className="rail-train"
-                      role="button"
-                      tabIndex={0}
                       aria-label={name}
                       data-full={load.full}
                       data-load-color={color}
+                      aria-pressed={
+                        selectedTrain?.direction === direction &&
+                        selectedTrain.time === train.time
+                      }
+                      style={{
+                        left: `${100 * (direction === "north" ? train.progress : 1 - train.progress)}%`,
+                        color,
+                      }}
+                      title={`${name}；約 ${numberText(load.onboard)} 人；點選明細`}
                       onClick={() =>
                         setSelectedTrain({ direction, time: train.time })
                       }
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" || e.key === " ") {
-                          e.preventDefault();
-                          setSelectedTrain({ direction, time: train.time });
-                        }
-                      }}
                     >
-                      <title>
-                        {name}；{load.after ? "上車後" : "下客後、上車前"}約{" "}
-                        {numberText(load.onboard)} 人；點選明細
-                      </title>
-                      <rect
-                        x="-49"
-                        y="-16"
-                        width="98"
-                        height="32"
-                        rx="7"
-                        fill="#101715"
-                        stroke={color}
-                        strokeWidth={load.full ? 3 : 2}
-                      />
-                      {[0, 1, 2, 3, 4, 5].map((car) => (
-                        <g key={car}>
-                          <rect
-                            x={-42 + car * 14}
-                            y="-9"
-                            width="12"
-                            height="18"
-                            rx="2"
-                            fill={color}
-                            fillOpacity=".65"
-                          />
-                          <rect
-                            x={-40 + car * 14}
-                            y="-6"
-                            width="8"
-                            height="5"
-                            rx="1"
-                            fill="#101715"
-                          />
-                        </g>
-                      ))}
-                      <path
-                        d={
-                          i === 0 ? "M 44 -4 l 4 4 -4 4" : "M -44 -4 l -4 4 4 4"
-                        }
-                        stroke="#fff"
-                        fill="none"
-                      />
-                      <text
-                        y={i === 0 ? -26 : 34}
-                        textAnchor="middle"
-                        fill={color}
-                        fontSize="12"
-                        fontWeight="600"
-                      >
-                        {phase}{" "}
+                      <span className="rail-train-load">
                         {load.full
-                          ? "滿載 100%"
+                          ? "滿載"
                           : `${Math.floor(load.ratio * 100)}%`}
-                      </text>
-                    </g>
+                        <small>{phase}</small>
+                      </span>
+                      <span className="rail-cars" aria-hidden="true">
+                        {[0, 1, 2, 3, 4, 5].map((car) => (
+                          <i key={car} />
+                        ))}
+                      </span>
+                    </button>
                   );
                 })}
-              </g>
-            );
-          })}
-          <text
-            x="500"
-            y="139"
-            textAnchor="middle"
-            fill={stationColor}
-            fontSize="17"
-            fontWeight="600"
-          >
-            {numberText(total)} 人候車
-          </text>
-          <text
-            x="500"
-            y="242"
-            textAnchor="middle"
-            fill="#8a9490"
-            fontSize="10"
-          >
-            接近／離開位置為動畫示意，不是列車 GPS 或站間行車時間
-          </text>
-          <line x1="70" y1="267" x2="930" y2="267" stroke="#303536" />
-          {["大橋頭", "雙連", "民權西路"].map((name, i) => (
-            <g
-              key={name}
-              transform={`translate(${185 + i * 315} 306)`}
-              aria-label={`${name}待建模，無候車估計`}
-            >
-              <circle
-                r="10"
-                fill="#202527"
-                stroke={congestionColor(null)}
-                strokeWidth="3"
-              />
-              <text x="22" y="5" fill="#a9adaf" fontSize="14">
-                {name}
-              </text>
-              <text x="22" y="29" fill="#82878c" fontSize="11">
-                待建模 · 未知，不當作 0 人
-              </text>
-            </g>
-          ))}
-        </svg>
+              </div>
+            </div>
+          );
+        })}
+        <p className="rail-stage-note">
+          點選列車查看載量明細 · 移動位置僅為示意
+        </p>
       </div>
       <div className="rail-playback">
         <div className="rail-playback-head">
@@ -522,27 +305,6 @@ function RailPlayback({ data, date }: { data: RailReplay; date: string }) {
           <span>{replayTime(horizon).slice(0, -3)}</span>
         </div>
       </div>
-      <div className="rail-legends">
-        <div>
-          <strong>列車載客率</strong>
-          <span className="rail-gradient" />
-          <span>0% 綠 → 50% 黃 → 100% 紅（滿載）</span>
-        </div>
-        <div>
-          <strong>車站雙向候車</strong>
-          <span className="rail-gradient" />
-          <span>
-            0 人綠 → {numberText(threshold / 2)} 人黃 → ≥{numberText(threshold)}{" "}
-            人紅
-          </span>
-        </div>
-        <p>
-          上車前顯示固定的背景載量假設，離站瞬間才加入北門上車人數。同方向隊伍超過可再載空間時，離站必為滿載；站點顯示的是雙向候車合計。
-        </p>
-        <p>
-          車站門檻可調，僅供視覺比較，並非月台安全容量。灰色＝尚無模型。尚未取得實際到站載量或模擬停站上車過程。
-        </p>
-      </div>
       {selectedTrain && detail && (
         <div className="rail-train-detail" aria-live="polite">
           <strong>
@@ -564,6 +326,94 @@ function RailPlayback({ data, date }: { data: RailReplay; date: string }) {
           </Button>
         </div>
       )}
+      <details className="rail-settings">
+        <summary>
+          <span>情境設定</span>
+          <span>
+            {shape === "uniform"
+              ? "均勻"
+              : shape === "broad"
+                ? "寬峰"
+                : "集中峰"}{" "}
+            · 可再載 {numberText(remaining)} 人／班
+          </span>
+        </summary>
+        <div className="rail-controls">
+          <label>
+            到達形狀
+            <select
+              value={shape}
+              onChange={(e) => {
+                setShape(e.target.value);
+                setSelectedTrain(null);
+              }}
+            >
+              <option value="uniform">均勻</option>
+              <option value="broad">寬峰 · σ 20 分</option>
+              <option value="concentrated">集中峰 · σ 5 分</option>
+            </select>
+          </label>
+          <label>
+            到北門下客後可再載
+            <select
+              value={fraction}
+              onChange={(e) => {
+                setFraction(+e.target.value);
+                setSelectedTrain(null);
+              }}
+            >
+              {[0.25, 0.5, 0.75].map((f) => (
+                <option key={f} value={f}>
+                  {numberText(data.maximum * f)} 人／班
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            車站紅色門檻（雙向合計）
+            <select
+              value={threshold}
+              onChange={(e) => setThreshold(+e.target.value)}
+            >
+              {[500, 1000, 2000, 3000].map((n) => (
+                <option value={n} key={n}>
+                  {numberText(n)} 人
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+      </details>
+      <div className="rail-unmodeled" aria-label="其他車站建模狀態">
+        <span>其他車站</span>
+        {["大橋頭", "雙連", "民權西路"].map((name) => (
+          <span key={name}>
+            <i />
+            {name} <small>待建模</small>
+          </span>
+        ))}
+      </div>
+      <div className="rail-legends">
+        <div>
+          <strong>列車載客率</strong>
+          <span className="rail-gradient" />
+          <span>0% 綠 → 50% 黃 → 100% 紅（滿載）</span>
+        </div>
+        <div>
+          <strong>車站雙向候車</strong>
+          <span className="rail-gradient" />
+          <span>
+            0 人綠 → {numberText(threshold / 2)} 人黃 → ≥{numberText(threshold)}{" "}
+            人紅
+          </span>
+        </div>
+        <p>
+          上車前顯示固定的背景載量假設，離站瞬間才加入北門上車人數。同方向隊伍超過可再載空間時，離站必為滿載；站點顯示的是雙向候車合計。
+        </p>
+        <p>
+          車站門檻可調，僅供視覺比較，並非月台安全容量。灰色＝尚無模型。尚未取得實際到站載量或模擬停站上車過程。
+        </p>
+      </div>
       <details className="rail-assumptions">
         <summary>這些顏色怎麼算？</summary>
         <p>

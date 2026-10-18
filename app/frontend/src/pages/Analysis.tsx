@@ -107,7 +107,6 @@ export function Analysis({ date, rows, loading, error, retry }: AnalysisProps) {
     <div className="analysis-page">
       <section className="analysis-intro">
         <div>
-          <div className="eyebrow">DATA EXPLORER</div>
           <h1>分析資料</h1>
           <p className="muted">
             從一座車站、一個時段，觀察活動當天的人流變化。
@@ -271,14 +270,14 @@ export function Analysis({ date, rows, loading, error, retry }: AnalysisProps) {
                       dataKey="time"
                       axisLine={false}
                       tickLine={false}
-                      tick={{ fill: "#8e929b", fontSize: 11 }}
+                      tick={{ fill: "#8e929b", fontSize: 12 }}
                       tickMargin={15}
                     />
                     <YAxis
                       axisLine={false}
                       tickLine={false}
                       width={52}
-                      tick={{ fill: "#8e929b", fontSize: 11 }}
+                      tick={{ fill: "#8e929b", fontSize: 12 }}
                       tickFormatter={(value) => numberText(Number(value))}
                       domain={[0, "auto"]}
                     />
@@ -364,7 +363,13 @@ export function Analysis({ date, rows, loading, error, retry }: AnalysisProps) {
                 {station.name} · {date || "尚未選擇日期"}
               </span>
             </div>
-            <div className="analysis-table-scroll">
+            <p className="mobile-table-hint">左右滑動查看完整表格</p>
+            <div
+              className="analysis-table-scroll"
+              tabIndex={0}
+              role="region"
+              aria-label="可左右捲動的資料表"
+            >
               <table>
                 <caption className="sr-only">
                   {station.name} 站 {date} 18 時至 24 時人流與一般日基準

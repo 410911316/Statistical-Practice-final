@@ -17,12 +17,11 @@ import {
   ExternalLink,
   Layers2,
   Map as MapIcon,
-  Orbit,
+  TrainFront,
   Pause,
   Play,
   RotateCcw,
   Settings2,
-  ShieldCheck,
   SlidersHorizontal,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -41,7 +40,11 @@ import {
   type FlowRow,
 } from "@/lib/api";
 import { STATIONS, SOURCE_LINKS } from "@/data/geography";
-import { FlowMap } from "@/components/FlowMap";
+const FlowMap = lazy(() =>
+  import("@/components/FlowMap").then((module) => ({
+    default: module.FlowMap,
+  })),
+);
 const Analysis = lazy(() =>
   import("@/pages/Analysis").then((module) => ({ default: module.Analysis })),
 );
@@ -219,89 +222,67 @@ function Workspace() {
   ).length;
   return (
     <div className="app-shell">
-      <aside className="sidebar">
-        <Link to="/" className="brand" aria-label="回人流展示首頁">
-          <span className="brand-mark">
-            <Orbit size={27} />
-          </span>
-          <span>
-            稻埕觀測室<small>DADAOCHENG OBSERVATORY</small>
-          </span>
-        </Link>
-        <div className="workspace-label">
-          統計實務 · 研究專案<span>01</span>
-        </div>
-        <nav aria-label="主要導覽">
-          <NavLink to="/" end>
-            <MapIcon size={18} />
-            人流展示<span className="nav-number">01</span>
-          </NavLink>
-          <NavLink to="/analysis">
-            <Activity size={18} />
-            資料分析<span className="nav-number">02</span>
-          </NavLink>
-          <NavLink to="/research">
-            <Layers2 size={18} />
-            模型與候車<span className="nav-number">03</span>
-          </NavLink>
-        </nav>
-        <div className="sidebar-note">
-          <span className="eyebrow">THE RESEARCH</span>
-          <p>
-            從一場煙火，
-            <br />
-            看見城市的流動。
-          </p>
-          <span className="muted">大稻埕活動 × 捷運人流</span>
-        </div>
-        <div className="sidebar-bottom">
-          <div className="private-label">
-            <ShieldCheck size={15} />
-            {STATIC_MODE ? "公開研究成果" : "團隊研究空間"}
-          </div>
-          <p>每個人的操作獨立保留在自己的瀏覽器。</p>
-          <button
-            onClick={() => setSourcesOpen(!sourcesOpen)}
-            className="source-link"
-          >
-            資料來源與說明
-            <ArrowUpRight size={14} />
-          </button>
-          <div className="version">
-            成果展示<span>v0.2</span>
-          </div>
-        </div>
-      </aside>
-      <div className="main-shell">
-        <header className="topbar">
-          <div className="breadcrumb">
-            大稻埕煙火研究<span>/</span>
-            <span className="breadcrumb-last">人流觀測</span>
-          </div>
-          <div className="topbar-right">
-            <span className={`connection ${connected ? "is-connected" : ""}`}>
-              <i />
+      <a
+        className="skip-link"
+        href="#main-content"
+        onClick={(event) => {
+          event.preventDefault();
+          const main = document.getElementById("main-content");
+          main?.focus();
+          main?.scrollIntoView();
+        }}
+      >
+        跳至主要內容
+      </a>
+      <header className="site-header">
+        <div className="site-header-inner">
+          <Link to="/" className="site-brand" aria-label="回人流展示首頁">
+            <TrainFront size={23} strokeWidth={1.6} />
+            <span>
+              稻埕觀測室<small>大稻埕活動 × 捷運人流</small>
+            </span>
+          </Link>
+          <nav className="site-nav" aria-label="主要導覽">
+            <NavLink to="/" end>
+              <MapIcon size={17} />
+              人流展示
+            </NavLink>
+            <NavLink to="/analysis">
+              <Activity size={17} />
+              資料分析
+            </NavLink>
+            <NavLink to="/research">
+              <Layers2 size={17} />
+              模型與候車
+            </NavLink>
+          </nav>
+          <div className="site-tools">
+            <span className="data-status">
               {connected
                 ? STATIC_MODE
-                  ? "公開快照已載入"
+                  ? "公開快照"
                   : "MySQL 已連線"
                 : loading
-                  ? "資料連接中"
-                  : STATIC_MODE
-                    ? "快照未載入"
-                    : "資料庫未連線"}
+                  ? "載入中"
+                  : "資料未載入"}
             </span>
-            <div className="avatar">研</div>
+            <button
+              className="sources-toggle"
+              onClick={() => setSourcesOpen(!sourcesOpen)}
+              aria-expanded={sourcesOpen}
+              aria-controls="data-sources"
+            >
+              資料說明
+              <ArrowUpRight size={14} />
+            </button>
           </div>
-        </header>
-        <main className="main-content">
+        </div>
+      </header>
+      <div className="main-shell">
+        <main className="main-content" id="main-content" tabIndex={-1}>
           {!researchPage && (
             <div className="context-bar">
-              <div className="context-label">
-                <span className="eyebrow">EVENT EXPLORER</span>
-                <span className="context-dot">/</span>
-                <span>活動觀測</span>
-              </div>
+              <span className="context-label">大稻埕煙火人流研究</span>
               <div className="date-control">
                 <label htmlFor="event-date">活動日期</label>
                 <div className="select-wrap">
@@ -326,7 +307,11 @@ function Workspace() {
             </div>
           )}
           {sourcesOpen && (
-            <div className="source-panel panel">
+            <section
+              className="source-panel panel"
+              id="data-sources"
+              aria-label="資料來源與使用方式"
+            >
               <div>
                 <strong>資料來源與使用方式</strong>
                 <button
@@ -348,7 +333,7 @@ function Workspace() {
                   </a>
                 ))}
               </div>
-            </div>
+            </section>
           )}
           {!researchPage &&
             currentEvent &&
@@ -367,14 +352,15 @@ function Workspace() {
                 <>
                   <div className="page-heading">
                     <div>
-                      <div className="eyebrow">URBAN MOVEMENT / 城市流動</div>
-                      <h1>即時地圖資訊</h1>
-                      <p>從散場步行到列車候車，探索大稻埕的人流與運輸情境。</p>
+                      <h1>
+                        {viewMode === "rail" ? "北門散場回放" : "散場步行流向"}
+                      </h1>
+                      <p>
+                        {viewMode === "rail"
+                          ? "沿著時間軸，觀察列車載客與雙向候車人數。"
+                          : "觀察活動場地與周邊車站的流向示意。"}
+                      </p>
                     </div>
-                    <Badge variant="outline" className="prototype-badge">
-                      <span className="badge-dot" />
-                      {viewMode === "rail" ? "列車情境回放" : "散場路徑示意"}
-                    </Badge>
                   </div>
                   <div className="view-mode-switch" aria-label="展示模式">
                     <Button
@@ -470,14 +456,25 @@ function Workspace() {
                               步行示意圖層
                             </span>
                           </div>
-                          <FlowMap
-                            selected={selected}
-                            onSelect={setSelected}
-                            minute={minute}
-                            density={density}
-                            opacity={opacity / 100}
-                            labels={labels}
-                          />
+                          <Suspense
+                            fallback={
+                              <div
+                                className="map-stage empty-state"
+                                aria-busy="true"
+                              >
+                                正在載入地圖…
+                              </div>
+                            }
+                          >
+                            <FlowMap
+                              selected={selected}
+                              onSelect={setSelected}
+                              minute={minute}
+                              density={density}
+                              opacity={opacity / 100}
+                              labels={labels}
+                            />
+                          </Suspense>
                           <div className="timeline">
                             <div className="timeline-head">
                               <div className="playback-controls">
