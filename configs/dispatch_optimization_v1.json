@@ -1,0 +1,30 @@
+{
+  "prediction_path": ".local/forecast/predictions.csv",
+  "prediction_sha256": "96915ef02b9ebbf6fae909209f85b65cd9da1f2682dc87497d198bdb53daf3ef",
+  "prediction_column": "frozen_w4",
+  "truth_column": "y",
+  "operations_snapshot": "20261015",
+  "first_hour": 18,
+  "last_hour": 23,
+  "platform_delay_minutes": 5,
+  "seed": 20261026,
+  "optimization_draws_per_event": 200,
+  "evaluation_draws_per_event": 300,
+  "northbound_share_range": [0.4, 0.6],
+  "remaining_capacity_fraction_range": [0.25, 0.75],
+  "shapes": {
+    "uniform": null,
+    "broad": 20,
+    "concentrated": 5
+  },
+  "peak_centers_minutes": [15, 30, 45],
+  "max_extra_trains": 4,
+  "min_separation_minutes": [2, 3],
+  "insertion_window_minutes": [0, 365],
+  "horizon_minutes": 420,
+  "residual_penalty_minutes": 60,
+  "extra_train_capacity": "same_as_regular",
+  "p95_target_minutes": 10,
+  "max_exceed_probability": 0.05,
+  "interpretation": "Heuristic extra-train insertion against sampled scenarios, evaluated on independent draws. Minimum separation is an assumption, not verified signalling headway; fleet, crew, turnback and depot readiness are not modelled."
+}

@@ -1,0 +1,23 @@
+{
+  "model_refitted": false,
+  "uses_observed_y": "other_events_ratios_only",
+  "predictions_sha256": "96915ef02b9ebbf6fae909209f85b65cd9da1f2682dc87497d198bdb53daf3ef",
+  "normalized_snapshot_sha256": "b395e542f9531bdf31a8ed31ac0306883af7e4d80954f6022bf7355585174d56",
+  "seed": 20261026,
+  "implementation_sha256": {
+    "configs/dispatch_optimization_v1.json": "57b81208ad5375aece601a7b7fc73d74b7984ec78622582824c2a07009586f03",
+    "src/run_dispatch_optimization.py": "2c6d66daaee6da37d53d45bdd427bf4fa1f47ca60360dbdc8bb7506073805ac9",
+    "src/dispatch_optimization.py": "966829b40c27101b545808660d34cc3f5d28c03bbdf830b8e47cf4eb217e0696",
+    "src/run_queue_uncertainty.py": "ccb98e88bb3b78cdb93cb8c8d13ff84aa250cdc7b53f2a067d5edcf2b736ec5d",
+    "src/queue_waits.py": "c63cf9ebc0db390a8bb952ad9a66bc0bb01b7a1aff12ec8c827ab48bdb2b8a93",
+    "src/queue_scenarios.py": "26cc1bb952316437bdcfca0f1516d81355f198cf3a3bbbf264a6d227cb45a9ac",
+    "src/queueing.py": "9d7267bca2a5896568bf911fae3e5c9391b10d755418471f3f0e2cb266e3a891"
+  },
+  "outputs": {
+    "evaluation.csv": "680d8c96f380acab9a90aaa2d3e143f591d7df3313e3f204a65957dc325b23a0",
+    "figures/extra_trains_tradeoff.png": "1614c0b271579679beb3411a615ff0a30112f51a2c65553e652777fc1621c315",
+    "needed_trains.csv": "f876bf3863eb199732c949e2d3760154c9c67ee3a4148d334501ef5a4aa45437",
+    "plans.csv": "91ceaf455c3f76418c82b784576de18547422152fcebfbc34e9f163a8f0bf669",
+    "report.md": "fb93cc42d984583e430a020e61ad89026b50151be8a34eb4dc4ba27381c28781"
+  }
+}
