@@ -3,7 +3,9 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-from queue_waits import fifo_wait_distribution
+import numpy as np
+
+from queue_waits import fifo_wait_distribution, summarize_wait_pieces
 from queueing import simulate_bulk_queue
 
 
@@ -40,6 +42,13 @@ class FifoWaitDistributionTest(unittest.TestCase):
         queue = simulate_bulk_queue(arrivals, trains, capacity)
         self.assertAlmostEqual(waits["mean_wait_minutes"], queue["mean_wait_minutes"])
         self.assertAlmostEqual(waits["mean_wait_minutes"], waits["queue_mean_wait_minutes"])
+
+    def test_zero_width_piece_counts_as_point_mass(self):
+        pieces = np.array([[1.0, 2.0, 2.0], [1.0, 0.0, 4.0]])
+        result = summarize_wait_pieces(pieces, quantiles=[0.5], thresholds_minutes=[2])
+        self.assertAlmostEqual(result["share_waiting_longer_than"][2], 0.25)
+        self.assertAlmostEqual(result["quantiles"][0.5], 2)
+        self.assertAlmostEqual(result["mean_wait_minutes"], 2)
 
     def test_censored_run_reports_no_quantiles(self):
         result = fifo_wait_distribution([450], [4], [300], interval_minutes=4,

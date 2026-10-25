@@ -1,0 +1,23 @@
+{
+  "prediction_path": ".local/forecast/predictions.csv",
+  "prediction_sha256": "96915ef02b9ebbf6fae909209f85b65cd9da1f2682dc87497d198bdb53daf3ef",
+  "prediction_column": "frozen_w4",
+  "truth_column": "y",
+  "operations_snapshot": "20261015",
+  "first_hour": 18,
+  "last_hour": 23,
+  "platform_delay_minutes": 5,
+  "draws_per_event": 1000,
+  "seed": 20261025,
+  "northbound_share_range": [0.4, 0.6],
+  "remaining_capacity_fraction_range": [0.25, 0.75],
+  "shapes": {
+    "uniform": null,
+    "broad": 20,
+    "concentrated": 5
+  },
+  "peak_centers_minutes": [15, 30, 45],
+  "wait_quantiles": [0.5, 0.9, 0.95],
+  "wait_thresholds_minutes": [5, 10],
+  "interpretation": "Scenario-mixture intervals: forecast ratios from the other eight events, assumed minute shapes, Poisson arrivals and assumed remaining capacity. Not calibrated predictive intervals of observed queues."
+}

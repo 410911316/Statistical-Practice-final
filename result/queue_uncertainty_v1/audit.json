@@ -1,0 +1,25 @@
+{
+  "model_refitted": false,
+  "uses_observed_y": "other_events_ratios_only",
+  "predictions_sha256": "96915ef02b9ebbf6fae909209f85b65cd9da1f2682dc87497d198bdb53daf3ef",
+  "normalized_snapshot_sha256": "b395e542f9531bdf31a8ed31ac0306883af7e4d80954f6022bf7355585174d56",
+  "seed": 20261025,
+  "draws": 9000,
+  "max_v1_anchor_gap_minutes": 7.145395386487507e-13,
+  "censored_share": 0.0,
+  "implementation_sha256": {
+    "configs/queue_uncertainty_v1.json": "28c95913c32f59bf3cf63ce28a313c947b8eb769988d8225cbdf0aaf41670bdb",
+    "src/run_queue_uncertainty.py": "ccb98e88bb3b78cdb93cb8c8d13ff84aa250cdc7b53f2a067d5edcf2b736ec5d",
+    "src/queue_waits.py": "c63cf9ebc0db390a8bb952ad9a66bc0bb01b7a1aff12ec8c827ab48bdb2b8a93",
+    "src/queue_scenarios.py": "26cc1bb952316437bdcfca0f1516d81355f198cf3a3bbbf264a6d227cb45a9ac",
+    "src/queueing.py": "9d7267bca2a5896568bf911fae3e5c9391b10d755418471f3f0e2cb266e3a891"
+  },
+  "outputs": {
+    "draws.csv": "b1ba8d50858ef83624c35b003d8555dfec74cda62aa69b4911c6f14991f18b67",
+    "event_intervals.csv": "ae723b9a1f852fa328d12fafa52a09c35267182ce1ce44158e8417a4eecd7f3c",
+    "factor_summary.csv": "1d42238d4761f2c7652de8ae23b7f88b9f42c2718af09c091fdcf88d7febcf1f",
+    "figures/event_intervals.png": "48236612254d6958ff8ddc5c73f86c0778487074134f20ccd65407f252098f7c",
+    "figures/factor_effects.png": "1e66c0729d949cc7dddbcb290eb32c6243df0492c4b44bcdf94fafe9fc3389ea",
+    "report.md": "709ebf80f8648dc66164f254c5751f6b19fcb7401037e6226289661811265db1"
+  }
+}
