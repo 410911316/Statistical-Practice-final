@@ -15,12 +15,15 @@ import numpy as np
 class DirectionQueue:
     """Arrival scenarios for one direction: arrivals[s, i] arrive uniformly in minute i."""
 
-    def __init__(self, arrivals, capacity, horizon):
+    def __init__(self, arrivals, capacity, horizon, extra_capacity=None):
         arrivals=np.asarray(arrivals,dtype=float)
         if arrivals.ndim!=2 or (arrivals<0).any() or not np.isfinite(arrivals).all():
             raise ValueError('arrivals must be a finite nonnegative scenarios × minutes array')
         self.capacity=np.broadcast_to(np.asarray(capacity,dtype=float),arrivals.shape[:1]).copy()
-        if (self.capacity<0).any(): raise ValueError('capacity must be nonnegative')
+        # Extra trains may arrive emptier than regular ones (e.g. short-turn starts).
+        self.extra_capacity=(self.capacity.copy() if extra_capacity is None else
+                             np.broadcast_to(np.asarray(extra_capacity,dtype=float),arrivals.shape[:1]).copy())
+        if (self.capacity<0).any() or (self.extra_capacity<0).any(): raise ValueError('capacity must be nonnegative')
         width=max(arrivals.shape[1],int(horizon))
         padded=np.zeros((arrivals.shape[0],width))
         padded[:,:arrivals.shape[1]]=arrivals
@@ -31,9 +34,10 @@ class DirectionQueue:
         self.demand=self.cumulative[:,-1]
         self.horizon=width
 
-    def evaluate(self,train_times):
+    def evaluate(self,train_times,extra_times=()):
         """Return (waiting person-minutes, residual queue, left-behind departures) per scenario."""
-        times=np.asarray(sorted(train_times),dtype=int)
+        extra=set(int(t) for t in extra_times)
+        times=np.asarray(sorted(list(train_times)+list(extra_times)),dtype=int)
         if len(times) and (times[0]<0 or times[-1]>self.horizon or np.any(np.diff(times)<=0)):
             raise ValueError('train times must be distinct integer minutes within the horizon')
         queue=np.zeros(len(self.demand));wait=np.zeros(len(self.demand))
@@ -42,7 +46,7 @@ class DirectionQueue:
             span=t-previous
             wait+=queue*span+self.area[:,t]-self.area[:,previous]-self.cumulative[:,previous]*span
             queue=queue+self.cumulative[:,t]-self.cumulative[:,previous]
-            queue=queue-np.minimum(queue,self.capacity)
+            queue=queue-np.minimum(queue,self.extra_capacity if t in extra else self.capacity)
             left+=queue>1e-7;previous=t
         # Arrivals after the last train never board: count them as residual, not as waits.
         queue=queue+self.demand-self.cumulative[:,previous]
@@ -62,7 +66,7 @@ def plan_cost(queues,trains,extras,residual_penalty):
     """Mean over scenarios of total waiting person-minutes; unserved riders are penalized."""
     total=0.
     for direction,queue in queues.items():
-        wait,residual,_=queue.evaluate(list(trains[direction])+list(extras[direction]))
+        wait,residual,_=queue.evaluate(trains[direction],extras[direction])
         total+=np.mean(wait+residual_penalty*residual)
     return total
 

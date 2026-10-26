@@ -6,6 +6,7 @@ share, remaining capacity). Plans are chosen on one set of draws and scored
 on another, so the reported improvement is not the optimizer's own sample.
 """
 import json
+import sys
 from datetime import date
 
 import matplotlib
@@ -36,14 +37,15 @@ def sample_scenarios(hourly,ratios,event,cfg,maximum,rng,count):
     return {d:np.array(v,dtype=float) for d,v in arrivals.items()},np.array(spaces)
 
 
-def evaluate_plan(arrivals,spaces,trains,extras,threshold):
+def evaluate_plan(arrivals,spaces,extra_spaces,trains,extras,threshold):
     """Pooled FIFO waits per evaluation scenario for one plan."""
     rows=[]
     for s in range(len(spaces)):
         pieces,cleared,left=[],True,0
         for d in (NORTH,SOUTH):
             times=sorted(list(trains[d])+list(extras[d]))
-            queue,p=fifo_wait_pieces(arrivals[d][s],times,[spaces[s]]*len(times))
+            capacities=[extra_spaces[s] if t in extras[d] else spaces[s] for t in times]
+            queue,p=fifo_wait_pieces(arrivals[d][s],times,capacities)
             pieces.append(p);cleared&=queue['cleared']
             left+=sum(t['left_behind']>1e-7 for t in queue['train_records'])
         row={'cleared':cleared,'left_behind':left,'mean_wait_minutes':np.nan,'p95_wait_minutes':np.nan}
@@ -66,8 +68,11 @@ def clock(minute,first_hour):
 
 
 def main():
-    cfg=json.loads((ROOT/'configs/dispatch_optimization_v1.json').read_text(encoding='utf-8'))
-    if cfg['extra_train_capacity']!='same_as_regular': raise ValueError('Only same_as_regular is implemented')
+    config=sys.argv[1] if len(sys.argv)>1 else 'configs/dispatch_optimization_v1.json'
+    cfg=json.loads((ROOT/config).read_text(encoding='utf-8'))
+    extra=cfg['extra_train_capacity']
+    if extra!='same_as_regular' and not (isinstance(extra,dict) and 0<extra.get('remaining_fraction',0)<=1):
+        raise ValueError('extra_train_capacity must be same_as_regular or {"remaining_fraction": (0, 1]}')
     hours=range(cfg['first_hour'],cfg['last_hour']+1)
     forecasts,ratios=load_cohort(ROOT/cfg['prediction_path'],cfg['prediction_sha256'],
                                  cfg['prediction_column'],cfg['truth_column'],hours)
@@ -78,7 +83,7 @@ def main():
         if sha(snapshot/s['local_file'])!=s['content_sha256']: raise ValueError('Official source snapshot changed')
     maximum=tables['metro_capacity_reference'][0]['max_train_persons']
     target,window=cfg['p95_target_minutes'],tuple(cfg['insertion_window_minutes'])
-    out=ROOT/'result/dispatch_optimization_v1';(out/'figures').mkdir(parents=True,exist_ok=True)
+    out=ROOT/cfg.get('output_dir','result/dispatch_optimization_v1');(out/'figures').mkdir(parents=True,exist_ok=True)
     streams=np.random.SeedSequence(cfg['seed']).spawn(2*len(forecasts))
     plan_rows,eval_rows=[],[]
     for i,(event,hourly) in enumerate(forecasts.iterrows()):
@@ -93,7 +98,10 @@ def main():
                                             cfg['optimization_draws_per_event'])
         ev_arr,ev_spaces=sample_scenarios(hourly,ratios,event,cfg,maximum,np.random.default_rng(streams[2*i+1]),
                                           cfg['evaluation_draws_per_event'])
-        queues={d:DirectionQueue(opt_arr[d],opt_spaces,cfg['horizon_minutes']) for d in (NORTH,SOUTH)}
+        opt_extra,ev_extra=((opt_spaces,ev_spaces) if extra=='same_as_regular' else
+                            (np.full(len(opt_spaces),maximum*extra['remaining_fraction']),
+                             np.full(len(ev_spaces),maximum*extra['remaining_fraction'])))
+        queues={d:DirectionQueue(opt_arr[d],opt_spaces,cfg['horizon_minutes'],opt_extra) for d in (NORTH,SOUTH)}
         for separation in cfg['min_separation_minutes']:
             plans=optimize_insertions(queues,trains,cfg['max_extra_trains'],separation,window,
                                       cfg['residual_penalty_minutes'])
@@ -102,7 +110,7 @@ def main():
                     plan_rows.append(dict(event_date=event,day_type=day,min_separation=separation,n_extra=n,
                                           direction=d,inserted=' '.join(clock(m,cfg['first_hour']) for m in extras[d])))
                 eval_rows.append(dict(event_date=event,day_type=day,min_separation=separation,n_extra=n,
-                                      **evaluate_plan(ev_arr,ev_spaces,trains,extras,target)))
+                                      **evaluate_plan(ev_arr,ev_spaces,ev_extra,trains,extras,target)))
             print(event,separation,'done',flush=True)
     plans=pd.DataFrame(plan_rows);plans.to_csv(out/'plans.csv',index=False,encoding='utf-8-sig')
     evaluation=pd.DataFrame(eval_rows);evaluation.to_csv(out/'evaluation.csv',index=False,encoding='utf-8-sig')
@@ -138,23 +146,27 @@ def main():
                  '紅線＝不加開時超過 5% 門檻的場次；灰線＝其他場次。情境假設，非實際可行班表',fontsize=11)
     fig.savefig(out/'figures/extra_trains_tradeoff.png');plt.close(fig)
 
-    lines=['# 北門加開班次最佳化（第一版）','',
+    capacity_text=('與該情境的一般班次剩餘空間相同（保守；空車折返可能更多）' if extra=='same_as_regular' else
+                   f'固定為 2,220 人的 {extra["remaining_fraction"]:.0%}（接近空車的樂觀界線；往新店方向自松山發車途經多站，未必成立）')
+    seps=cfg['min_separation_minutes']
+    lines=[f'# {cfg.get("report_title","北門加開班次最佳化（第一版）")}','',
     '**在假設情境下求「加開幾班、插在哪一分鐘」的啟發式解；用另一批獨立情境評估。不是可直接上線的班表：車隊、司機、折返、出庫就緒與號誌最小班距都未核實。**','',
     '## 1. 問題設定','',
     '| 項目 | 設定 |','|---|---|',
     '| 決策 | 每場加開 0–{0} 班（兩方向合計），每班插在哪個整數分鐘 |'.format(cfg['max_extra_trains']),
     f'| 限制 | 與同方向任何一班至少相隔 {"／".join(map(str,cfg["min_separation_minutes"]))} 分鐘（假設值，另做敏感度）；只能在 18:00 後 0–{window[1]} 分鐘內插入 |',
-    '| 加開列車容量 | 與該情境的一般班次剩餘空間相同（保守；空車折返可能更多） |',
+    f'| 加開列車容量 | {capacity_text} |',
     f'| 目標 | {cfg["optimization_draws_per_event"]} 個最佳化情境的平均總等待人分鐘最小；末班仍未上車者每人計 {cfg["residual_penalty_minutes"]} 分鐘懲罰 |',
     '| 解法 | 逐班貪婪插入，再逐班移動到更好位置直到無法改善；小型問題已與窮舉最佳解比對一致 |',
     f'| 評估 | 另外 {cfg["evaluation_draws_per_event"]} 個獨立情境，計算平均候車、P95 與「P95 超過 {target} 分」機率 |','',
     '情境抽法與候車不確定性模擬相同：其他場次的實際／預測比例、三種分鐘形狀、Poisson 到達、方向比例與剩餘容量。','',
     f'## 2. 結果（最小間隔 {main_sep} 分）','','![加開班次取捨](figures/extra_trains_tradeoff.png)','',
-    f'| 活動 | 不加開：P95>{target} 分機率 | 最少加開幾班可降到 ≤{cfg["max_exceed_probability"]:.0%} | 間隔 {cfg["min_separation_minutes"][-1]} 分時 |','|---|---:|---:|---:|']
+    f'| 活動 | 不加開：P95>{target} 分機率 | 最少加開幾班可降到 ≤{cfg["max_exceed_probability"]:.0%} |'+(f' 間隔 {seps[-1]} 分時 |' if len(seps)>1 else ''),
+    '|---|---:|---:|'+('---:|' if len(seps)>1 else '')]
     for event,g in needed.groupby('event_date'):
-        a=g[g.min_separation==main_sep].iloc[0];b=g[g.min_separation==cfg['min_separation_minutes'][-1]].iloc[0]
+        a=g[g.min_separation==main_sep].iloc[0];b=g[g.min_separation==seps[-1]].iloc[0]
         fmt=lambda v:'0' if v==0 else (f'{int(v)} 班' if pd.notna(v) else f'>{cfg["max_extra_trains"]} 班')
-        lines.append(f'| {event} | {a.baseline_share_p95_over_target:.1%} | {fmt(a.min_extra_trains)} | {fmt(b.min_extra_trains)} |')
+        lines.append(f'| {event} | {a.baseline_share_p95_over_target:.1%} | {fmt(a.min_extra_trains)} |'+(f' {fmt(b.min_extra_trains)} |' if len(seps)>1 else ''))
     lines+=['',f'各場加開位置（最小間隔 {main_sep} 分）：','','| 活動 | 加開數 | 往松山 | 往新店 | 平均候車中位數 | P95 中位數（95%） | P95>{0} 分機率 |'.format(target),'|---|---:|---|---|---:|---:|---:|']
     for r in base.sort_values(['event_date','n_extra']).itertuples():
         p=plans[(plans.event_date==r.event_date)&(plans.min_separation==main_sep)&(plans.n_extra==r.n_extra)].set_index('direction').inserted
@@ -169,7 +181,7 @@ def main():
     (out/'report.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
     audit={'model_refitted':False,'uses_observed_y':'other_events_ratios_only','predictions_sha256':sha(ROOT/cfg['prediction_path']),
            'normalized_snapshot_sha256':sha(snapshot/'normalized.json'),'seed':cfg['seed'],
-           'implementation_sha256':{p:sha(ROOT/p) for p in ['configs/dispatch_optimization_v1.json','src/run_dispatch_optimization.py',
+           'implementation_sha256':{p:sha(ROOT/p) for p in [config,'src/run_dispatch_optimization.py',
                                     'src/dispatch_optimization.py','src/run_queue_uncertainty.py','src/queue_waits.py',
                                     'src/queue_scenarios.py','src/queueing.py']},
            'outputs':{str(p.relative_to(out)).replace('\\','/'):sha(p) for p in sorted(out.rglob('*')) if p.is_file() and p.name!='audit.json'}}

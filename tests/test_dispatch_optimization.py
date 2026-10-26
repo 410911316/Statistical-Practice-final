@@ -27,6 +27,17 @@ class DispatchOptimizationTests(unittest.TestCase):
             if ref['cleared']:
                 self.assertAlmostEqual(wait[s],ref['waiting_person_minutes'],places=6)
 
+    def test_extra_trains_use_their_own_capacity(self):
+        arrivals=np.r_[np.full(5,40.),np.full(5,300.),np.full(10,20.)][None,:]
+        queue=DirectionQueue(arrivals,200,30,extra_capacity=1800)
+        wait,residual,_=queue.evaluate([4,10,16,22,28],[12])
+        times=[4,10,12,16,22,28]
+        ref=simulate_bulk_queue(arrivals[0],times,[1800 if t==12 else 200 for t in times])
+        self.assertAlmostEqual(wait[0],ref['waiting_person_minutes'])
+        self.assertAlmostEqual(residual[0],ref['residual_queue'])
+        same,_,_=DirectionQueue(arrivals,200,30).evaluate([4,10,16,22,28],[12])
+        self.assertLess(wait[0],same[0])
+
     def test_feasible_minutes_respect_separation(self):
         minutes=feasible_minutes([10,16],2,5,20)
         self.assertTrue(all(min(abs(m-10),abs(m-16))>=2 for m in minutes))
