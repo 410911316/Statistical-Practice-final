@@ -36,21 +36,30 @@ class DirectionQueue:
 
     def evaluate(self,train_times,extra_times=()):
         """Return (waiting person-minutes, residual queue, left-behind departures) per scenario."""
+        _,wait,queue,left=self._run(train_times,extra_times)
+        return wait,queue,left.sum(axis=1)
+
+    def left_behind_by_train(self,train_times):
+        """Return (sorted departure minutes, scenarios × trains bool: someone was left behind)."""
+        times,_,_,left=self._run(train_times,())
+        return times,left
+
+    def _run(self,train_times,extra_times):
         extra=set(int(t) for t in extra_times)
         times=np.asarray(sorted(list(train_times)+list(extra_times)),dtype=int)
         if len(times) and (times[0]<0 or times[-1]>self.horizon or np.any(np.diff(times)<=0)):
             raise ValueError('train times must be distinct integer minutes within the horizon')
         queue=np.zeros(len(self.demand));wait=np.zeros(len(self.demand))
-        left=np.zeros(len(self.demand),dtype=int);previous=0
-        for t in times:
+        left=np.zeros((len(self.demand),len(times)),dtype=bool);previous=0
+        for k,t in enumerate(times):
             span=t-previous
             wait+=queue*span+self.area[:,t]-self.area[:,previous]-self.cumulative[:,previous]*span
             queue=queue+self.cumulative[:,t]-self.cumulative[:,previous]
             queue=queue-np.minimum(queue,self.extra_capacity if t in extra else self.capacity)
-            left+=queue>1e-7;previous=t
+            left[:,k]=queue>1e-7;previous=t
         # Arrivals after the last train never board: count them as residual, not as waits.
         queue=queue+self.demand-self.cumulative[:,previous]
-        return wait,queue,left
+        return times,wait,queue,left
 
 
 def feasible_minutes(existing,separation,start,end):

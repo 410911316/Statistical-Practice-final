@@ -1,0 +1,28 @@
+{
+  "prediction_path": ".local/forecast/predictions.csv",
+  "prediction_sha256": "96915ef02b9ebbf6fae909209f85b65cd9da1f2682dc87497d198bdb53daf3ef",
+  "prediction_column": "frozen_w4",
+  "truth_column": "y",
+  "operations_snapshot": "20261015",
+  "first_hour": 18,
+  "last_hour": 23,
+  "platform_delay_minutes": 5,
+  "seed": 20261027,
+  "optimization_draws_per_event": 200,
+  "evaluation_draws_per_event": 300,
+  "northbound_share_range": [0.4, 0.6],
+  "remaining_capacity_fraction_range": [0.25, 0.75],
+  "shapes": {
+    "uniform": null,
+    "broad": 20,
+    "concentrated": 5
+  },
+  "peak_centers_minutes": [15, 30, 45],
+  "slot_minutes": 15,
+  "service_end_minutes": 375,
+  "headway_options_minutes": [2, 3, 4, 5, 6, 7, 8, 9, 10],
+  "left_behind_epsilon": 0.05,
+  "p95_target_minutes": 10,
+  "output_dir": "result/train_requirement_v1",
+  "interpretation": "Beimen-only trains needed per 15-minute slot from sampled scenarios. Added trains are a lower bound; reductions are candidates until line-wide section loads are checked. Maximum headway 10 min and minimum headway 2 min are assumptions."
+}
